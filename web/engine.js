@@ -53,9 +53,32 @@ const Engine = (() => {
     return ok.length ? ok[ok.length - 1][0] : lines[0];
   }
   // opts.flags：人生線帶進來的 flag（或除錯注入）
-  function create(script, birth, opts = {}) {
+  
+  // ===== 階段最低事件次數（design integration） =====
+  const STAGE_MIN = {
+    childhood: { maxAge: 12, minEvents: 6 },
+    student:   { maxAge: 22, minEvents: 7 }
+  };
+  function getStage(age) {
+    if (age == null) return 'adult';
+    if (age <= 12) return 'childhood';
+    if (age <= 22) return 'student';
+    return 'adult';
+  }
+  function shouldStayInStage(currentAge, nextAge, stageCounts) {
+    const cur = getStage(currentAge);
+    const nxt = getStage(nextAge);
+    if (cur === nxt || cur === 'adult') return false;
+    const rule = STAGE_MIN[cur];
+    if (!rule) return false;
+    const count = (stageCounts && stageCounts[cur]) || 0;
+    return count < rule.minEvents;
+  }
+  // ===== end stage min =====
+
+function create(script, birth, opts = {}) {
     const pi = script.player_init;
-    const p = { stats: {}, flags: new Set([...(pi.flags || []), ...(opts.flags || [])]), lifeFlags: [...(opts.flags || [])], debt: 0, history: [], entered: [] };
+    const p = { stats: {}, flags: new Set([...(pi.flags || []), ...(opts.flags || [])]), lifeFlags: [...(opts.flags || [])], debt: 0, history: [], entered: [], stageCounts: { childhood: 0, student: 0 } };
     const [events, initMod] = applyModifiers(script, new Set(p.flags), !!opts.combined);
     const ev = Object.fromEntries(events.map(e => [e.id, e]));
     const en = Object.fromEntries(script.endings.map(e => [e.id, e]));
