@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2300萬分之1 · 完整開始頁預覽</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c12;
+  --bg-grad: radial-gradient(ellipse at top, #1a1420 0%, #0a0c12 55%);
+  --card: #141820;
+  --card-border: rgba(180, 60, 70, 0.25);
+  --fg: #e8e4e0;
+  --mut: #a89a94;
+  --acc: #d4a574;
+  --warn: #c45c5c;
+  --gold: #c9a87a;
+  --soft-red: rgba(196, 92, 92, 0.12);
+  --line: rgba(212, 165, 116, 0.18);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image: var(--bg-grad);
+  color: var(--fg);
+  font-family: "Noto Sans TC", -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+.wrap {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 40px 18px 40px;
+  position: relative;
+}
+.wrap::before {
+  content: "";
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(196,92,92,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.meta { font-size: 12px; color: var(--mut); letter-spacing: .08em; margin-bottom: 22px; position: relative; z-index: 1; }
+.hero { position: relative; z-index: 1; }
+.hero h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.02;
+  margin: 0 0 10px;
+  letter-spacing: -0.03em;
+  color: #f0ebe6;
+}
+.hero h1 .one { color: var(--warn); text-shadow: 0 0 20px rgba(196,92,92,0.3); }
+.hero p.sub { color: var(--mut); margin: 0 0 28px; font-size: 16.5px; }
+
+.live-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; position: relative; z-index: 1; }
+.live-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px 14px;
+  position: relative;
+  overflow: hidden;
+}
+.live-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warn), transparent);
+  opacity: 0.6;
+}
+.live-card .num { font-size: 30px; font-weight: 800; color: var(--acc); letter-spacing: -0.02em; line-height: 1; }
+.live-card .lbl { font-size: 12.5px; color: var(--mut); margin-top: 6px; line-height: 1.4; }
+
+.fact-ticker {
+  background: var(--soft-red);
+  border: 1px solid rgba(196,92,92,0.35);
+  border-radius: 12px;
+  padding: 13px 16px;
+  margin-bottom: 22px;
+  font-size: 13.5px;
+  color: #e0d0c8;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  transition: opacity .3s;
+}
+.fact-ticker::before { content: "⚠"; margin-right: 8px; color: var(--warn); font-size: 14px; opacity: 0.8; }
+
+.desc { font-size: 15px; color: #c8c0b8; margin: 0 0 22px; position: relative; z-index: 1; }
+.desc strong { color: #f0ebe6; }
+
+.main-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 36px;
+}
+.main-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(196,92,92,0.3), transparent 40%, transparent 60%, rgba(201,168,122,0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.stat { text-align: center; background: rgba(255,255,255,.025); border-radius: 10px; padding: 10px 4px; border: 1px solid rgba(255,255,255,.04); }
+.stat span { display:block; font-size:11px; color:var(--mut); }
+.stat b { font-size:13.5px; color:var(--gold); }
+.opts { margin: 12px 0 14px; font-size: 13.5px; color: var(--mut); }
+.opts label { display:flex; align-items:center; gap:8px; margin: 6px 0; cursor:pointer; }
+button.primary {
+  width:100%;
+  background: linear-gradient(180deg, #c45c5c 0%, #a84848 100%);
+  color: #fff;
+  border: none;
+  border-radius:12px;
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow: 0 4px 16px rgba(196,92,92,0.25);
+}
+button.primary:hover { filter: brightness(1.08); }
+button.ghost {
+  width:100%;
+  margin-top:8px;
+  background: transparent;
+  color: var(--mut);
+  border: 1px solid var(--line);
+  border-radius:12px;
+  padding:11px;
+  font-family:inherit;
+  font-size:14px;
+  cursor:pointer;
+}
+.footer { text-align:center; margin-top:20px; font-size:13.5px; color: var(--mut); font-style: italic; position: relative; z-index: 1; }
+
+/* ===== 他們分享的經驗 ===== */
+.shared-section {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 18px 60px;
+  position: relative;
+  z-index: 1;
+}
+.shared-section h2 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #f0ebe6;
+}
+.shared-section .sub {
+  color: var(--mut);
+  font-size: 13.5px;
+  margin: 0 0 20px;
+}
+.carousel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+@media (max-width: 700px) {
+  .carousel { grid-template-columns: 1fr; }
+}
+.exp-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  min-height: 140px;
+}
+.exp-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warn), transparent);
+  opacity: 0.5;
+  border-radius: 12px 12px 0 0;
+}
+.exp-card .tag {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--warn);
+  background: var(--soft-red);
+  border: 1px solid rgba(196,92,92,0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.exp-card .quote {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #e0d8d0;
+  margin: 0 0 10px;
+}
+.exp-card .who {
+  font-size: 12px;
+  color: var(--mut);
+}
+.nav-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.nav-row button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--mut);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.nav-row button:hover { border-color: var(--warn); color: var(--warn); }
+.dots span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  margin: 0 3px;
+}
+.dots span.on { background: var(--warn); }
+.shared-note {
+  font-size: 12.5px;
+  color: var(--mut);
+  line-height: 1.65;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.shared-note strong { color: var(--acc); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="meta">台灣人生模擬 · 取材自真實資料</div>
+
+  <div class="hero">
+    <h1>2300萬<span style="font-size:.55em;color:var(--mut);font-weight:500">分之</span><span class="one">1</span></h1>
+    <p class="sub">你是其中一個。<br>大多數謊言很小，但有些會變成轉機。</p>
+  </div>
+
+  <div class="live-row">
+    <div class="live-card">
+      <div class="num" id="lies">1,284</div>
+      <div class="lbl">打開這個頁面後<br>被說出的小謊</div>
+    </div>
+    <div class="live-card">
+      <div class="num" id="cases">47</div>
+      <div class="lbl">今天全台約受理<br>的詐騙案件</div>
+    </div>
+  </div>
+
+  <div class="fact-ticker" id="ticker">
+    多數人一天說 0～2 個謊，其中約 90% 是無傷大雅的小謊。
+  </div>
+
+  <p class="desc">
+    一出生，四個數值就已經決定。接下來你會遇到家人、同學、同事說的話，也會遇到<strong>看起來很真</strong>的訊息與機會。遊戲裡的事件取材自 165 統計與真實經驗。
+  </p>
+
+  <div class="main-card">
+    <div class="stats">
+      <div class="stat"><span>存款</span><b>隨機</b></div>
+      <div class="stat"><span>警覺</span><b>隨機</b></div>
+      <div class="stat"><span>人際</span><b>隨機</b></div>
+      <div class="stat"><span>心理</span><b>隨機</b></div>
+    </div>
+    <div class="opts">
+      <label><input type="checkbox"> 無壓力模式</label>
+      <label><input type="checkbox"> 跳過已看過的劇情</label>
+    </div>
+    <button class="primary">開始這一生 →</button>
+    <button class="ghost">成就 12 / 48</button>
+  </div>
+
+  <p class="footer">上當的人不笨，往往只是太真誠。</p>
+</div>
+
+<!-- 他們分享的經驗 -->
+<div class="shared-section">
+  <h2>他們分享的經驗</h2>
+  <p class="sub">走完一生的人，留下一句話。沒有名字，只有當時的感覺。</p>
+
+  <div class="carousel" id="carousel"></div>
+
+  <div class="nav-row">
+    <button onclick="prev()">←</button>
+    <div class="dots" id="dots"></div>
+    <button onclick="next()">→</button>
+  </div>
+
+  <div class="shared-note">
+    <strong>備註：</strong>目前為預設 10 則示範短句，一次顯示 3 則並輪播。遊戲上線後，玩家在結局時可留下「一句想說的話」，經審核後會替換進此區。內容可涵蓋受騙、有驚無險、風平浪靜或懊悔等各種經驗。
+  </div>
+</div>
+
+<script>
+const facts = [
+  "多數人一天說 0～2 個謊，其中約 90% 是無傷大雅的小謊。",
+  "10 分鐘的日常對話裡，約 60% 的成年人會至少說一次謊。",
+  "台灣 2025 年詐騙財損近 900 億，網購與假投資是最常見手法。",
+  "超過 95% 的民眾曾收過假訊息，投資理財類最常出現。",
+  "孩子大約 2～3 歲就會開始有意識地說第一個謊。",
+  "履歷裡約有 30～40% 含有不同程度的誇大。",
+  "假投資詐騙雖然件數不一定最多，但財損金額往往最高。"
+];
+let fi = 0;
+const ticker = document.getElementById('ticker');
+setInterval(() => {
+  fi = (fi + 1) % facts.length;
+  ticker.style.opacity = 0;
+  setTimeout(() => {
+    ticker.innerHTML = facts[fi];
+    ticker.style.opacity = 1;
+  }, 280);
+}, 4200);
+
+let lies = 1284;
+setInterval(() => {
+  lies += Math.random() > 0.4 ? 1 : 2;
+  document.getElementById('lies').textContent = lies.toLocaleString();
+}, 1600);
+
+let cases = 47;
+setInterval(() => {
+  if (Math.random() > 0.7) {
+    cases += 1;
+    document.getElementById('cases').textContent = cases;
+  }
+}, 3200);
+
+// 分享經驗輪播
+const experiences = [
+  { tag: "受騙", quote: "「對方說再轉一次就解凍。我真的轉了。」", who: "高雄 · 45 歲" },
+  { tag: "有驚無險", quote: "「差點匯出去，後來打給家人確認才停手。」", who: "台中 · 32 歲" },
+  { tag: "風平浪靜", quote: "「這一生沒遇過什麼大事。薪水不多，但每個月都過得去。」", who: "台南 · 58 歲" },
+  { tag: "懊悔", quote: "「我一直覺得自己不會上當。結果還是轉了。」", who: "台北 · 29 歲" },
+  { tag: "受騙", quote: "「他每天跟我說早安。三個月後，我把積蓄都給了他。」", who: "新北 · 51 歲" },
+  { tag: "有驚無險", quote: "「網拍賣家一直催我私下交易。我沒理他，後來他消失了。」", who: "桃園 · 27 歲" },
+  { tag: "風平浪靜", quote: "「沒有人騙過我，也沒有人特別幫過我。這樣也好。」", who: "彰化 · 64 歲" },
+  { tag: "懊悔", quote: "「我媽叫我不要點那個連結。我還是點了。」", who: "台中 · 23 歲" },
+  { tag: "受騙", quote: "「投資群組裡每個人都在曬獲利。我進去的隔天，群組就不見了。」", who: "高雄 · 38 歲" },
+  { tag: "有驚無險", quote: "「假警察打來時，我掛掉後打給真正的派出所。他們說沒這回事。」", who: "台北 · 41 歲" }
+];
+
+let page = 0;
+const perPage = 3;
+const totalPages = Math.ceil(experiences.length / perPage);
+
+function renderExp() {
+  const start = page * perPage;
+  const slice = experiences.slice(start, start + perPage);
+  document.getElementById('carousel').innerHTML = slice.map(e => `
+    <div class="exp-card">
+      <div class="tag">${e.tag}</div>
+      <p class="quote">${e.quote}</p>
+      <div class="who">${e.who}</div>
+    </div>
+  `).join('');
+  document.getElementById('dots').innerHTML = Array.from({length: totalPages}, (_, i) =>
+    `<span class="${i === page ? 'on' : ''}"></span>`
+  ).join('');
+}
+function next() { page = (page + 1) % totalPages; renderExp(); }
+function prev() { page = (page - 1 + totalPages) % totalPages; renderExp(); }
+renderExp();
+setInterval(next, 7000);
+</script>
+</body>
+</html>

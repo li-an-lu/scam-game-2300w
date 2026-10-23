@@ -43,3 +43,9 @@
 - **三階段追加（第三批）**：`more-events-batch.md`（童年／學生／出社會各補幾則）
 
 後續階段將陸續補上，整合進事件池與生成邏輯。
+
+### 已提供內容（續）
+
+- **說謊研究延伸敘事**：`lies-research-expanded.md`（可併入各階段被動謊言池）
+- **開始頁預覽**：`web/start-preview-combined.html`
+- **開始頁樣式**：已追加至 `web/style.css`；結構參考見 `web/START-SCREEN-NOTES.md`

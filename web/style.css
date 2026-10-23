@@ -126,3 +126,81 @@ details.seen summary{cursor:pointer;opacity:.8;font-size:.95em;overflow-wrap:any
 .author a{overflow-wrap:anywhere}
 .contact label{display:block;margin:8px 0;font-size:.95em}
 .contact input,.contact select,.contact textarea{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px;font:inherit;border-radius:8px;border:1px solid #556;background:#0000001a;color:inherit}
+
+/* ===== 開始頁：深沉暗紅酒暈風格（2026-10-24 整合） ===== */
+.start-hero h1 {
+  font-family: "Noto Serif TC", "Noto Sans TC", serif;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f0ebe6;
+}
+.start-hero h1 .one {
+  color: #c45c5c;
+  text-shadow: 0 0 20px rgba(196,92,92,0.3);
+}
+.live-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.live-card {
+  background: #141820;
+  border: 1px solid rgba(180, 60, 70, 0.25);
+  border-radius: 14px;
+  padding: 16px 14px;
+  position: relative;
+}
+.live-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c45c5c, transparent);
+  opacity: 0.6;
+}
+.live-card .num { font-size: 30px; font-weight: 800; color: #d4a574; }
+.live-card .lbl { font-size: 12.5px; color: #a89a94; margin-top: 6px; }
+.fact-ticker {
+  background: rgba(196, 92, 92, 0.12);
+  border: 1px solid rgba(196,92,92,0.35);
+  border-radius: 12px;
+  padding: 13px 16px;
+  margin-bottom: 22px;
+  font-size: 13.5px;
+  color: #e0d0c8;
+}
+.fact-ticker::before { content: "⚠ "; color: #c45c5c; }
+.shared-section { margin-top: 36px; }
+.shared-section h2 { font-size: 22px; color: #f0ebe6; }
+.carousel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.exp-card {
+  background: #141820;
+  border: 1px solid rgba(180, 60, 70, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+}
+.exp-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c45c5c, transparent);
+  opacity: 0.5;
+}
+.exp-card .tag {
+  display: inline-block;
+  font-size: 11px;
+  color: #c45c5c;
+  background: rgba(196, 92, 92, 0.12);
+  border: 1px solid rgba(196,92,92,0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+}
