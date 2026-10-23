@@ -49,3 +49,8 @@
 - **說謊研究延伸敘事**：`lies-research-expanded.md`（可併入各階段被動謊言池）
 - **開始頁預覽**：`web/start-preview-combined.html`
 - **開始頁樣式**：已追加至 `web/style.css`；結構參考見 `web/START-SCREEN-NOTES.md`
+
+### 已提供內容（續）
+
+- **謊言連結型結局卡**：`ending-cards-lie-linked-complete.md`（14 張，回扣被動謊言）
+- **相關成就**：`achievements-lie-linked.json`（可合併進現有 achievements.json）

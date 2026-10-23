@@ -1,0 +1,234 @@
+{
+  "version": "1.1-lie-linked",
+  "note": "謊言連結型結局與被動謊言相關成就，可合併進現有 achievements.json",
+  "achievements": [
+    {
+      "id": "ACH_END_TRUST_LONG",
+      "category": "ending_codex",
+      "name": "他每天跟我說早安",
+      "description": "圖鑑記錄：結局「他每天跟我說早安」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_TRUST_LONG"]
+      },
+      "hidden": false,
+      "tone": "record",
+      "source": [
+        {
+          "ref": "life:END_TRUST_LONG",
+          "from": "ending.sources",
+          "name": "假交友結合投資類型",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_GROUP_PROFIT",
+      "category": "ending_codex",
+      "name": "群組裡每個人都在賺",
+      "description": "圖鑑記錄：結局「群組裡每個人都在賺」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_GROUP_PROFIT"]
+      },
+      "hidden": false,
+      "tone": "record",
+      "source": [
+        {
+          "ref": "life:END_GROUP_PROFIT",
+          "from": "ending.sources",
+          "name": "假投資群組曬單",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_AUTHORITY_CALL",
+      "category": "ending_codex",
+      "name": "他說他是警察",
+      "description": "圖鑑記錄：結局「他說他是警察」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_AUTHORITY_CALL"]
+      },
+      "hidden": false,
+      "tone": "serious",
+      "source": [
+        {
+          "ref": "life:END_AUTHORITY_CALL",
+          "from": "ending.sources",
+          "name": "假檢警詐騙",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_DONT_WORRY",
+      "category": "ending_codex",
+      "name": "不想讓家人擔心",
+      "description": "圖鑑記錄：結局「不想讓家人擔心」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_DONT_WORRY"]
+      },
+      "hidden": false,
+      "tone": "serious",
+      "source": [
+        {
+          "ref": "life:END_DONT_WORRY",
+          "from": "ending.sources",
+          "name": "獨自處理後損失擴大",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_ALMOST",
+      "category": "ending_codex",
+      "name": "差點匯出去",
+      "description": "圖鑑記錄：結局「差點匯出去」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_ALMOST"]
+      },
+      "hidden": false,
+      "tone": "positive",
+      "source": [
+        {
+          "ref": "life:END_ALMOST",
+          "from": "ending.sources",
+          "name": "臨櫃攔阻／親友勸阻",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_QUIET",
+      "category": "ending_codex",
+      "name": "這一生沒什麼大事",
+      "description": "圖鑑記錄：結局「這一生沒什麼大事」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_QUIET"]
+      },
+      "hidden": false,
+      "tone": "record",
+      "source": [
+        {
+          "ref": "life:END_QUIET",
+          "from": "ending.sources",
+          "name": "日常小謊與非高額被害",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_END_HELPED_OTHERS",
+      "category": "ending_codex",
+      "name": "你勸過別人",
+      "description": "圖鑑記錄：結局「你勸過別人」。",
+      "unlock": {
+        "scope": "collection",
+        "requires_endings": ["life:END_HELPED_OTHERS"]
+      },
+      "hidden": false,
+      "tone": "positive",
+      "source": [
+        {
+          "ref": "life:END_HELPED_OTHERS",
+          "from": "ending.sources",
+          "name": "親友勸阻成功",
+          "url": null
+        }
+      ]
+    },
+    {
+      "id": "ACH_LIE_CHILDHOOD_3",
+      "category": "life",
+      "name": "從小聽到的話",
+      "description": "在同一局中觸發至少 3 個童年被動謊言。",
+      "unlock": {
+        "scope": "run",
+        "requires_flags": ["lie_child_1", "lie_child_2", "lie_child_3"]
+      },
+      "hidden": false,
+      "tone": "record",
+      "source": []
+    },
+    {
+      "id": "ACH_LIE_SPOT_AUTHORITY",
+      "category": "red_flag",
+      "name": "這不像警察會說的話",
+      "description": "在假檢警相關事件中選擇掛斷或查證。",
+      "unlock": {
+        "scope": "run",
+        "requires_choices": [
+          {
+            "line": "life",
+            "event": "authority_call",
+            "choice_index": 0,
+            "text": "掛斷並查證"
+          }
+        ]
+      },
+      "hidden": false,
+      "tone": "positive",
+      "source": []
+    },
+    {
+      "id": "ACH_LIE_TELL_FAMILY",
+      "category": "red_flag",
+      "name": "還是跟家人說了",
+      "description": "在「不想讓家人擔心」相關情境中選擇告知家人。",
+      "unlock": {
+        "scope": "run",
+        "requires_flags": ["told_family"]
+      },
+      "hidden": false,
+      "tone": "positive",
+      "source": []
+    },
+    {
+      "id": "ACH_CODEX_LIE_5",
+      "category": "ending_codex",
+      "name": "謊言圖鑑 ×5",
+      "description": "收集任意 5 個謊言連結型結局。",
+      "unlock": {
+        "scope": "collection",
+        "requires_any_endings": [
+          "life:END_TRUST_LONG",
+          "life:END_GROUP_PROFIT",
+          "life:END_AUTHORITY_CALL",
+          "life:END_DONT_WORRY",
+          "life:END_SHOPPING_LINK",
+          "life:END_JOB_FEE",
+          "life:END_ROMANCE_BORROW",
+          "life:END_FAMILY_IMPERSONATE",
+          "life:END_INVEST_SMALL",
+          "life:END_CUSTOMER_SERVICE",
+          "life:END_LOAN_FIRST",
+          "life:END_ALMOST",
+          "life:END_QUIET",
+          "life:END_HELPED_OTHERS"
+        ],
+        "min_count": 5
+      },
+      "hidden": false,
+      "tone": "record",
+      "source": []
+    },
+    {
+      "id": "ACH_SHARE_SENTENCE",
+      "category": "life",
+      "name": "留下一句話",
+      "description": "在結局時留下一句想說的話。",
+      "unlock": {
+        "scope": "run",
+        "requires_flags": ["shared_sentence"]
+      },
+      "hidden": false,
+      "tone": "positive",
+      "source": []
+    }
+  ]
+}
