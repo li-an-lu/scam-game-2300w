@@ -54,3 +54,7 @@
 
 - **謊言連結型結局卡**：`ending-cards-lie-linked-complete.md`（14 張，回扣被動謊言）
 - **相關成就**：`achievements-lie-linked.json`（可合併進現有 achievements.json）
+
+### 設計調整最終版
+
+詳見 `design-adjustments-final.md`（核心謊言旗標、正面事件伏筆、結局權重與分流規則、過程型成就）。
