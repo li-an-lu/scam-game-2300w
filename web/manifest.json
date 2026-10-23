@@ -1,0 +1,147 @@
+{
+  "_doc": "劇本清單。出生後依 birth 的結果，從 lines 中按權重抽一條劇本線（玩家看不到也不能選）。新增劇本線只要在 lines 加一筆。若劇本 JSON 自己有 entry 欄位（同格式），以劇本的為準。conditions 語法同 ending 條件，另外支援 family_in / county_in；stats 指出生擲骰的百分位（0–1）。",
+  "birth": {
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      "小康",
+      "單親",
+      "務農",
+      "經商"
+    ],
+    "rolls": [
+      "存款",
+      "警覺",
+      "人際",
+      "心理"
+    ]
+  },
+  "lines": [
+    {
+      "id": "investment",
+      "file": "script-investment.json",
+      "weight": 1,
+      "weight_mods": [
+        {
+          "if": {
+            "family_in": [
+              "經商",
+              "小康"
+            ]
+          },
+          "mul": 1.5
+        },
+        {
+          "if": {
+            "stats": {
+              "存款": {
+                "gte": 0.6
+              }
+            }
+          },
+          "mul": 1.5
+        }
+      ]
+    },
+    {
+      "id": "mule",
+      "file": "script-mule.json",
+      "weight": 1,
+      "weight_mods": [
+        {
+          "if": {
+            "family_in": [
+              "單親",
+              "務農"
+            ]
+          },
+          "mul": 1.5
+        },
+        {
+          "if": {
+            "stats": {
+              "存款": {
+                "lt": 0.4
+              }
+            }
+          },
+          "mul": 1.5
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "file": "script-shopping.json",
+      "weight": 1,
+      "weight_mods": [
+        {
+          "if": {
+            "stats": {
+              "心理": {
+                "lt": 0.5
+              }
+            }
+          },
+          "mul": 1.2
+        }
+      ]
+    },
+    {
+      "id": "romance",
+      "file": "script-romance.json",
+      "weight": 0,
+      "_doc": "v5：只在合併模式由 scam_integration 插入；單線抽籤權重 0（?line= 仍可直接玩）"
+    },
+    {
+      "id": "marriage",
+      "file": "script-marriage.json",
+      "weight": 0,
+      "_doc": "v5：只在合併模式由 scam_integration 插入；單線抽籤權重 0（?line= 仍可直接玩）"
+    },
+    {
+      "id": "parent",
+      "file": "script-parent.json",
+      "weight": 0,
+      "_doc": "v5：只在合併模式由 scam_integration 插入；單線抽籤權重 0（?line= 仍可直接玩）"
+    }
+  ],
+  "year_filler": [
+    "平凡地過了一年。",
+    "讀書、打工、和朋友吃宵夜。",
+    "換了一支新手機。",
+    "家裡養了一隻貓。",
+    "颱風假在家追劇。",
+    "第一次自己出國旅行。",
+    "被長輩催著找穩定工作。",
+    "過年回家被問薪水。",
+    "手機裡的群組越來越多。"
+  ],
+  "title": "2300萬分之1",
+  "life": {
+    "file": "script-life.json",
+    "enabled": true,
+    "_doc": "人生線：預設開啟。先玩 script-life.json（0–50 歲，含揭曉事件），結束時把 meta.cross_line_flags 中玩家持有的 flag 帶進隨機分派的詐騙線（依各線 cross_line_modifiers 套用）。讀不到檔案就當沒有（flags 為空）。?life=0 跳過；除錯可用 ?flags=a,b 直接注入（注入時跳過人生線）。"
+  }
+}

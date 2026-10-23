@@ -1,0 +1,1518 @@
+{
+  "meta": {
+    "title": "2300萬分之1",
+    "version": "1.0",
+    "language": "zh-TW",
+    "one_life": true,
+    "content_policy": "只描述受騙者看到什麼、經歷什麼，不寫詐騙的操作手法",
+    "amount_note": "金額為設計假設：依真實案件量級等比例縮小，合併模式另依進場存款縮放（見 script-life.json scam_integration）",
+    "engine_notes": "next=='__EVAL__' 時：先依 ending_rules.stat_flags 依數值設定 flag，再依 priority 判定結局。結局畫面：顯示 reason_texts 中玩家擁有之 flag 的說明；『你錯過的破綻』＝玩家擁有的 missed_* flag 依 red_flag_texts 逐條顯示，若無則顯示 missed_red_flags（通用版）。數值套用後夾在 min/max。初始存款＝init 值×(1+family.存款_mod)；family 其他數值為加減。",
+    "presentation_notes": "同投資線：presentation='chat' 以全螢幕仿聊天室呈現；畫面一律使用虛構 app 名稱與外觀。聊天內容只呈現詐團話術與受害者反應，不寫可照做的操作步驟。",
+    "no_pressure_mode": {
+      "available": true,
+      "default": false,
+      "effect": "關閉所有 pressure 倒數；不影響劇情與結局",
+      "min_timer_s": 20
+    },
+    "life_grid": {
+      "bucket_years": 5,
+      "colors": {
+        "green": "安全",
+        "yellow": "有疑點",
+        "red": "受騙損失"
+      },
+      "rule": "同投資線"
+    },
+    "real_world_stat_notes": "real_world_stat 是假網拍占 115-09 全國受理件數的比例（3,513÷10,775），不是結局稀有度。",
+    "cross_line_notes": "跨線 flag 來自人生線（script-life.json 結束時玩家持有的 flag，見其 meta.cross_line_flags）。進入詐騙線時，把人生線 flag 併入玩家 flags；之後對每筆 cross_line_modifiers，若 if_flags.all 全有且 if_flags.none 全無，就在 target 事件套用 effect（見 common.py 註解）。同一事件多筆規則依陣列順序套用。",
+    "choice_feedback": {
+      "outcome_text": "選完立刻顯示的即時結果（1–3 句；延遲揭曉事件不劇透）",
+      "log_text": "人生紀錄用的短句"
+    },
+    "choice_label_rule": {
+      "max_chars": 15,
+      "blocklist": [
+        "騙",
+        "損失",
+        "賠",
+        "後悔",
+        "成功",
+        "失敗",
+        "才還",
+        "被抓",
+        "識破",
+        "真相",
+        "原來",
+        "結果",
+        "紅燈",
+        "警訊",
+        "＝",
+        "不合理",
+        "太緊張",
+        "正常工作",
+        "嚇壞",
+        "崩潰",
+        "倒會",
+        "已讀不回"
+      ],
+      "rule": "選項標籤只描述玩家行動，不寫結果、不做道德評價；結果放在 outcome_text 或之後的揭曉事件"
+    },
+    "ending_premise_notes": "endings[].requires_flags／forbids_flags 宣告結局文字預設的前提（validate.py 窮舉路徑檢查）。text_variants[]：{when:{flags_all,flags_none}, text, requires_flags?, forbids_flags?}，引擎依序取第一個 when 成立的變體取代 text；都不成立用 text。",
+    "help_resources_rule": "v4.7：每個結局都有 help_resources（至少 165）；有心理傷害的結局加 1925／1995；車手線刑事相關結局加法律扶助基金會 412-8518",
+    "cross_line_mode_rule": "cross_line_modifiers[].mode：all＝單線與合併模式都會套用；standalone_only＝合併模式下進場年齡範圍內拿不到該 flag，實際上只會在單線模式觸發（引擎不需特別處理，條件本來就不成立）；validate／combined 只列為 info",
+    "mental_wear": {
+      "delta": -2,
+      "applies_to": "grid 為 yellow／red 的選項（含 random 分支、解鎖選項）",
+      "design_assumption": true,
+      "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
+    },
+    "subtitle": "家長篇",
+    "line": "parent",
+    "mandatory": true,
+    "content_policy_extra": "私密影像案只寫流程與後果，絕不描述影像內容",
+    "stats_note": "沒有官方統計對應家長篇情境，不放統計"
+  },
+  "ending_rules": {
+    "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v4.4：SILENT_COLLAPSE 0.5 → CS_DRAINED 1 …）",
+    "fallback": "END_PA_OPEN",
+    "condition_grammar": {
+      "flags_all": "全部都要有",
+      "flags_any": "至少一個",
+      "flags_none": "都不能有",
+      "any_of": "子條件任一成立"
+    },
+    "stat_flags": [
+      {
+        "flag": "savings_depleted",
+        "stats": {
+          "存款": {
+            "lte": 0
+          }
+        },
+        "text": "你的存款歸零了。"
+      },
+      {
+        "flag": "mental_collapse",
+        "stats": {
+          "心理": {
+            "lte": 20
+          }
+        },
+        "text": "長期的壓力讓你的心理狀態跌到谷底（心理≤20）。"
+      },
+      {
+        "flag": "isolated",
+        "stats": {
+          "人際": {
+            "lte": 15
+          }
+        },
+        "text": "你和身邊的人越來越疏遠，沒有人能拉你一把（人際≤15）。"
+      },
+      {
+        "flag": "has_support",
+        "stats": {
+          "人際": {
+            "gte": 20
+          }
+        },
+        "text": "身邊還有願意幫你的人（人際≥20）。"
+      }
+    ]
+  },
+  "player_init": {
+    "stats": {
+      "存款": {
+        "min": 0,
+        "init_range": [
+          20000,
+          200000
+        ]
+      },
+      "警覺": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          15,
+          45
+        ]
+      },
+      "人際": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          30,
+          70
+        ]
+      },
+      "心理": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          40,
+          80
+        ]
+      }
+    },
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      {
+        "name": "小康",
+        "存款_mod": 0
+      },
+      {
+        "name": "單親",
+        "存款_mod": -0.3,
+        "心理": -5
+      },
+      {
+        "name": "務農",
+        "人際": 5
+      },
+      {
+        "name": "經商",
+        "存款_mod": 0.5
+      }
+    ],
+    "start_event": "pa_start",
+    "flags": []
+  },
+  "stats": [],
+  "stats_sources": [],
+  "events": [
+    {
+      "id": "pa_start",
+      "age": 43,
+      "text": "孩子上國中了。這天晚上，他在房間門口站了很久，好像有話要說。",
+      "sources": [
+        {
+          "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+          "url": "https://jsps.chc.edu.tw/posts/8986",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-06-19：成年人招募 16 歲少年當取款車手，少年在交款現場被捕，招募者依組織犯罪條例加重判 1 年",
+          "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "臺北市少年警察隊：兒少網路交友與私密照外流應變（保留證據、求助報警、禁止散布）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "等他開口",
+          "random": true,
+          "effects": {},
+          "next": "pa_game",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcomes": [
+            {
+              "probability": 0.3,
+              "effects": {},
+              "next": "pa_game",
+              "flags_set": [
+                "pa_case_game"
+              ],
+              "outcome_text": "孩子說，他在遊戲裡為了拿「免費點數」，把你手機收到的驗證碼傳給別人。",
+              "log_text": "驗證碼給了人",
+              "grid": "green"
+            },
+            {
+              "probability": 0.25,
+              "effects": {},
+              "next": "pa_mule",
+              "flags_set": [
+                "pa_case_mule"
+              ],
+              "outcome_text": "孩子說，同學找他「幫忙領包裹、領錢」，一次給兩千，他已經去了一次。",
+              "log_text": "同學找他領錢",
+              "grid": "green"
+            },
+            {
+              "probability": 0.25,
+              "effects": {},
+              "next": "pa_date",
+              "flags_set": [
+                "pa_case_date"
+              ],
+              "outcome_text": "孩子說，網路上認識的「學姐」要他買點數，說買了才能見面。",
+              "log_text": "網友要他買點數",
+              "grid": "green"
+            },
+            {
+              "probability": 0.2,
+              "effects": {},
+              "next": "pa_threat",
+              "flags_set": [
+                "pa_case_threat"
+              ],
+              "outcome_text": "孩子紅著眼說，有人威脅要把他的私密照片傳給同學，除非他付錢。",
+              "log_text": "有人威脅他",
+              "grid": "green"
+            }
+          ],
+          "random_note": {
+            "design_assumption": true,
+            "note": "四種情境比例是設計假設，不是統計"
+          }
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "pa_game",
+      "age": 43,
+      "text": "帳單上多了好幾筆你沒買過的小額付款，你的門號也被拿去綁了別人的帳號。",
+      "sources": [
+        {
+          "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+          "url": "https://jsps.chc.edu.tw/posts/8986",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "家人聊天（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "孩子",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "child",
+            "text": "對方說傳驗證碼就送點數……",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "child",
+            "text": "我以為那只是一串數字",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "child",
+            "text": "對不起",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "先罵他一頓",
+          "effects": {
+            "心理": -12,
+            "人際": -8
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_scolded"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你脫口而出：「你怎麼這麼笨！」孩子低下頭，回房間關上門。",
+          "log_text": "先罵一頓",
+          "mental_wear": -2
+        },
+        {
+          "text": "陪他一起去報案",
+          "effects": {
+            "心理": -6,
+            "警覺": 8,
+            "人際": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你拍拍他的肩：「說出來很勇敢。我們一起處理。」你們帶著截圖去了派出所。",
+          "log_text": "陪他報案"
+        },
+        {
+          "text": "自己出錢把事情壓下",
+          "effects": {
+            "存款": -15000,
+            "心理": -16
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_paid_off"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你照對方說的付了錢，叮嚀孩子別跟任何人說。",
+          "log_text": "出錢壓下",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "pa_mule",
+      "age": 43,
+      "text": "孩子說同學說「只是幫忙」，可是領的錢要交給一個從沒見過的人。",
+      "sources": [
+        {
+          "name": "中央社 2025-06-19：成年人招募 16 歲少年當取款車手，少年在交款現場被捕，招募者依組織犯罪條例加重判 1 年",
+          "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "家人聊天（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "孩子",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "child",
+            "text": "同學說很多人都在做，很好賺",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "child",
+            "text": "他說不能跟大人講",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "child",
+            "text": "我是不是做錯事了？",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "先罵他一頓",
+          "effects": {
+            "心理": -12,
+            "人際": -8
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_scolded"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你脫口而出：「你怎麼這麼笨！」孩子低下頭，回房間關上門。",
+          "log_text": "先罵一頓",
+          "mental_wear": -2
+        },
+        {
+          "text": "陪他一起去報案",
+          "effects": {
+            "心理": -6,
+            "警覺": 8,
+            "人際": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你拍拍他的肩：「說出來很勇敢。我們一起處理。」你們帶著截圖去了派出所。",
+          "log_text": "陪他報案"
+        },
+        {
+          "text": "自己出錢把事情壓下",
+          "effects": {
+            "存款": -15000,
+            "心理": -16
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_paid_off"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你照對方說的付了錢，叮嚀孩子別跟任何人說。",
+          "log_text": "出錢壓下",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "pa_date",
+      "age": 43,
+      "text": "孩子給你看對話：對方叫他買點數、拍下序號，才肯見面。",
+      "sources": [
+        {
+          "name": "臺北市少年警察隊：兒少網路交友與私密照外流應變（保留證據、求助報警、禁止散布）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "家人聊天（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "孩子",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "child",
+            "text": "學姐說買了點數就跟我見面",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "child",
+            "text": "可是買了之後她又說不夠",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "child",
+            "text": "我零用錢都花光了",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "先罵他一頓",
+          "effects": {
+            "心理": -12,
+            "人際": -8
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_scolded"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你脫口而出：「你怎麼這麼笨！」孩子低下頭，回房間關上門。",
+          "log_text": "先罵一頓",
+          "mental_wear": -2
+        },
+        {
+          "text": "陪他一起去報案",
+          "effects": {
+            "心理": -6,
+            "警覺": 8,
+            "人際": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你拍拍他的肩：「說出來很勇敢。我們一起處理。」你們帶著截圖去了派出所。",
+          "log_text": "陪他報案"
+        },
+        {
+          "text": "自己出錢把事情壓下",
+          "effects": {
+            "存款": -15000,
+            "心理": -16
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_paid_off"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你照對方說的付了錢，叮嚀孩子別跟任何人說。",
+          "log_text": "出錢壓下",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "pa_threat",
+      "age": 43,
+      "text": "孩子說，對方在網路上和他聊了好幾週，之後開始威脅，要他付錢。（遊戲不描述任何影像內容。）",
+      "sources": [
+        {
+          "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "家人聊天（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "孩子",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "child",
+            "text": "他說不付錢就傳給我全班",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "child",
+            "text": "我好怕",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "child",
+            "text": "不要告訴別人好不好",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "先罵他一頓",
+          "effects": {
+            "心理": -12,
+            "人際": -8
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_scolded"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你脫口而出：「你怎麼這麼笨！」孩子低下頭，回房間關上門。",
+          "log_text": "先罵一頓",
+          "mental_wear": -2
+        },
+        {
+          "text": "陪他一起去報案",
+          "effects": {
+            "心理": -6,
+            "警覺": 8,
+            "人際": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你拍拍他的肩：「說出來很勇敢。我們一起處理。」你們帶著截圖去了派出所。",
+          "log_text": "陪他報案"
+        },
+        {
+          "text": "自己出錢把事情壓下",
+          "effects": {
+            "存款": -15000,
+            "心理": -16
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_paid_off"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你照對方說的付了錢，叮嚀孩子別跟任何人說。",
+          "log_text": "出錢壓下",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "pa_after",
+      "age": 44,
+      "presentation": "timeskip",
+      "text": "幾個月過去了。",
+      "sources": [
+        {
+          "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+          "url": "https://jsps.chc.edu.tw/posts/8986",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-06-19：成年人招募 16 歲少年當取款車手，少年在交款現場被捕，招募者依組織犯罪條例加重判 1 年",
+          "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "看看孩子最近",
+          "effects": {},
+          "next": "__EVAL__",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "日子慢慢回到原本的樣子，但有些事改變了。",
+          "log_text": "幾個月後"
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "END_PA_COLLAPSE",
+      "priority": 1,
+      "conditions": {
+        "flags_all": [
+          "mental_collapse"
+        ],
+        "flags_any": [
+          "pa_paid_off",
+          "pa_scolded"
+        ]
+      },
+      "text": "這件事壓在你和孩子身上很久。你們都很累，卻都沒跟對方說。\n孩子遇到私密影像威脅時：不要付錢、保留對話與帳號、報警，並可透過 iWIN 申請下架、撥 113 求助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "未成年人遭網友以私密影像威脅付款，家長私下付款後對方持續勒索，最後仍需報警與申請下架。",
+        "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_K2"
+      },
+      "missed_red_flags": [
+        "孩子被要求「不要告訴大人」"
+      ],
+      "sources": [
+        {
+          "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "兩個人都撐著",
+      "title_emoji": "🌧️",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在家長篇撐得很辛苦。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "iWIN 網路內容防護機構（02-2577-5118，協助下架）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "臺北市少年警察隊頁面列出，2026-10-23 WebFetch"
+        },
+        {
+          "name": "113 保護專線（衛福部）",
+          "url": "https://www.mohw.gov.tw/fp-190-233-1.html",
+          "verified": true,
+          "verify_note": "官方網站"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ],
+      "combined_only": true,
+      "combined_only_note": "需要人生線帶入的心理低點或 family_blame，單獨遊玩家長篇不會出現",
+      "rarity_key": "parent_END_PA_COLLAPSE"
+    },
+    {
+      "id": "END_PA_HUSH",
+      "priority": 2,
+      "conditions": {
+        "flags_all": [
+          "pa_paid_off"
+        ]
+      },
+      "text": "你付了錢，對方過一陣子又來要。孩子學到的是：出事就花錢、不要說。\n孩子遇到私密影像威脅時：不要付錢、保留對話與帳號、報警，並可透過 iWIN 申請下架、撥 113 求助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "（待查）家長代未成年子女付款了事，對方再度聯繫要錢——此情節為推論，尚無台灣來源。",
+        "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_K6"
+      },
+      "missed_red_flags": [
+        "對方要求付錢換取沉默"
+      ],
+      "sources": [
+        {
+          "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "錢壓不住",
+      "title_emoji": "🤫",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在家長篇用錢壓了下來。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "pa_paid_off"
+      ],
+      "forbids_flags": [],
+      "text_variants": [
+        {
+          "when": {
+            "label": "mule",
+            "flags_all": [
+              "pa_case_mule"
+            ]
+          },
+          "requires_flags": [
+            "pa_case_mule"
+          ],
+          "text": "你賠了錢，但孩子提領過的那筆錢還是被追查到。家長也可能要負連帶賠償。"
+        }
+      ],
+      "sources_pending": [
+        "家長私下付錢壓下後遭再次勒索的台灣案例：待查（寫手提供，待查證）"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "iWIN 網路內容防護機構（02-2577-5118，協助下架）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "臺北市少年警察隊頁面列出，2026-10-23 WebFetch"
+        },
+        {
+          "name": "113 保護專線（衛福部）",
+          "url": "https://www.mohw.gov.tw/fp-190-233-1.html",
+          "verified": true,
+          "verify_note": "官方網站"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ],
+      "rarity_key": "parent_END_PA_HUSH"
+    },
+    {
+      "id": "END_PA_SILENT",
+      "priority": 3,
+      "conditions": {
+        "flags_all": [
+          "pa_scolded"
+        ]
+      },
+      "text": "孩子之後再遇到怪事，都沒有再來找你。你是從別人那裡才知道的。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "國中生遇到交友或打工陷阱，因怕被罵不敢跟家長說，事態擴大後才被發現。",
+        "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_K3"
+      },
+      "missed_red_flags": [
+        "孩子被要求「不要告訴大人」"
+      ],
+      "sources": [
+        {
+          "name": "中央社 2025-06-19：成年人招募 16 歲少年當取款車手，少年在交款現場被捕，招募者依組織犯罪條例加重判 1 年",
+          "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "關上的門",
+      "title_emoji": "🚪",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在家長篇，孩子後來不跟我說了。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "pa_scolded"
+      ],
+      "forbids_flags": [],
+      "text_variants": [
+        {
+          "when": {
+            "label": "mule",
+            "flags_all": [
+              "pa_case_mule"
+            ]
+          },
+          "requires_flags": [
+            "pa_case_mule"
+          ],
+          "text": "孩子之後還是被同學拉去領了幾次錢，被警方約談時你才知道。家長也可能要負連帶賠償。"
+        }
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "iWIN 網路內容防護機構（02-2577-5118，協助下架）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "臺北市少年警察隊頁面列出，2026-10-23 WebFetch"
+        },
+        {
+          "name": "113 保護專線（衛福部）",
+          "url": "https://www.mohw.gov.tw/fp-190-233-1.html",
+          "verified": true,
+          "verify_note": "官方網站"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ],
+      "rarity_key": "parent_END_PA_SILENT"
+    },
+    {
+      "id": "END_PA_BROKE_CYCLE",
+      "priority": 4,
+      "conditions": {
+        "flags_all": [
+          "pa_hugged"
+        ]
+      },
+      "text": "你想起自己當年被責怪的感覺，這次選擇先抱住他。孩子後來遇到事情，第一個找的是你。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "（設計結局）家人間「先接住、再處理」的回應方式，對應衛福部兒少保護宣導。",
+        "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_K6"
+      },
+      "missed_red_flags": [
+        "孩子被要求「不要告訴大人」"
+      ],
+      "sources": [
+        {
+          "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "不再重複",
+      "title_emoji": "🫂",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在家長篇，沒有重複當年的事。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "pa_hugged"
+      ],
+      "forbids_flags": [],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "iWIN 網路內容防護機構（02-2577-5118，協助下架）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "臺北市少年警察隊頁面列出，2026-10-23 WebFetch"
+        },
+        {
+          "name": "113 保護專線（衛福部）",
+          "url": "https://www.mohw.gov.tw/fp-190-233-1.html",
+          "verified": true,
+          "verify_note": "官方網站"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ],
+      "combined_only": true,
+      "combined_only_note": "需要人生線帶入的心理低點或 family_blame，單獨遊玩家長篇不會出現",
+      "rarity_key": "parent_END_PA_BROKE_CYCLE"
+    },
+    {
+      "id": "END_PA_OPEN",
+      "priority": 5,
+      "conditions": {},
+      "text": "你們一起報了案。孩子之後遇到奇怪的訊息，會先拿來問你。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "家長陪同未成年子女報案並保留證據，警方協助處理，孩子之後主動求助。",
+        "url": "https://jsps.chc.edu.tw/posts/8986",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_K5"
+      },
+      "missed_red_flags": [
+        "孩子被要求「不要告訴大人」"
+      ],
+      "sources": [
+        {
+          "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+          "url": "https://jsps.chc.edu.tw/posts/8986",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "願意開口的孩子",
+      "title_emoji": "🗣️",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在家長篇，孩子願意跟我說。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [],
+      "text_variants": [
+        {
+          "when": {
+            "label": "threat",
+            "flags_all": [
+              "pa_case_threat"
+            ]
+          },
+          "requires_flags": [
+            "pa_case_threat"
+          ],
+          "text": "你們一起報了案，也透過 iWIN 申請下架。孩子說：「謝謝你沒有罵我。」"
+        }
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "iWIN 網路內容防護機構（02-2577-5118，協助下架）",
+          "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF",
+          "verified": true,
+          "verify_note": "臺北市少年警察隊頁面列出，2026-10-23 WebFetch"
+        },
+        {
+          "name": "113 保護專線（衛福部）",
+          "url": "https://www.mohw.gov.tw/fp-190-233-1.html",
+          "verified": true,
+          "verify_note": "官方網站"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ],
+      "rarity_key": "parent_END_PA_OPEN"
+    }
+  ],
+  "red_flag_texts": {},
+  "red_flag_anchors": {},
+  "cross_line_modifiers": [
+    {
+      "id": "pa_blame_game",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_game"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "想起當年，先抱抱他",
+          "effects": {
+            "心理": -4,
+            "人際": 10,
+            "警覺": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_hugged",
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你想起自己當年被罵「怎麼這麼笨」的那一刻。你沒有重複那句話，先抱住他，再一起去報案。",
+          "log_text": "沒有重複當年"
+        }
+      },
+      "note": "family_blame（曾被家人責怪）：多一個不重複的選項",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_mule",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_mule"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "想起當年，先抱抱他",
+          "effects": {
+            "心理": -4,
+            "人際": 10,
+            "警覺": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_hugged",
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你想起自己當年被罵「怎麼這麼笨」的那一刻。你沒有重複那句話，先抱住他，再一起去報案。",
+          "log_text": "沒有重複當年"
+        }
+      },
+      "note": "family_blame（曾被家人責怪）：多一個不重複的選項",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_date",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_date"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "想起當年，先抱抱他",
+          "effects": {
+            "心理": -4,
+            "人際": 10,
+            "警覺": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_hugged",
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你想起自己當年被罵「怎麼這麼笨」的那一刻。你沒有重複那句話，先抱住他，再一起去報案。",
+          "log_text": "沒有重複當年"
+        }
+      },
+      "note": "family_blame（曾被家人責怪）：多一個不重複的選項",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_threat",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_threat"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "想起當年，先抱抱他",
+          "effects": {
+            "心理": -4,
+            "人際": 10,
+            "警覺": 5
+          },
+          "next": "pa_after",
+          "flags": {
+            "set": [
+              "pa_hugged",
+              "pa_accompanied",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你想起自己當年被罵「怎麼這麼笨」的那一刻。你沒有重複那句話，先抱住他，再一起去報案。",
+          "log_text": "沒有重複當年"
+        }
+      },
+      "note": "family_blame（曾被家人責怪）：多一個不重複的選項",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_memory_game",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_game"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（你想起很多年前，有人對你說：「怎麼會這麼笨？」）"
+        }
+      },
+      "note": "family_blame 回憶句",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_memory_mule",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_mule"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（你想起很多年前，有人對你說：「怎麼會這麼笨？」）"
+        }
+      },
+      "note": "family_blame 回憶句",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_memory_date",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_date"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（你想起很多年前，有人對你說：「怎麼會這麼笨？」）"
+        }
+      },
+      "note": "family_blame 回憶句",
+      "mode": "all"
+    },
+    {
+      "id": "pa_blame_memory_threat",
+      "if_flags": {
+        "all": [
+          "family_blame"
+        ]
+      },
+      "target": {
+        "event": "pa_threat"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（你想起很多年前，有人對你說：「怎麼會這麼笨？」）"
+        }
+      },
+      "note": "family_blame 回憶句",
+      "mode": "all"
+    }
+  ]
+}

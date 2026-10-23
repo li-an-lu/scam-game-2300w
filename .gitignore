@@ -1,0 +1,8 @@
+STATS_TOKEN.txt
+logs/
+__pycache__/
+.netlify/
+web/.netlify/
+node_modules/
+*.env
+.env*

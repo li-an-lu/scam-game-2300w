@@ -1,0 +1,1663 @@
+{
+  "meta": {
+    "title": "2300萬分之1",
+    "version": "1.0",
+    "language": "zh-TW",
+    "one_life": true,
+    "content_policy": "只描述受騙者看到什麼、經歷什麼，不寫詐騙的操作手法",
+    "amount_note": "金額為設計假設：依真實案件量級等比例縮小，合併模式另依進場存款縮放（見 script-life.json scam_integration）",
+    "engine_notes": "next=='__EVAL__' 時：先依 ending_rules.stat_flags 依數值設定 flag，再依 priority 判定結局。結局畫面：顯示 reason_texts 中玩家擁有之 flag 的說明；『你錯過的破綻』＝玩家擁有的 missed_* flag 依 red_flag_texts 逐條顯示，若無則顯示 missed_red_flags（通用版）。數值套用後夾在 min/max。初始存款＝init 值×(1+family.存款_mod)；family 其他數值為加減。",
+    "presentation_notes": "同投資線：presentation='chat' 以全螢幕仿聊天室呈現；畫面一律使用虛構 app 名稱與外觀。聊天內容只呈現詐團話術與受害者反應，不寫可照做的操作步驟。",
+    "no_pressure_mode": {
+      "available": true,
+      "default": false,
+      "effect": "關閉所有 pressure 倒數；不影響劇情與結局",
+      "min_timer_s": 20
+    },
+    "life_grid": {
+      "bucket_years": 5,
+      "colors": {
+        "green": "安全",
+        "yellow": "有疑點",
+        "red": "受騙損失"
+      },
+      "rule": "同投資線"
+    },
+    "real_world_stat_notes": "real_world_stat 是假網拍占 115-09 全國受理件數的比例（3,513÷10,775），不是結局稀有度。",
+    "cross_line_notes": "跨線 flag 來自人生線（script-life.json 結束時玩家持有的 flag，見其 meta.cross_line_flags）。進入詐騙線時，把人生線 flag 併入玩家 flags；之後對每筆 cross_line_modifiers，若 if_flags.all 全有且 if_flags.none 全無，就在 target 事件套用 effect（見 common.py 註解）。同一事件多筆規則依陣列順序套用。",
+    "choice_feedback": {
+      "outcome_text": "選完立刻顯示的即時結果（1–3 句；延遲揭曉事件不劇透）",
+      "log_text": "人生紀錄用的短句"
+    },
+    "choice_label_rule": {
+      "max_chars": 15,
+      "blocklist": [
+        "騙",
+        "損失",
+        "賠",
+        "後悔",
+        "成功",
+        "失敗",
+        "才還",
+        "被抓",
+        "識破",
+        "真相",
+        "原來",
+        "結果",
+        "紅燈",
+        "警訊",
+        "＝",
+        "不合理",
+        "太緊張",
+        "正常工作",
+        "嚇壞",
+        "崩潰",
+        "倒會",
+        "已讀不回"
+      ],
+      "rule": "選項標籤只描述玩家行動，不寫結果、不做道德評價；結果放在 outcome_text 或之後的揭曉事件"
+    },
+    "ending_premise_notes": "endings[].requires_flags／forbids_flags 宣告結局文字預設的前提（validate.py 窮舉路徑檢查）。text_variants[]：{when:{flags_all,flags_none}, text, requires_flags?, forbids_flags?}，引擎依序取第一個 when 成立的變體取代 text；都不成立用 text。",
+    "help_resources_rule": "v4.7：每個結局都有 help_resources（至少 165）；有心理傷害的結局加 1925／1995；車手線刑事相關結局加法律扶助基金會 412-8518",
+    "cross_line_mode_rule": "cross_line_modifiers[].mode：all＝單線與合併模式都會套用；standalone_only＝合併模式下進場年齡範圍內拿不到該 flag，實際上只會在單線模式觸發（引擎不需特別處理，條件本來就不成立）；validate／combined 只列為 info",
+    "mental_wear": {
+      "delta": -2,
+      "applies_to": "grid 為 yellow／red 的選項（含 random 分支、解鎖選項）",
+      "design_assumption": true,
+      "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
+    },
+    "subtitle": "交往詐騙線",
+    "line": "romance",
+    "mandatory": true,
+    "mental_cost_rule": "每條路徑都有心理代價（即使及早查證也有失落）",
+    "stats_note": "165 儀表板只有假交友（投資詐財）類別，與本線借款、急病說法不完全對應，不放統計"
+  },
+  "ending_rules": {
+    "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v4.4：SILENT_COLLAPSE 0.5 → CS_DRAINED 1 …）",
+    "fallback": "END_RM_CHECKED",
+    "condition_grammar": {
+      "flags_all": "全部都要有",
+      "flags_any": "至少一個",
+      "flags_none": "都不能有",
+      "any_of": "子條件任一成立"
+    },
+    "stat_flags": [
+      {
+        "flag": "savings_depleted",
+        "stats": {
+          "存款": {
+            "lte": 0
+          }
+        },
+        "text": "你的存款歸零了。"
+      },
+      {
+        "flag": "mental_collapse",
+        "stats": {
+          "心理": {
+            "lte": 20
+          }
+        },
+        "text": "長期的壓力讓你的心理狀態跌到谷底（心理≤20）。"
+      },
+      {
+        "flag": "isolated",
+        "stats": {
+          "人際": {
+            "lte": 15
+          }
+        },
+        "text": "你和身邊的人越來越疏遠，沒有人能拉你一把（人際≤15）。"
+      },
+      {
+        "flag": "has_support",
+        "stats": {
+          "人際": {
+            "gte": 20
+          }
+        },
+        "text": "身邊還有願意幫你的人（人際≥20）。"
+      }
+    ]
+  },
+  "player_init": {
+    "stats": {
+      "存款": {
+        "min": 0,
+        "init_range": [
+          20000,
+          200000
+        ]
+      },
+      "警覺": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          15,
+          45
+        ]
+      },
+      "人際": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          30,
+          70
+        ]
+      },
+      "心理": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          40,
+          80
+        ]
+      }
+    },
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      {
+        "name": "小康",
+        "存款_mod": 0
+      },
+      {
+        "name": "單親",
+        "存款_mod": -0.3,
+        "心理": -5
+      },
+      {
+        "name": "務農",
+        "人際": 5
+      },
+      {
+        "name": "經商",
+        "存款_mod": 0.5
+      }
+    ],
+    "start_event": "rm_meet",
+    "flags": []
+  },
+  "stats": [],
+  "stats_sources": [],
+  "events": [
+    {
+      "id": "rm_meet",
+      "age": 27,
+      "text": "你最近開始想找個伴。認識新朋友的方式有很多種……",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        }
+      ],
+      "sources_pending": [
+        "工作認識、網聚認識的交往詐騙台灣案例：待查（寫手提供，待查證）"
+      ],
+      "choices": [
+        {
+          "text": "認識新的人",
+          "random": true,
+          "effects": {},
+          "next": "rm_weeks",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcomes": [
+            {
+              "probability": 0.3333333333333333,
+              "effects": {
+                "心理": 5
+              },
+              "next": "rm_weeks",
+              "flags_set": [
+                "rm_via_app"
+              ],
+              "outcome_text": "你在交友軟體上配對到「阿澄」，聊天很合拍。",
+              "log_text": "交友軟體認識阿澄",
+              "grid": "green"
+            },
+            {
+              "probability": 0.3333333333333333,
+              "effects": {
+                "心理": 5
+              },
+              "next": "rm_weeks",
+              "flags_set": [
+                "rm_via_meetup"
+              ],
+              "outcome_text": "朋友揪的桌遊網聚上，你和「阿澄」很聊得來，散場前互加好友。",
+              "log_text": "網聚認識阿澄",
+              "grid": "green"
+            },
+            {
+              "probability": 0.3333333333333333,
+              "effects": {
+                "心理": 5
+              },
+              "next": "rm_weeks",
+              "flags_set": [
+                "rm_via_work"
+              ],
+              "outcome_text": "合作廠商的窗口「阿澄」很照顧你，案子結束後還常傳訊息關心。",
+              "log_text": "工作認識阿澄",
+              "grid": "green"
+            }
+          ],
+          "random_note": {
+            "design_assumption": true,
+            "note": "認識管道三選一、各 1/3 是設計假設，不是統計；三種管道在真實案件裡都有"
+          }
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "rm_weeks",
+      "age": 27,
+      "text": "幾個星期下來，阿澄每天早安晚安，記得你說過的每件小事。你開始期待手機亮起來。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "dating_like",
+        "app_display_name": "心動訊息（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "阿澄",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "早安～昨天你說胃不舒服，今天有好一點嗎？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "我覺得我們好像認識很久了",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "下週末要不要見個面？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m4",
+            "from": "scammer",
+            "text": "下週我要出差耶😢 等我回來一定！",
+            "delay_ms": 1800,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "再約一次具體時間",
+          "effects": {
+            "警覺": 5
+          },
+          "next": "rm_excuse",
+          "flags": {
+            "set": [
+              "rm_asked_meet"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你約了具體的日期。阿澄說好，但前一天又說臨時有事。",
+          "log_text": "再約時間"
+        },
+        {
+          "text": "先這樣聊就好",
+          "effects": {
+            "心理": 1,
+            "警覺": -3
+          },
+          "next": "rm_turn",
+          "flags": {
+            "set": [
+              "missed_rm_no_meet"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你說沒關係，慢慢來。阿澄傳了一個愛心。",
+          "log_text": "沒約見面",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "rm_excuse",
+      "age": 27,
+      "text": "見面一延再延，視訊也總是「網路不好」。週末回家吃飯時，姐姐問你最近怎麼一直在笑。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "跟姐姐聊聊阿澄",
+          "effects": {
+            "人際": 3
+          },
+          "next": "rm_turn",
+          "flags": {
+            "set": [
+              "rm_told_sister"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "姐姐聽完說：「你開心我很高興，不過如果他開口跟你要錢，先給我看一下好不好？」",
+          "log_text": "跟姐姐聊了"
+        },
+        {
+          "text": "相信阿澄很忙",
+          "effects": {
+            "警覺": -3,
+            "心理": -2
+          },
+          "next": "rm_turn",
+          "flags": {
+            "set": [
+              "missed_rm_excuse"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你告訴自己，他只是比較忙。",
+          "log_text": "相信很忙",
+          "mental_wear": -2
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "rm_turn",
+      "age": 28,
+      "text": "有一天，阿澄的語氣變了。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "看阿澄的訊息",
+          "random": true,
+          "effects": {},
+          "next": "rm_ask_invest",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcomes": [
+            {
+              "probability": 0.3333333333333333,
+              "effects": {},
+              "next": "rm_ask_invest",
+              "flags_set": [
+                "rm_type_invest"
+              ],
+              "outcome_text": "阿澄說他「跟著一位老師投資」，想帶你一起賺，為你們的未來存錢。",
+              "log_text": "阿澄提投資",
+              "grid": "green"
+            },
+            {
+              "probability": 0.3333333333333333,
+              "effects": {},
+              "next": "rm_ask_loan",
+              "flags_set": [
+                "rm_type_loan"
+              ],
+              "outcome_text": "阿澄說店裡周轉不過來，下個月就能還，只差三萬。",
+              "log_text": "阿澄要借錢",
+              "grid": "green"
+            },
+            {
+              "probability": 0.3333333333333333,
+              "effects": {},
+              "next": "rm_ask_sick",
+              "flags_set": [
+                "rm_type_sick"
+              ],
+              "outcome_text": "阿澄說家人突然住院，醫藥費要先繳，一直在道歉。",
+              "log_text": "阿澄家人生病",
+              "grid": "green"
+            }
+          ],
+          "random_note": {
+            "design_assumption": true,
+            "note": "三種轉折各 1/3 是設計假設；真實案件常見投資、借款、家人急病三類說法（刑事局、行政院宣導）"
+          }
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "rm_ask_invest",
+      "age": 28,
+      "text": "阿澄傳來一個投資平台的截圖，說「老師帶的都賺」，要你先入金試試。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "dating_like",
+        "app_display_name": "心動訊息（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "阿澄",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "寶貝你看，我上週又賺了 12%",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "我們一起存結婚基金好不好？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "先放一萬試試，我教你操作",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "搜尋阿澄的照片",
+          "effects": {
+            "警覺": 8,
+            "心理": -8
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_checked"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "同一張照片出現在好幾個不同名字的帳號上。你盯著螢幕很久，心裡空了一塊。",
+          "log_text": "查到照片"
+        },
+        {
+          "text": "先轉一小筆",
+          "effects": {
+            "存款": -10000,
+            "心理": 0
+          },
+          "next": "rm_more",
+          "flags": {
+            "set": [
+              "rm_paid_once",
+              "missed_rm_money_ask"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你轉了一萬。阿澄說「謝謝你，我真的好愛你」。",
+          "log_text": "先轉一萬",
+          "mental_wear": -2
+        },
+        {
+          "text": "說要再想想",
+          "effects": {
+            "心理": -3
+          },
+          "next": "rm_push",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "阿澄沉默了一下，接著傳來一長串訊息。",
+          "log_text": "說要想想"
+        },
+        {
+          "text": "把對話給姐姐看",
+          "effects": {
+            "人際": 5,
+            "心理": -6
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_sister_stop"
+            ],
+            "require": [
+              "rm_told_sister"
+            ]
+          },
+          "grid": "green",
+          "outcome_text": "姐姐看完，握著你的手說：「我們一起打 165 問問看。」電話那頭說，這是很典型的手法。",
+          "log_text": "給姐姐看"
+        }
+      ]
+    },
+    {
+      "id": "rm_ask_loan",
+      "age": 28,
+      "text": "阿澄說店裡周轉不過來，想先跟你借三萬，下個月一定還。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "dating_like",
+        "app_display_name": "心動訊息（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "阿澄",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "我真的很不想開口……",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "只是周轉一下，下個月一定還你",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "你先轉一萬也好，拜託",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "搜尋阿澄的照片",
+          "effects": {
+            "警覺": 8,
+            "心理": -8
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_checked"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "同一張照片出現在好幾個不同名字的帳號上。你盯著螢幕很久，心裡空了一塊。",
+          "log_text": "查到照片"
+        },
+        {
+          "text": "先轉一小筆",
+          "effects": {
+            "存款": -10000,
+            "心理": 0
+          },
+          "next": "rm_more",
+          "flags": {
+            "set": [
+              "rm_paid_once",
+              "missed_rm_money_ask"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你轉了一萬。阿澄說「謝謝你，我真的好愛你」。",
+          "log_text": "先轉一萬",
+          "mental_wear": -2
+        },
+        {
+          "text": "說要再想想",
+          "effects": {
+            "心理": -3
+          },
+          "next": "rm_push",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "阿澄沉默了一下，接著傳來一長串訊息。",
+          "log_text": "說要想想"
+        },
+        {
+          "text": "把對話給姐姐看",
+          "effects": {
+            "人際": 5,
+            "心理": -6
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_sister_stop"
+            ],
+            "require": [
+              "rm_told_sister"
+            ]
+          },
+          "grid": "green",
+          "outcome_text": "姐姐看完，握著你的手說：「我們一起打 165 問問看。」電話那頭說，這是很典型的手法。",
+          "log_text": "給姐姐看"
+        }
+      ]
+    },
+    {
+      "id": "rm_ask_sick",
+      "age": 28,
+      "text": "阿澄說家人住院，醫藥費要先繳，問你能不能先幫忙。",
+      "sources": [
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "dating_like",
+        "app_display_name": "心動訊息（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "阿澄",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "醫院說今天要先繳費",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "我在這邊誰都不認識，只有你了",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "先一萬就好，我回去馬上還你",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "搜尋阿澄的照片",
+          "effects": {
+            "警覺": 8,
+            "心理": -8
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_checked"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "同一張照片出現在好幾個不同名字的帳號上。你盯著螢幕很久，心裡空了一塊。",
+          "log_text": "查到照片"
+        },
+        {
+          "text": "先轉一小筆",
+          "effects": {
+            "存款": -10000,
+            "心理": 0
+          },
+          "next": "rm_more",
+          "flags": {
+            "set": [
+              "rm_paid_once",
+              "missed_rm_money_ask"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你轉了一萬。阿澄說「謝謝你，我真的好愛你」。",
+          "log_text": "先轉一萬",
+          "mental_wear": -2
+        },
+        {
+          "text": "說要再想想",
+          "effects": {
+            "心理": -3
+          },
+          "next": "rm_push",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "阿澄沉默了一下，接著傳來一長串訊息。",
+          "log_text": "說要想想"
+        },
+        {
+          "text": "把對話給姐姐看",
+          "effects": {
+            "人際": 5,
+            "心理": -6
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_sister_stop"
+            ],
+            "require": [
+              "rm_told_sister"
+            ]
+          },
+          "grid": "green",
+          "outcome_text": "姐姐看完，握著你的手說：「我們一起打 165 問問看。」電話那頭說，這是很典型的手法。",
+          "log_text": "給姐姐看"
+        }
+      ]
+    },
+    {
+      "id": "rm_push",
+      "age": 28,
+      "text": "阿澄說：「你是不是不信任我？我們在一起這麼久了。」接著好幾個小時都沒有再傳訊息。",
+      "sources": [
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        }
+      ],
+      "choices": [
+        {
+          "text": "打 165 問問看",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_hotline"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "165 的人聽完說：不見面、只談錢，這是交友詐騙最常見的樣子。你掛上電話，哭了一下。",
+          "log_text": "打給165"
+        },
+        {
+          "text": "怕他難過，還是轉",
+          "effects": {
+            "存款": -10000,
+            "心理": -2
+          },
+          "next": "rm_more",
+          "flags": {
+            "set": [
+              "rm_paid_once",
+              "missed_rm_guilt"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你轉了錢。阿澄又變回原本溫柔的樣子。",
+          "log_text": "還是轉了",
+          "mental_wear": -2
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "rm_more",
+      "age": 29,
+      "text": "幾週後，阿澄說還差一點：保證金、手續費、或是「最後一次」的醫藥費。金額一次比一次大。",
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        }
+      ],
+      "choices": [
+        {
+          "text": "停下來去報案",
+          "effects": {
+            "警覺": 10,
+            "心理": -12
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_reported",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你帶著轉帳紀錄去派出所。警察說能追的會盡量追，但你得有心理準備。",
+          "log_text": "去報案"
+        },
+        {
+          "text": "借錢再匯過去",
+          "effects": {
+            "存款": -60000,
+            "心理": -17,
+            "人際": -5
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "rm_deep_loss",
+              "rm_loan_taken",
+              "family_blame"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你跟信貸借了錢匯過去，之後阿澄就消失了。爸媽知道後罵你：「怎麼會這麼笨？」",
+          "log_text": "借錢再匯",
+          "mental_wear": -2
+        }
+      ],
+      "presentation": "card"
+    }
+  ],
+  "endings": [
+    {
+      "id": "END_RM_COLLAPSE",
+      "priority": 1,
+      "conditions": {
+        "flags_all": [
+          "rm_deep_loss",
+          "mental_collapse"
+        ]
+      },
+      "text": "錢沒了，信任也沒了。你好幾個月提不起勁，連手機亮起來都會發抖。\n真心付出被利用的難過是真的，不是你太傻。這種失落可以找人說。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "一名女子在交友後被帶進投資平台，陸續匯出超過百萬，平台要求再繳費才能出金，才發現被騙。",
+        "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R1"
+      },
+      "missed_red_flags": [
+        "還沒見過面就談錢",
+        "借錢去匯款"
+      ],
+      "sources": [
+        {
+          "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+          "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "空掉的人",
+      "title_emoji": "🌧️",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線，撐得很辛苦。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "rm_deep_loss"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_COLLAPSE",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_RM_DEEP",
+      "priority": 2,
+      "conditions": {
+        "flags_all": [
+          "rm_deep_loss"
+        ]
+      },
+      "text": "你為了阿澄借了錢，人卻消失了。每個月的還款提醒你那段日子。\n真心付出被利用的難過是真的，不是你太傻。這種失落可以找人說。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "高雄一名男子在交友軟體認識網友，對方要他下載非官方 App 儲值；小額能提領後，他把積蓄全部存進去，結果領不出來，損失約 320 萬元。",
+        "url": "https://www.cna.com.tw/news/asoc/202601040111.aspx",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R2"
+      },
+      "missed_red_flags": [
+        "見面一再推託",
+        "金額越來越大"
+      ],
+      "sources": [
+        {
+          "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "借來的心動",
+      "title_emoji": "💸",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線，學到很貴的一課。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "rm_deep_loss"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_DEEP",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_RM_STOPPED",
+      "priority": 3,
+      "conditions": {
+        "flags_all": [
+          "rm_reported"
+        ]
+      },
+      "text": "你轉出去的錢不一定追得回來，但你在越陷越深前停下來了。\n真心付出被利用的難過是真的，不是你太傻。這種失落可以找人說。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "被害人在交友對象多次以各種名目要錢後，帶著轉帳紀錄報案，警方協助凍結部分款項。",
+        "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R3"
+      },
+      "missed_red_flags": [
+        "沒見面就先轉帳"
+      ],
+      "sources": [
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "停損的人",
+      "title_emoji": "🛑",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線及時停下來了。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "rm_reported"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_STOPPED",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_RM_SISTER",
+      "priority": 4,
+      "conditions": {
+        "flags_all": [
+          "rm_sister_stop"
+        ]
+      },
+      "text": "姐姐陪你打了 165。那天晚上你很難過，但你沒有一個人扛。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "家人察覺被害人和網友聊天後情緒起伏大，陪同查證，對方要錢前即被識破。",
+        "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R6"
+      },
+      "missed_red_flags": [
+        "一直沒有真的見面"
+      ],
+      "sources": [
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "有人陪著看",
+      "title_emoji": "🤝",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線，有家人陪我一起看清楚。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "rm_sister_stop"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_SISTER",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_RM_HOTLINE",
+      "priority": 5,
+      "conditions": {
+        "flags_all": [
+          "rm_hotline"
+        ]
+      },
+      "text": "被說「不信任」很難受，但你還是打了 165。心痛會過去，存款還在。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "交友對象以情緒勒索催促匯款，被害人先撥 165 查證，確認為詐騙手法。",
+        "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R3"
+      },
+      "missed_red_flags": [
+        "用愧疚感催你匯款"
+      ],
+      "sources": [
+        {
+          "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+          "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "打出那通電話",
+      "title_emoji": "☎️",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線打了 165。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "rm_hotline"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_HOTLINE",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_RM_CHECKED",
+      "priority": 6,
+      "conditions": {},
+      "text": "同一張臉、好幾個名字。你難過了好幾天，但你沒有把錢交出去。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "民眾以圖片搜尋發現交友對象的照片被多個假帳號使用，及早停止往來。",
+        "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_R6"
+      },
+      "missed_red_flags": [
+        "還沒見面就談錢"
+      ],
+      "sources": [
+        {
+          "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+          "url": "https://www.dcard.tw/f/anti_fraud/p/260128103",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；民間經驗分享，非官方"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "查過照片的人",
+      "title_emoji": "🔍",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在交往詐騙線，先查了再說。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [],
+      "rarity_key": "romance_END_RM_CHECKED",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    }
+  ],
+  "red_flag_texts": {
+    "missed_rm_no_meet": "聊了好幾個星期，對方一直沒有真的見面",
+    "missed_rm_excuse": "見面、視訊一再推託",
+    "missed_rm_money_ask": "還沒見過面，對方就開口談錢",
+    "missed_rm_guilt": "用「你不信任我」讓你愧疚"
+  },
+  "red_flag_anchors": {
+    "missed_rm_no_meet": [
+      {
+        "event": "rm_weeks",
+        "message": "m4"
+      }
+    ],
+    "missed_rm_excuse": [
+      {
+        "event": "rm_weeks",
+        "message": "m4"
+      }
+    ],
+    "missed_rm_money_ask": [
+      {
+        "event": "rm_ask_invest",
+        "message": "m3"
+      },
+      {
+        "event": "rm_ask_loan",
+        "message": "m3"
+      },
+      {
+        "event": "rm_ask_sick",
+        "message": "m3"
+      }
+    ],
+    "missed_rm_guilt": [
+      {
+        "event": "rm_ask_loan",
+        "message": "m1"
+      }
+    ]
+  },
+  "cross_line_modifiers": [
+    {
+      "id": "rm_lent_memory",
+      "if_flags": {
+        "all": [
+          "lent_money_lost"
+        ]
+      },
+      "target": {
+        "event": "rm_ask_loan"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（你想起 24 歲借出去、到現在都沒回來的那三萬。）"
+        }
+      },
+      "note": "借錢線連結：lend（24）→交往借款",
+      "mode": "all"
+    },
+    {
+      "id": "rm_fee_memory",
+      "if_flags": {
+        "all": [
+          "paid_job_fee"
+        ]
+      },
+      "target": {
+        "event": "rm_ask_invest"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（16 歲那次，也是說「先付一點」才能開始。）"
+        }
+      },
+      "note": "先付費連結：part_time_ad（16）→交往投資",
+      "mode": "all"
+    },
+    {
+      "id": "rm_otp_memory",
+      "if_flags": {
+        "all": [
+          "otp_scammed"
+        ]
+      },
+      "target": {
+        "event": "rm_weeks"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 5
+        }
+      },
+      "note": "驗證碼連結：小時候傳過驗證碼，對「只在線上」的人多一點戒心",
+      "mode": "all"
+    }
+  ]
+}

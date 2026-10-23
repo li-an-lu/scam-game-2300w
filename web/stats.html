@@ -1,0 +1,12 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>統計</title><style>body{font-family:sans-serif;max-width:640px;margin:2em auto;padding:0 1em;background:#141833;color:#eef}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #445;padding:6px;text-align:right}td:first-child,th:first-child{text-align:left}.big{display:flex;gap:1em;flex-wrap:wrap}.big div{background:#22284d;padding:1em;border-radius:10px;flex:1;min-width:120px}.big b{font-size:2em;display:block}input,button{font-size:1em;padding:.5em}</style></head>
+<body><h1>《2300萬分之1》遊玩統計</h1><div id="login"><p>請貼上統計密碼（只會存在這台裝置）：</p><input id="t" type="password" size="30"> <button id="ok">查看</button></div><div id="out"></div>
+<script>
+const L={start:'開始遊戲總數',devices:'匿名裝置數（玩過第 1 局）',repeat_devices:'玩第 2 局以上的裝置',share:'分享按鈕點擊'};
+async function go(){const t=localStorage.getItem('statsToken');if(!t)return;
+ const r=await fetch('/api/stats',{headers:{authorization:'Bearer '+t}}).catch(()=>null);
+ if(!r||r.status===401){out.textContent='密碼錯誤或無法連線';localStorage.removeItem('statsToken');return}
+ const d=await r.json();login.hidden=true;const T=d.total;
+ out.innerHTML='<div class="big">'+Object.keys(L).map(k=>`<div>${L[k]}<b>${T[k]||0}</b></div>`).join('')+'</div><p>第 2 局比例：'+(T.devices?((T.repeat_devices||0)/T.devices*100).toFixed(1)+'%':'—')+'</p><h2>每日（台北時間）</h2><table><tr><th>日期</th>'+Object.keys(L).map(k=>`<th>${L[k]}</th>`).join('')+'</tr>'+Object.keys(d.days).sort().reverse().map(day=>`<tr><td>${day}</td>`+Object.keys(L).map(k=>`<td>${d.days[day][k]||0}</td>`).join('')+'</tr>').join('')+'</table>';}
+ok.onclick=()=>{localStorage.setItem('statsToken',t.value.trim());go()};go();
+</script></body></html>

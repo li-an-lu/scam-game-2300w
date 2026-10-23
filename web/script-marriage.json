@@ -1,0 +1,1193 @@
+{
+  "meta": {
+    "title": "2300萬分之1",
+    "version": "1.0",
+    "language": "zh-TW",
+    "one_life": true,
+    "content_policy": "只描述受騙者看到什麼、經歷什麼，不寫詐騙的操作手法",
+    "amount_note": "金額為設計假設：依真實案件量級等比例縮小，合併模式另依進場存款縮放（見 script-life.json scam_integration）",
+    "engine_notes": "next=='__EVAL__' 時：先依 ending_rules.stat_flags 依數值設定 flag，再依 priority 判定結局。結局畫面：顯示 reason_texts 中玩家擁有之 flag 的說明；『你錯過的破綻』＝玩家擁有的 missed_* flag 依 red_flag_texts 逐條顯示，若無則顯示 missed_red_flags（通用版）。數值套用後夾在 min/max。初始存款＝init 值×(1+family.存款_mod)；family 其他數值為加減。",
+    "presentation_notes": "同投資線：presentation='chat' 以全螢幕仿聊天室呈現；畫面一律使用虛構 app 名稱與外觀。聊天內容只呈現詐團話術與受害者反應，不寫可照做的操作步驟。",
+    "no_pressure_mode": {
+      "available": true,
+      "default": false,
+      "effect": "關閉所有 pressure 倒數；不影響劇情與結局",
+      "min_timer_s": 20
+    },
+    "life_grid": {
+      "bucket_years": 5,
+      "colors": {
+        "green": "安全",
+        "yellow": "有疑點",
+        "red": "受騙損失"
+      },
+      "rule": "同投資線"
+    },
+    "real_world_stat_notes": "real_world_stat 是假網拍占 115-09 全國受理件數的比例（3,513÷10,775），不是結局稀有度。",
+    "cross_line_notes": "跨線 flag 來自人生線（script-life.json 結束時玩家持有的 flag，見其 meta.cross_line_flags）。進入詐騙線時，把人生線 flag 併入玩家 flags；之後對每筆 cross_line_modifiers，若 if_flags.all 全有且 if_flags.none 全無，就在 target 事件套用 effect（見 common.py 註解）。同一事件多筆規則依陣列順序套用。",
+    "choice_feedback": {
+      "outcome_text": "選完立刻顯示的即時結果（1–3 句；延遲揭曉事件不劇透）",
+      "log_text": "人生紀錄用的短句"
+    },
+    "choice_label_rule": {
+      "max_chars": 15,
+      "blocklist": [
+        "騙",
+        "損失",
+        "賠",
+        "後悔",
+        "成功",
+        "失敗",
+        "才還",
+        "被抓",
+        "識破",
+        "真相",
+        "原來",
+        "結果",
+        "紅燈",
+        "警訊",
+        "＝",
+        "不合理",
+        "太緊張",
+        "正常工作",
+        "嚇壞",
+        "崩潰",
+        "倒會",
+        "已讀不回"
+      ],
+      "rule": "選項標籤只描述玩家行動，不寫結果、不做道德評價；結果放在 outcome_text 或之後的揭曉事件"
+    },
+    "ending_premise_notes": "endings[].requires_flags／forbids_flags 宣告結局文字預設的前提（validate.py 窮舉路徑檢查）。text_variants[]：{when:{flags_all,flags_none}, text, requires_flags?, forbids_flags?}，引擎依序取第一個 when 成立的變體取代 text；都不成立用 text。",
+    "help_resources_rule": "v4.7：每個結局都有 help_resources（至少 165）；有心理傷害的結局加 1925／1995；車手線刑事相關結局加法律扶助基金會 412-8518",
+    "cross_line_mode_rule": "cross_line_modifiers[].mode：all＝單線與合併模式都會套用；standalone_only＝合併模式下進場年齡範圍內拿不到該 flag，實際上只會在單線模式觸發（引擎不需特別處理，條件本來就不成立）；validate／combined 只列為 info",
+    "mental_wear": {
+      "delta": -2,
+      "applies_to": "grid 為 yellow／red 的選項（含 random 分支、解鎖選項）",
+      "design_assumption": true,
+      "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
+    },
+    "subtitle": "婚姻詐騙線",
+    "line": "marriage",
+    "types": [
+      "配偶隱瞞債務／冒名借款、當保證人",
+      "預謀詐婚"
+    ],
+    "stats_note": "沒有官方統計對應婚姻內的冒名借款或詐婚，不放統計"
+  },
+  "ending_rules": {
+    "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v4.4：SILENT_COLLAPSE 0.5 → CS_DRAINED 1 …）",
+    "fallback": "END_MR_ANNUL",
+    "condition_grammar": {
+      "flags_all": "全部都要有",
+      "flags_any": "至少一個",
+      "flags_none": "都不能有",
+      "any_of": "子條件任一成立"
+    },
+    "stat_flags": [
+      {
+        "flag": "savings_depleted",
+        "stats": {
+          "存款": {
+            "lte": 0
+          }
+        },
+        "text": "你的存款歸零了。"
+      },
+      {
+        "flag": "mental_collapse",
+        "stats": {
+          "心理": {
+            "lte": 20
+          }
+        },
+        "text": "長期的壓力讓你的心理狀態跌到谷底（心理≤20）。"
+      },
+      {
+        "flag": "isolated",
+        "stats": {
+          "人際": {
+            "lte": 15
+          }
+        },
+        "text": "你和身邊的人越來越疏遠，沒有人能拉你一把（人際≤15）。"
+      },
+      {
+        "flag": "has_support",
+        "stats": {
+          "人際": {
+            "gte": 20
+          }
+        },
+        "text": "身邊還有願意幫你的人（人際≥20）。"
+      }
+    ]
+  },
+  "player_init": {
+    "stats": {
+      "存款": {
+        "min": 0,
+        "init_range": [
+          20000,
+          200000
+        ]
+      },
+      "警覺": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          15,
+          45
+        ]
+      },
+      "人際": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          30,
+          70
+        ]
+      },
+      "心理": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          40,
+          80
+        ]
+      }
+    },
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      {
+        "name": "小康",
+        "存款_mod": 0
+      },
+      {
+        "name": "單親",
+        "存款_mod": -0.3,
+        "心理": -5
+      },
+      {
+        "name": "務農",
+        "人際": 5
+      },
+      {
+        "name": "經商",
+        "存款_mod": 0.5
+      }
+    ],
+    "start_event": "mr_wedding",
+    "flags": []
+  },
+  "stats": [],
+  "stats_sources": [],
+  "events": [
+    {
+      "id": "mr_wedding",
+      "age": 32,
+      "text": "你結婚了。婚宴上大家都說你們很登對，媽媽偷偷擦了眼淚。",
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+          "url": "https://udn.com/news/story/7321/9492558",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "開始婚後生活",
+          "random": true,
+          "effects": {},
+          "next": "mr_letter",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcomes": [
+            {
+              "probability": 0.5,
+              "effects": {
+                "心理": 5
+              },
+              "next": "mr_letter",
+              "flags_set": [
+                "mr_type_debt"
+              ],
+              "outcome_text": "婚後一切看起來都很平順。直到某天信箱多了一封信。",
+              "log_text": "婚後收到信",
+              "grid": "green"
+            },
+            {
+              "probability": 0.5,
+              "effects": {
+                "心理": 5
+              },
+              "next": "mr_asks",
+              "flags_set": [
+                "mr_type_fraud"
+              ],
+              "outcome_text": "婚後沒多久，另一半開始常常提到錢。",
+              "log_text": "另一半常提錢",
+              "grid": "green"
+            }
+          ],
+          "random_note": {
+            "design_assumption": true,
+            "note": "兩種類型各 50% 是設計假設：配偶隱瞞債務／冒名借款、預謀詐婚，判決中都有"
+          }
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "mr_letter",
+      "age": 32,
+      "text": "信封上寫著你的名字：一家你沒去過的融資公司，通知你「保證的借款」已經逾期。",
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+          "url": "https://udn.com/news/story/7321/9492558",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "自由時報 2025-04-22：已婚者隱瞞婚姻、變造證件照片配偶欄、誇大收入，以結婚為前提借款 360 萬元；刑事判 2 年 6 月，民事判還 358.4 萬元（台南）",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5020227",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "sms_like",
+        "app_display_name": "簡訊（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "某融資公司",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "other",
+            "text": "您擔任保證人之借款已逾期，請儘速處理",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "player",
+            "text": "我沒有當過任何人的保證人",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "other",
+            "text": "契約上有您的簽名與證件影本",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "申請自己的信用報告",
+          "effects": {
+            "警覺": 10,
+            "心理": -5
+          },
+          "next": "mr_talk",
+          "flags": {
+            "set": [
+              "mr_checked_credit"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "報告上有兩筆你從沒辦過的借款，用的是你的身分證影本。",
+          "log_text": "查信用報告"
+        },
+        {
+          "text": "先放著不問",
+          "effects": {
+            "心理": -7
+          },
+          "next": "mr_later",
+          "flags": {
+            "set": [
+              "missed_mr_letter"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你把信收進抽屜，告訴自己應該是弄錯了。",
+          "log_text": "先放著",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "mr_later",
+      "age": 33,
+      "presentation": "timeskip",
+      "text": "半年後，催收電話開始打到你公司。",
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+          "url": "https://udn.com/news/story/7321/9492558",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        }
+      ],
+      "choices": [
+        {
+          "text": "回家問另一半",
+          "effects": {
+            "存款": -20000,
+            "心理": -8
+          },
+          "next": "mr_talk",
+          "flags": {
+            "set": [
+              "mr_debt_grew"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "利息又滾了一筆。另一半終於承認，是他拿你的證件去辦的。",
+          "log_text": "回家問"
+        }
+      ]
+    },
+    {
+      "id": "mr_talk",
+      "age": 33,
+      "text": "另一半說：「我只是周轉一下，本來想自己還掉。」你看著那些契約，上面是你的名字。",
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+          "url": "https://udn.com/news/story/7321/9492558",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "自由時報 2025-04-22：已婚者隱瞞婚姻、變造證件照片配偶欄、誇大收入，以結婚為前提借款 360 萬元；刑事判 2 年 6 月，民事判還 358.4 萬元（台南）",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5020227",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；法條原文"
+        }
+      ],
+      "choices": [
+        {
+          "text": "報警，也辦離婚",
+          "effects": {
+            "心理": -15,
+            "人際": -5
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "mr_reported",
+              "mr_divorced",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你帶著信用報告去報案。偽造文書的案子走了很久，婚也離了。",
+          "log_text": "報警並離婚"
+        },
+        {
+          "text": "幫他把錢還掉",
+          "effects": {
+            "存款": -80000,
+            "心理": -12
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "mr_paid_debt",
+              "family_blame"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你拿出存款還了債。爸媽知道後說：「早就叫你看清楚，現在怎麼辦？」",
+          "log_text": "幫忙還錢",
+          "mental_wear": -2
+        },
+        {
+          "text": "先找法律諮詢",
+          "effects": {
+            "心理": -8,
+            "警覺": 5
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "mr_legal"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "法律扶助的律師告訴你：冒名簽的保證契約可以爭執，先別自己認下來。",
+          "log_text": "找法律諮詢"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "mr_asks",
+      "age": 33,
+      "text": "另一半說老家要整修、媽媽要開刀，要你先拿一筆錢；你的身分證和印章也「借去辦點事」。",
+      "sources": [
+        {
+          "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；法條原文"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊天（虛構）",
+        "theme": "fictional_warm",
+        "contact": {
+          "name": "另一半",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "我媽下週要開刀，還差二十萬",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "你的印章先借我，辦完就還你",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "我們是一家人，你不相信我嗎？",
+            "delay_ms": 1600,
+            "type": "text"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "text": "查戶籍和婚姻紀錄",
+          "effects": {
+            "警覺": 10,
+            "心理": -5
+          },
+          "next": "mr_truth",
+          "flags": {
+            "set": [
+              "mr_checked_record"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你請戶政調了資料，發現對方隱瞞了一段前婚。",
+          "log_text": "查戶籍紀錄"
+        },
+        {
+          "text": "先把錢給他",
+          "effects": {
+            "存款": -50000,
+            "心理": -7
+          },
+          "next": "mr_truth",
+          "flags": {
+            "set": [
+              "mr_paid_partner",
+              "missed_mr_id_lent"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你把錢和印章都交了出去。",
+          "log_text": "交出錢和印章",
+          "mental_wear": -2
+        }
+      ]
+    },
+    {
+      "id": "mr_truth",
+      "age": 34,
+      "text": "沒多久，另一半帶著東西消失了，電話也打不通。",
+      "sources": [
+        {
+          "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；法條原文"
+        }
+      ],
+      "choices": [
+        {
+          "text": "報警並請求撤銷婚姻",
+          "effects": {
+            "心理": -15,
+            "人際": -3
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "mr_reported",
+              "mr_annul",
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你報了案，也向法院請求撤銷婚姻。程序很長，但你一步一步走。",
+          "log_text": "報警並撤銷"
+        },
+        {
+          "text": "忍下來，不跟人說",
+          "effects": {
+            "心理": -22,
+            "人際": -8
+          },
+          "next": "__EVAL__",
+          "flags": {
+            "set": [
+              "mr_silent"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你覺得丟臉，誰也沒說。夜裡常常睡不著。",
+          "log_text": "忍下來",
+          "mental_wear": -2
+        }
+      ],
+      "presentation": "card"
+    }
+  ],
+  "endings": [
+    {
+      "id": "END_MR_COLLAPSE",
+      "priority": 1,
+      "conditions": {
+        "flags_all": [
+          "mental_collapse"
+        ],
+        "flags_any": [
+          "mr_silent",
+          "mr_paid_debt",
+          "mr_paid_partner"
+        ]
+      },
+      "text": "錢、婚姻、自信一起被拿走。你很久都不想見人。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "女子未經前夫同意，在借款本票與借據上偽造前夫簽名，讓他成為連帶保證人；前夫被追債後才知道。彰化地院依偽造私文書、偽造有價證券罪判刑。",
+        "url": "https://udn.com/news/story/7321/9492558",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M2"
+      },
+      "missed_red_flags": [
+        "沒簽過的契約",
+        "證件被借走"
+      ],
+      "sources": [
+        {
+          "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+          "url": "https://udn.com/news/story/7321/9492558",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "撐不住的婚姻",
+      "title_emoji": "🌧️",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線撐得很辛苦。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_COLLAPSE",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_MR_SILENT",
+      "priority": 2,
+      "conditions": {
+        "flags_all": [
+          "mr_silent"
+        ]
+      },
+      "text": "你沒有報警，也沒有跟家人說。錢沒了，婚姻也只剩一張紙。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "被害人遭配偶隱瞞前婚、以家人開刀等理由要錢後失聯，事後才提起訴訟撤銷婚姻。",
+        "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M7"
+      },
+      "missed_red_flags": [
+        "身分證、印章被借去辦事"
+      ],
+      "sources": [
+        {
+          "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；法條原文"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "一個人吞下",
+      "title_emoji": "🤐",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線選擇自己吞下。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "mr_silent"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_SILENT",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_MR_PAID",
+      "priority": 3,
+      "conditions": {
+        "flags_all": [
+          "mr_paid_debt"
+        ]
+      },
+      "text": "你替另一半還了債。名字回來了，存款沒了，信任也很難回來。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "桃園一名女子婚後 3 個月，家裡開始有人上門討債，才知道丈夫婚前就背了鉅額債務；丈夫 5 個月後躲債失聯。",
+        "url": "https://www.setn.com/News.aspx?NewsID=482098",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M1"
+      },
+      "missed_red_flags": [
+        "沒簽過的契約"
+      ],
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "替他還的人",
+      "title_emoji": "🧾",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線替人還了債。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "mr_paid_debt"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_PAID",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_MR_DIVORCE",
+      "priority": 4,
+      "conditions": {
+        "flags_all": [
+          "mr_divorced"
+        ]
+      },
+      "text": "報警、離婚，都很痛。但那些契約上的名字，你一筆一筆拿回來了。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "前夫發現自己被前妻偽簽成借款連帶保證人、遭追債後提告，彰化地院判前妻偽造私文書與偽造有價證券罪。",
+        "url": "https://udn.com/news/story/7321/9492558",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M2"
+      },
+      "missed_red_flags": [
+        "信箱裡的催繳信"
+      ],
+      "sources": [
+        {
+          "name": "自由時報 2025-04-22：已婚者隱瞞婚姻、變造證件照片配偶欄、誇大收入，以結婚為前提借款 360 萬元；刑事判 2 年 6 月，民事判還 358.4 萬元（台南）",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/5020227",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "拿回名字",
+      "title_emoji": "⚖️",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線拿回自己的名字。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "mr_divorced"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_DIVORCE",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_MR_LEGAL",
+      "priority": 5,
+      "conditions": {
+        "flags_all": [
+          "mr_legal"
+        ]
+      },
+      "text": "你沒有先認下債務，而是找律師問清楚每一步的代價。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "配偶冒名借款案中，被害人尋求法律協助，主張保證契約非本人簽署。",
+        "url": "https://www.setn.com/News.aspx?NewsID=482098",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M1"
+      },
+      "missed_red_flags": [
+        "沒簽過的契約"
+      ],
+      "sources": [
+        {
+          "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+          "url": "https://www.setn.com/News.aspx?NewsID=482098",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "先問清楚",
+      "title_emoji": "📚",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線先找了法律協助。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "mr_legal"
+      ],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_LEGAL",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_MR_ANNUL",
+      "priority": 6,
+      "conditions": {},
+      "text": "你報了案，也請法院撤銷婚姻。很累，但你沒有讓這件事定義你。\n被最親近的人冒用名字，受傷是正常的。你可以找人說，也可以找法律協助。",
+      "reason_texts": [],
+      "case_card": {
+        "summary": "一方隱瞞前婚並謊稱懷孕締結婚姻，法院依民法第997條判准撤銷婚姻。",
+        "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+        "note": "去識別化改寫，細節以原文為準",
+        "story_id": "research_M7"
+      },
+      "missed_red_flags": [
+        "證件被借去辦事"
+      ],
+      "sources": [
+        {
+          "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 開啟核對；去識別化；法條原文"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "撤銷那紙婚約",
+      "title_emoji": "📄",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板沒有對應這個結局的分類統計",
+        "display": null
+      },
+      "share_text": "我在婚姻詐騙線撤銷了婚約。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [],
+      "rarity_key": "marriage_END_MR_ANNUL",
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    }
+  ],
+  "red_flag_texts": {
+    "missed_mr_letter": "你的名字出現在你沒簽過的契約上",
+    "missed_mr_id_lent": "身分證、印章被「借去辦事」"
+  },
+  "red_flag_anchors": {
+    "missed_mr_letter": [
+      {
+        "event": "mr_letter",
+        "message": "m3"
+      }
+    ],
+    "missed_mr_id_lent": [
+      {
+        "event": "mr_asks",
+        "message": "m2"
+      }
+    ]
+  },
+  "cross_line_modifiers": [
+    {
+      "id": "mr_evidence",
+      "if_flags": {
+        "all": [
+          "evidence_habit"
+        ]
+      },
+      "target": {
+        "event": "mr_letter"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 5
+        }
+      },
+      "note": "證據習慣：比較會想到查信用報告",
+      "mode": "all"
+    },
+    {
+      "id": "mr_romance_memory",
+      "if_flags": {
+        "all": [
+          "rm_deep_loss_seen"
+        ]
+      },
+      "target": {
+        "event": "mr_asks"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（「你不相信我嗎？」——你好像在哪裡聽過這句話。）"
+        }
+      },
+      "note": "交往線連結：交往詐騙中借錢匯款的人",
+      "mode": "all"
+    }
+  ]
+}

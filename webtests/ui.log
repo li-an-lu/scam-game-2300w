@@ -1,0 +1,10 @@
+/workspace/scam-game/webtests/ui_combined.py:15: SyntaxWarning: invalid escape sequence '\p'
+  em:[...document.querySelectorAll('button.choice,#result')].map(e=>e.innerText).filter(t=>/\p{Extended_Pictographic}/u.test(t)).slice(0,2),ch:[...document.querySelectorAll('button[data-i]:not([disabled])')].length,ov:document.documentElement.scrollWidth>innerWidth,ovel:[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,3).map(e=>e.tagName+'.'+e.className+':'+(e.textContent||'').slice(0,20))})""")
+c390 ({'id': 'END_LIFE_STRETCHED/', 'recap': '19歲｜求職車手線：🤝 被拉回來的人\n\n25歲｜假網拍線：🛡 三關全破的人', 'hist': ['mule:END_RESCUED@19', 'shopping:END_SAFE@25'], 'share': '🧾 一直很緊的人\n19歲｜求職車手線：🤝 被拉回來的人\n25歲｜假網拍線：🛡 三關全破的人\n🟩🟩🟥🟨🟥🟥🟩🟩🟥\n我的人生日常線：錢一直很緊。你呢？\nhttp://localhost:8888/'}, [], [], 40, 40, 0)
+c320 ({'id': 'END_LIFE_HONGBAO_GONE/', 'recap': '21歲｜求職車手線：🛡 第一步就說不的人\n\n24歲｜假網拍線：📞 被一通電話帶走的人\n\n36歲｜假投資線：🛡 理性懷疑者', 'hist': ['mule:END_REFUSE@21', 'shopping:END_CS_DRAINED@24', 'investment:END_EARLY@36'], 'share': '🧧 紅包沒回來的人\n21歲｜求職車手線：🛡 第一步就說不的人\n24歲｜假網拍線：📞 被一通電話帶走的人\n36歲｜假投資線：🛡 理性懷疑者\n🟩🟥🟨🟩🟥🟥🟩🟩🟨\n小時候的紅包，長大後沒有回來。\nhttp://localhost:8888/'}, [], [], 41, 41, 0)
+rand ('END_LIFE_STRETCHED/lent_and_rosca', ['mule:END_REFUSE@22', 'shopping:END_SAFE@23']) [] set() results 39 withnums 39 overflow 0
+rand ('END_LIFE_STEADY/scammed', ['shopping:END_SILENT_COLLAPSE@28', 'investment:END_SMALL_LOSS@35']) [] set() results 43 withnums 43 overflow 0
+OVERFLOW samples []
+EMOJI in play []
+SHARE [('已複製連結和分享文字，可以貼給朋友', ''), ('已複製連結和分享文字，可以貼給朋友', ''), ('已複製連結和分享文字，可以貼給朋友', ''), ('已複製連結和分享文字，可以貼給朋友', '')]
+help165 all True 9 readorig counts [1, 1, 1, 1, 1, 1, 1, 0, 1]

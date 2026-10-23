@@ -1,0 +1,61 @@
+Counter({'投資詐騙': 10, '假買家': 6, '假交友/殺豬盤': 5, '求職變車手/人頭': 5, '演唱會票': 5, '假檢警': 4, '愛情詐騙': 4, '假網拍/票券': 3, '租屋': 3, '猜猜我是誰/假親友': 3, 'AI仿聲/換臉': 3, '帳戶警示後遺症': 2, '假網拍/假買家': 2, '解除分期': 2, '遊戲交易': 2, '假中獎': 2, '車手': 2, '假親友': 1, '假網拍/假賣家': 1, '二手交易': 1, '遊戲點數/假親友': 1, '假代購': 1, '假貸款': 1, '網戀投資詐騙': 1}) 70
+$ gen_life.py
+32 events 5 endings
+$ gen_investment.py
+$ gen_mule.py
+$ gen_shopping.py
+$ validate.py script-investment.json
+choice feedback checks: choices 30 OK
+choice label checks: labels 30 OK
+v4 checks: events 15 anchors 10 OK
+cross_line checks: modifiers 10 life flags used ['evidence_habit', 'learned_odds', 'lent_money_lost', 'mlm_joined', 'pressure_signer', 'trusts_adults', 'wary_of_easy_money'] flag-combos 128 paths 876544 endings {'END_DEBT': 122880, 'END_ALL_LOST': 151552, 'END_COLLAPSE': 90112, 'END_FAMILY_RIFT': 225280, 'END_BROKE': 98304, 'END_SMALL_LOSS': 172032, 'END_EARLY': 16384} OK
+premise checks: base paths per ending(+variant) {'END_ALL_LOST': 2544, 'END_BROKE': 1536, 'END_COLLAPSE#alone': 704, 'END_COLLAPSE#supported': 768, 'END_DEBT': 1952, 'END_EARLY': 256, 'END_FAMILY_RIFT#bank': 560, 'END_FAMILY_RIFT#family_money': 2368, 'END_FAMILY_RIFT#ignored_bank': 320, 'END_SMALL_LOSS': 2304} OK
+script-investment.json events 15 endings 7 paths 13312 fallback 0 hits {'END_DEBT': 1952, 'END_ALL_LOST': 2544, 'END_COLLAPSE': 1472, 'END_FAMILY_RIFT': 3248, 'END_BROKE': 1536, 'END_SMALL_LOSS': 2304, 'END_EARLY': 256}
+ALL OK []
+$ validate.py script-mule.json
+choice feedback checks: choices 29 OK
+choice label checks: labels 30 OK
+v4 checks: events 14 anchors 6 OK
+cross_line checks: modifiers 11 life flags used ['cash_strapped', 'evidence_habit', 'family_passphrase', 'lent_money_lost', 'pressure_signer', 'told_truth', 'wary_of_easy_money'] flag-combos 128 paths 1548288 endings {'END_CUT_OFF': 294912, 'END_RESCUED': 307200, 'END_ACCOUNT': 380928, 'END_STOPPED_ALONE': 196608, 'END_REFUSE': 73728, 'END_CONVICTED': 147456, 'END_RECORD': 147456} OK
+premise checks: base paths per ending(+variant) {'END_ACCOUNT': 5568, 'END_CONVICTED': 2304, 'END_CUT_OFF#civil': 1080, 'END_CUT_OFF#collapse': 2376, 'END_CUT_OFF#settled': 1152, 'END_RECORD#confessed': 1152, 'END_RECORD#denied': 1152, 'END_REFUSE': 1024, 'END_RESCUED#family': 1536, 'END_RESCUED#self': 3648, 'END_STOPPED_ALONE#ignored_friend': 3072} OK
+script-mule.json events 14 endings 7 paths 24064 fallback 0 hits {'END_CUT_OFF': 4608, 'END_RESCUED': 5184, 'END_ACCOUNT': 5568, 'END_STOPPED_ALONE': 3072, 'END_REFUSE': 1024, 'END_CONVICTED': 2304, 'END_RECORD': 2304}
+ALL OK []
+$ validate.py script-shopping.json
+choice feedback checks: choices 20 OK
+choice label checks: labels 21 OK
+v4 checks: events 10 anchors 7 OK
+cross_line checks: modifiers 12 life flags used ['card_scammed', 'checks_first', 'counted_change', 'evidence_habit', 'family_passphrase', 'game_scammed', 'lent_money_lost', 'otp_scammed', 'pressure_signer', 'trust_repaid'] flag-combos 1024 paths 3276800 endings {'END_SILENT_COLLAPSE': 344064, 'END_CS_DRAINED': 1228800, 'END_TICKET_LOST': 851968, 'END_SMALL_FEE': 524288, 'END_SAFE': 327680} OK
+premise checks: base paths per ending(+variant) {'END_CS_DRAINED': 2448, 'END_SAFE': 512, 'END_SILENT_COLLAPSE#friend_noticed': 624, 'END_SMALL_FEE': 768, 'END_TICKET_LOST#reported': 640, 'END_TICKET_LOST#silent': 640} OK
+script-shopping.json events 10 endings 5 paths 5632 fallback 0 hits {'END_SILENT_COLLAPSE': 624, 'END_CS_DRAINED': 2448, 'END_TICKET_LOST': 1280, 'END_SMALL_FEE': 768, 'END_SAFE': 512}
+ALL OK []
+$ validate.py script-life.json --sample
+choice feedback checks: choices 64 OK
+choice label checks: labels 64 OK
+v4/v4.2 checks (sample mode): events 32 anchors 8 premise sample N=50000 {'END_LIFE_HONGBAO_GONE': 5684, 'END_LIFE_HONGBAO_SAVED': 8082, 'END_LIFE_STEADY': 23226, 'END_LIFE_STRETCHED': 7674, 'END_LIFE_STRETCHED#lent_and_rosca': 5334} OK
+SAMPLE N=200000 (uniform random choice per step, seed 42)
+  END_LIFE_STEADY: 92280 (46.1%)
+  END_LIFE_STRETCHED: 51949 (26.0%)
+  END_LIFE_HONGBAO_SAVED: 32471 (16.2%)
+  END_LIFE_HONGBAO_GONE: 23300 (11.7%)
+SAMPLE checks OK
+v4 checks: events 32 anchors 8 OK
+premise checks: base paths per ending(+variant) {} OK
+script-life.json events 32 endings 5 paths 200000 fallback 0 hits {'END_LIFE_HONGBAO_SAVED': 32471, 'END_LIFE_HONGBAO_GONE': 23300, 'END_LIFE_STEADY': 92280, 'END_LIFE_STRETCHED': 51949}
+COMBINED N=20000 seed 42
+  scams per life: {0: '9.9%', 1: '38.2%', 2: '39.7%', 3: '12.1%'} age_lived: {40: 20000}
+  life endings: {'END_LIFE_STEADY': '37.6%', 'END_LIFE_STRETCHED': '35.4%', 'END_LIFE_HONGBAO_SAVED': '13.2%', 'END_LIFE_HONGBAO_GONE': '9.2%', 'END_LIFE_RECORD': '4.6%'}
+  mule: entered 41.4% of lives; entry ages {18: 1142, 19: 1752, 20: 1750, 21: 1840, 22: 1797}
+     {'END_REFUSE': '33.1%', 'END_RESCUED': '28.7%', 'END_ACCOUNT': '23.1%', 'END_RECORD': '4.7%', 'END_STOPPED_ALONE': '4.1%', 'END_CONVICTED': '3.4%', 'END_CUT_OFF': '2.9%'}
+  shopping: entered 70.3% of lives; entry ages {22: 1968, 23: 1984, 24: 2059, 25: 2022, 26: 1938, 27: 2075, 28: 2014}
+     {'END_SAFE': '24.5%', 'END_TICKET_LOST': '23.2%', 'END_CS_DRAINED': '21.2%', 'END_SMALL_FEE': '21.0%', 'END_SILENT_COLLAPSE': '10.1%'}
+  investment: entered 42.3% of lives; entry ages {34: 1436, 35: 1337, 36: 1389, 37: 1405, 38: 1461, 39: 1437}
+     {'END_SMALL_LOSS': '38.8%', 'END_EARLY': '38.1%', 'END_ALL_LOST': '7.6%', 'END_COLLAPSE': '5.8%', 'END_BROKE': '5.5%', 'END_DEBT': '2.5%', 'END_FAMILY_RIFT': '1.8%'}
+  info: dead modifier in window 18-22: mule:mule_family_pass needs family_passphrase
+  info: dead modifier in window 18-22: mule:mule_lent needs lent_money_lost
+  info: dead modifier in window 18-22: mule:mule_lent_stat needs lent_money_lost
+  info: dead modifier in window 18-22: mule:mule_pressure_signer needs pressure_signer
+  info: dead modifier in window 22-28: shopping:shop_family_pass needs family_passphrase
+COMBINED checks ERRORS
+  ERR combined target: investment END_FAMILY_RIFT 1.8% not in [2%,40%] (among 8465 lives that entered)
+ERRORS ['combined target: investment END_FAMILY_RIFT 1.8% not in [2%,40%] (among 8465 lives that entered)']
+FAILED: validate.py script-life.json --sample（未複製到 web/）

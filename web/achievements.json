@@ -1,0 +1,3822 @@
+{
+ "version": "1.0",
+ "note": "source 皆自動引用 script-*.json 既有事件/結局來源；不含達成率等統計數字。",
+ "achievements": [
+  {
+   "id": "ACH_END_LIFE_LIFE_STRETCHED",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.1",
+   "description": "圖鑑記錄：人生結局「一直很緊的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_STRETCHED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_LIFE_STRETCHED",
+     "from": "ending.sources",
+     "name": "Dcard 閒聊板：本來以為是兄弟，結果借錢不還",
+     "url": "https://www.dcard.tw/f/talk/p/258243311"
+    },
+    {
+     "ref": "life:END_LIFE_STRETCHED",
+     "from": "ending.sources",
+     "name": "Dcard 心情板：借錢一直拖著不還的朋友",
+     "url": "https://www.dcard.tw/f/mood/p/258579026"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LIFE_LIFE_HONGBAO_GONE",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.2",
+   "description": "圖鑑記錄：人生結局「紅包沒回來的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_HONGBAO_GONE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_LIFE_HONGBAO_GONE",
+     "from": "ending.sources",
+     "name": "三立（PTT 轉述，2018）：媽媽說幫忙存，長大後「始終音訊全無」；推文「養你不用錢嗎」",
+     "url": "https://www.setn.com/News.aspx?NewsID=351665"
+    },
+    {
+     "ref": "life:END_LIFE_HONGBAO_GONE",
+     "from": "ending.sources",
+     "name": "三立（PTT 轉述，2020）：紅包被收走，「搞不好拿去買股票賠光」，可以告父母侵占嗎？",
+     "url": "https://www.setn.com/News.aspx?NewsID=782179"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LIFE_LIFE_HONGBAO_SAVED",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.3",
+   "description": "走到人生結局「拿到存摺的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_HONGBAO_SAVED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_LIFE_HONGBAO_SAVED",
+     "from": "ending.sources",
+     "name": "PTT Gossiping〈媽媽幫你存起來是真的〉：媽媽過世後整理遺產，才知道每月交給她的錢都真的存著",
+     "url": "https://www.pttweb.cc/bbs/Gossiping/M.1582284292.A.8D1"
+    },
+    {
+     "ref": "life:END_LIFE_HONGBAO_SAVED",
+     "from": "ending.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LIFE_LIFE_STEADY",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.4",
+   "description": "走到人生結局「跌跌撞撞長大的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_STEADY"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    },
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LIFE_LIFE_RECORD",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.5",
+   "description": "圖鑑記錄：人生結局「帶著紀錄長大的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_RECORD"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "life:END_LIFE_RECORD",
+     "from": "ending.sources",
+     "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039"
+    },
+    {
+     "ref": "life:END_LIFE_RECORD",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LIFE_LIFE_HALTED",
+   "category": "ending_codex",
+   "name": "人生圖鑑 No.6",
+   "description": "圖鑑記錄：人生結局「停在這裡的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_HALTED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "life:END_LIFE_HALTED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    },
+    {
+     "ref": "life:END_LIFE_HALTED",
+     "from": "ending.sources",
+     "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+     "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_LIFE_ALL",
+   "category": "ending_codex",
+   "name": "人生全收錄",
+   "description": "在不同輪裡看過人生全部 6 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_STRETCHED",
+     "life:END_LIFE_HONGBAO_GONE",
+     "life:END_LIFE_HONGBAO_SAVED",
+     "life:END_LIFE_STEADY",
+     "life:END_LIFE_RECORD",
+     "life:END_LIFE_HALTED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_LIFE_STRETCHED",
+     "from": "ending.sources",
+     "name": "Dcard 閒聊板：本來以為是兄弟，結果借錢不還",
+     "url": "https://www.dcard.tw/f/talk/p/258243311"
+    },
+    {
+     "ref": "life:END_LIFE_STRETCHED",
+     "from": "ending.sources",
+     "name": "Dcard 心情板：借錢一直拖著不還的朋友",
+     "url": "https://www.dcard.tw/f/mood/p/258579026"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_CONVICTED",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.1",
+   "description": "圖鑑記錄：車手線結局「替上游扛下一切的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_CONVICTED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "mule:END_CONVICTED",
+     "from": "ending.sources",
+     "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+     "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183"
+    },
+    {
+     "ref": "mule:END_CONVICTED",
+     "from": "ending.sources",
+     "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+     "url": "https://news.ltn.com.tw/news/society/paper/1686908"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_RECORD",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.2",
+   "description": "圖鑑記錄：車手線結局「留下紀錄的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_RECORD"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "mule:END_RECORD",
+     "from": "ending.sources",
+     "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039"
+    },
+    {
+     "ref": "mule:END_RECORD",
+     "from": "ending.sources",
+     "name": "臺灣士林地方法院112年度金訴緝字第17號刑事判決（司法院裁判書系統，去識別化引用）",
+     "url": "https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=SLDM%2c112%2c%e9%87%91%e8%a8%b4%e7%b7%9d%2c17%2c20230619%2c1"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_ACCOUNT",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.3",
+   "description": "圖鑑記錄：車手線結局「帳戶被借走的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_ACCOUNT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "mule:END_ACCOUNT",
+     "from": "ending.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+     "ref": "mule:END_ACCOUNT",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_RESCUED",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.4",
+   "description": "走到車手線結局「被拉回來的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_RESCUED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_RESCUED",
+     "from": "ending.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+     "ref": "mule:END_RESCUED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_REFUSE",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.5",
+   "description": "走到車手線結局「第一步就說不的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_REFUSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+     "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+    },
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_STOPPED_ALONE",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.6",
+   "description": "走到車手線結局「停下來，卻只能自己扛的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_STOPPED_ALONE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_STOPPED_ALONE",
+     "from": "ending.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+     "ref": "mule:END_STOPPED_ALONE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MULE_CUT_OFF",
+   "category": "ending_codex",
+   "name": "車手圖鑑 No.7",
+   "description": "圖鑑記錄：車手線結局「被所有人切割的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_CUT_OFF"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "mule:END_CUT_OFF",
+     "from": "ending.sources",
+     "name": "NOWnews：家屬公開切割涉嫌擔任車手的親人（2024-05-02）",
+     "url": "https://www.nownews.com/news/6418759"
+    },
+    {
+     "ref": "mule:END_CUT_OFF",
+     "from": "ending.sources",
+     "name": "中央社：少年詐騙車手獲2千 父母判賠157萬（2016-05-23）",
+     "url": "https://www.cna.com.tw/news/asoc/201605230144.aspx"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_MULE_ALL",
+   "category": "ending_codex",
+   "name": "車手線全收錄",
+   "description": "在不同輪裡看過車手線全部 7 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "mule:END_CONVICTED",
+     "mule:END_RECORD",
+     "mule:END_ACCOUNT",
+     "mule:END_RESCUED",
+     "mule:END_REFUSE",
+     "mule:END_STOPPED_ALONE",
+     "mule:END_CUT_OFF"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "mule:END_CONVICTED",
+     "from": "ending.sources",
+     "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+     "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183"
+    },
+    {
+     "ref": "mule:END_CONVICTED",
+     "from": "ending.sources",
+     "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+     "url": "https://news.ltn.com.tw/news/society/paper/1686908"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_CS_DRAINED",
+   "category": "ending_codex",
+   "name": "網購圖鑑 No.1",
+   "description": "圖鑑記錄：網購線結局「被一通電話帶走的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_CS_DRAINED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_TICKET_LOST",
+   "category": "ending_codex",
+   "name": "網購圖鑑 No.2",
+   "description": "圖鑑記錄：網購線結局「錯過演唱會的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_TICKET_LOST"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "shopping:END_TICKET_LOST",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_TICKET_LOST",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_SMALL_FEE",
+   "category": "ending_codex",
+   "name": "網購圖鑑 No.3",
+   "description": "圖鑑記錄：網購線結局「只付了運費的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_SMALL_FEE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "shopping:END_SMALL_FEE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SMALL_FEE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_SAFE",
+   "category": "ending_codex",
+   "name": "網購圖鑑 No.4",
+   "description": "走到網購線結局「三關全破的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_SAFE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_SILENT_COLLAPSE",
+   "category": "ending_codex",
+   "name": "網購圖鑑 No.5",
+   "description": "圖鑑記錄：網購線結局「一個人吞下所有自責的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_SILENT_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "shopping:END_SILENT_COLLAPSE",
+     "from": "ending.sources",
+     "name": "中央社：女子網戀遭詐自責憂鬱 醫籲注意情緒變化（2024-05-14）",
+     "url": "https://www.cna.com.tw/news/ahel/202405140092.aspx"
+    },
+    {
+     "ref": "shopping:END_SILENT_COLLAPSE",
+     "from": "ending.sources",
+     "name": "公視新聞網：財產遭騙自我批判致身心症狀 精神科醫師：詐騙憂鬱症增（2024-05-14）",
+     "url": "https://news.pts.org.tw/article/694944"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_SHOPPING_ALL",
+   "category": "ending_codex",
+   "name": "網購線全收錄",
+   "description": "在不同輪裡看過網購線全部 5 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "shopping:END_CS_DRAINED",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SMALL_FEE",
+     "shopping:END_SAFE",
+     "shopping:END_SILENT_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_EARLY",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.1",
+   "description": "走到投資線結局「理性懷疑者」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_EARLY"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_SMALL_LOSS",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.2",
+   "description": "走到投資線結局「及時煞車的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_SMALL_LOSS"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_ALL_LOST",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.3",
+   "description": "圖鑑記錄：投資線結局「借來的希望」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_ALL_LOST"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_BROKE",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.4",
+   "description": "圖鑑記錄：投資線結局「被溫柔收割的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_BROKE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "investment:END_BROKE",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_BROKE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_DEBT",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.5",
+   "description": "圖鑑記錄：投資線結局「最後一道防線失守」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_DEBT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "investment:END_DEBT",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_DEBT",
+     "from": "ending.sources",
+     "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+     "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_COLLAPSE",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.6",
+   "description": "圖鑑記錄：投資線結局「錢之後，連自己也差點失去的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "investment:END_COLLAPSE",
+     "from": "ending.sources",
+     "name": "中央社：女子網戀遭詐自責憂鬱 醫籲注意情緒變化（2024-05-14）",
+     "url": "https://www.cna.com.tw/news/ahel/202405140092.aspx"
+    },
+    {
+     "ref": "investment:END_COLLAPSE",
+     "from": "ending.sources",
+     "name": "書田診所衛教新聞稿：誤信詐騙陷自責憂鬱（2024-05-14，含三名受害者個案）",
+     "url": "https://www.shutien.org.tw/pr_news_detail.aspx?newsid=1855&unitid=51"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVESTMENT_FAMILY_RIFT",
+   "category": "ending_codex",
+   "name": "投資圖鑑 No.7",
+   "description": "圖鑑記錄：投資線結局「借走了家人信任的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_FAMILY_RIFT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "investment:END_FAMILY_RIFT",
+     "from": "ending.sources",
+     "name": "書田診所衛教新聞稿：誤信詐騙陷自責憂鬱（2024-05-14，含三名受害者個案）",
+     "url": "https://www.shutien.org.tw/pr_news_detail.aspx?newsid=1855&unitid=51"
+    },
+    {
+     "ref": "investment:END_FAMILY_RIFT",
+     "from": "ending.sources",
+     "name": "公視新聞網：財產遭騙自我批判致身心症狀 精神科醫師：詐騙憂鬱症增（2024-05-14）",
+     "url": "https://news.pts.org.tw/article/694944"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_INVESTMENT_ALL",
+   "category": "ending_codex",
+   "name": "投資線全收錄",
+   "description": "在不同輪裡看過投資線全部 7 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "investment:END_EARLY",
+     "investment:END_SMALL_LOSS",
+     "investment:END_ALL_LOST",
+     "investment:END_BROKE",
+     "investment:END_DEBT",
+     "investment:END_COLLAPSE",
+     "investment:END_FAMILY_RIFT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_COLLAPSE",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.1",
+   "description": "圖鑑記錄：交往線結局「空掉的人」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "romance:END_RM_COLLAPSE",
+     "from": "ending.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    },
+    {
+     "ref": "romance:END_RM_COLLAPSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_DEEP",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.2",
+   "description": "圖鑑記錄：交往線結局「借來的心動」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_DEEP"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "romance:END_RM_DEEP",
+     "from": "ending.sources",
+     "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx"
+    },
+    {
+     "ref": "romance:END_RM_DEEP",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_STOPPED",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.3",
+   "description": "走到交往線結局「停損的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_STOPPED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:END_RM_STOPPED",
+     "from": "ending.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    },
+    {
+     "ref": "romance:END_RM_STOPPED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_SISTER",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.4",
+   "description": "走到交往線結局「有人陪著看」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_SISTER"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:END_RM_SISTER",
+     "from": "ending.sources",
+     "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+     "url": "https://www.dcard.tw/f/anti_fraud/p/260128103"
+    },
+    {
+     "ref": "romance:END_RM_SISTER",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_HOTLINE",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.5",
+   "description": "走到交往線結局「打出那通電話」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_HOTLINE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:END_RM_HOTLINE",
+     "from": "ending.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    },
+    {
+     "ref": "romance:END_RM_HOTLINE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_RM_CHECKED",
+   "category": "ending_codex",
+   "name": "交往圖鑑 No.6",
+   "description": "走到交往線結局「查過照片的人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_CHECKED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:END_RM_CHECKED",
+     "from": "ending.sources",
+     "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+     "url": "https://www.dcard.tw/f/anti_fraud/p/260128103"
+    },
+    {
+     "ref": "romance:END_RM_CHECKED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_ROMANCE_ALL",
+   "category": "ending_codex",
+   "name": "交往線全收錄",
+   "description": "在不同輪裡看過交往線全部 6 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "romance:END_RM_COLLAPSE",
+     "romance:END_RM_DEEP",
+     "romance:END_RM_STOPPED",
+     "romance:END_RM_SISTER",
+     "romance:END_RM_HOTLINE",
+     "romance:END_RM_CHECKED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "romance:END_RM_COLLAPSE",
+     "from": "ending.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    },
+    {
+     "ref": "romance:END_RM_COLLAPSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_COLLAPSE",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.1",
+   "description": "圖鑑記錄：婚姻線結局「撐不住的婚姻」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "marriage:END_MR_COLLAPSE",
+     "from": "ending.sources",
+     "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+     "url": "https://udn.com/news/story/7321/9492558"
+    },
+    {
+     "ref": "marriage:END_MR_COLLAPSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_SILENT",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.2",
+   "description": "圖鑑記錄：婚姻線結局「一個人吞下」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_SILENT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "marriage:END_MR_SILENT",
+     "from": "ending.sources",
+     "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J"
+    },
+    {
+     "ref": "marriage:END_MR_SILENT",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_PAID",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.3",
+   "description": "圖鑑記錄：婚姻線結局「替他還的人」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_PAID"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "marriage:END_MR_PAID",
+     "from": "ending.sources",
+     "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+     "url": "https://www.setn.com/News.aspx?NewsID=482098"
+    },
+    {
+     "ref": "marriage:END_MR_PAID",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_DIVORCE",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.4",
+   "description": "走到婚姻線結局「拿回名字」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_DIVORCE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "marriage:END_MR_DIVORCE",
+     "from": "ending.sources",
+     "name": "自由時報 2025-04-22：已婚者隱瞞婚姻、變造證件照片配偶欄、誇大收入，以結婚為前提借款 360 萬元；刑事判 2 年 6 月，民事判還 358.4 萬元（台南）",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/5020227"
+    },
+    {
+     "ref": "marriage:END_MR_DIVORCE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_LEGAL",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.5",
+   "description": "走到婚姻線結局「先問清楚」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_LEGAL"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "marriage:END_MR_LEGAL",
+     "from": "ending.sources",
+     "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+     "url": "https://www.setn.com/News.aspx?NewsID=482098"
+    },
+    {
+     "ref": "marriage:END_MR_LEGAL",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_MARRIAGE_MR_ANNUL",
+   "category": "ending_codex",
+   "name": "婚姻圖鑑 No.6",
+   "description": "走到婚姻線結局「撤銷那紙婚約」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_ANNUL"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "marriage:END_MR_ANNUL",
+     "from": "ending.sources",
+     "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J"
+    },
+    {
+     "ref": "marriage:END_MR_ANNUL",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_MARRIAGE_ALL",
+   "category": "ending_codex",
+   "name": "婚姻線全收錄",
+   "description": "在不同輪裡看過婚姻線全部 6 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "marriage:END_MR_COLLAPSE",
+     "marriage:END_MR_SILENT",
+     "marriage:END_MR_PAID",
+     "marriage:END_MR_DIVORCE",
+     "marriage:END_MR_LEGAL",
+     "marriage:END_MR_ANNUL"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "marriage:END_MR_COLLAPSE",
+     "from": "ending.sources",
+     "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+     "url": "https://udn.com/news/story/7321/9492558"
+    },
+    {
+     "ref": "marriage:END_MR_COLLAPSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_PARENT_PA_COLLAPSE",
+   "category": "ending_codex",
+   "name": "家長圖鑑 No.1",
+   "description": "圖鑑記錄：家長篇結局「兩個人都撐著」。這是真實案例裡會發生的後果，請看完案件卡與求助資源。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_COLLAPSE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "parent:END_PA_COLLAPSE",
+     "from": "ending.sources",
+     "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175"
+    },
+    {
+     "ref": "parent:END_PA_COLLAPSE",
+     "from": "ending.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_PARENT_PA_HUSH",
+   "category": "ending_codex",
+   "name": "家長圖鑑 No.2",
+   "description": "圖鑑記錄：家長篇結局「錢壓不住」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_HUSH"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "parent:END_PA_HUSH",
+     "from": "ending.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    },
+    {
+     "ref": "parent:END_PA_HUSH",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_PARENT_PA_SILENT",
+   "category": "ending_codex",
+   "name": "家長圖鑑 No.3",
+   "description": "圖鑑記錄：家長篇結局「關上的門」。回顧裡有你錯過的破綻。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_SILENT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "parent:END_PA_SILENT",
+     "from": "ending.sources",
+     "name": "中央社 2025-06-19：成年人招募 16 歲少年當取款車手，少年在交款現場被捕，招募者依組織犯罪條例加重判 1 年",
+     "url": "https://www.cna.com.tw/news/asoc/202506190113.aspx"
+    },
+    {
+     "ref": "parent:END_PA_SILENT",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_PARENT_PA_BROKE_CYCLE",
+   "category": "ending_codex",
+   "name": "家長圖鑑 No.4",
+   "description": "走到家長篇結局「不再重複」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_BROKE_CYCLE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "parent:END_PA_BROKE_CYCLE",
+     "from": "ending.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    },
+    {
+     "ref": "parent:END_PA_BROKE_CYCLE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_PARENT_PA_OPEN",
+   "category": "ending_codex",
+   "name": "家長圖鑑 No.5",
+   "description": "走到家長篇結局「願意開口的孩子」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_OPEN"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "parent:END_PA_OPEN",
+     "from": "ending.sources",
+     "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+     "url": "https://jsps.chc.edu.tw/posts/8986"
+    },
+    {
+     "ref": "parent:END_PA_OPEN",
+     "from": "ending.sources",
+     "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_PARENT_ALL",
+   "category": "ending_codex",
+   "name": "家長篇全收錄",
+   "description": "在不同輪裡看過家長篇全部 5 個結局（圖鑑收集，不代表鼓勵走壞結局）。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "parent:END_PA_COLLAPSE",
+     "parent:END_PA_HUSH",
+     "parent:END_PA_SILENT",
+     "parent:END_PA_BROKE_CYCLE",
+     "parent:END_PA_OPEN"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "parent:END_PA_COLLAPSE",
+     "from": "ending.sources",
+     "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175"
+    },
+    {
+     "ref": "parent:END_PA_COLLAPSE",
+     "from": "ending.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_ALL",
+   "category": "ending_codex",
+   "name": "全圖鑑完成",
+   "description": "所有線、所有結局都已記錄在圖鑑裡。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_STRETCHED",
+     "life:END_LIFE_HONGBAO_GONE",
+     "life:END_LIFE_HONGBAO_SAVED",
+     "life:END_LIFE_STEADY",
+     "life:END_LIFE_RECORD",
+     "life:END_LIFE_HALTED",
+     "mule:END_CONVICTED",
+     "mule:END_RECORD",
+     "mule:END_ACCOUNT",
+     "mule:END_RESCUED",
+     "mule:END_REFUSE",
+     "mule:END_STOPPED_ALONE",
+     "mule:END_CUT_OFF",
+     "shopping:END_CS_DRAINED",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SMALL_FEE",
+     "shopping:END_SAFE",
+     "shopping:END_SILENT_COLLAPSE",
+     "investment:END_EARLY",
+     "investment:END_SMALL_LOSS",
+     "investment:END_ALL_LOST",
+     "investment:END_BROKE",
+     "investment:END_DEBT",
+     "investment:END_COLLAPSE",
+     "investment:END_FAMILY_RIFT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "all",
+     "from": "ending.sources",
+     "name": "各結局案件卡來源（見各線結局）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_ALL_V10",
+   "category": "ending_codex",
+   "name": "七線全圖鑑",
+   "description": "人生與六條詐騙線（含交往、婚姻、家長篇）的所有結局都已記錄。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_STRETCHED",
+     "life:END_LIFE_HONGBAO_GONE",
+     "life:END_LIFE_HONGBAO_SAVED",
+     "life:END_LIFE_STEADY",
+     "life:END_LIFE_RECORD",
+     "life:END_LIFE_HALTED",
+     "mule:END_CONVICTED",
+     "mule:END_RECORD",
+     "mule:END_ACCOUNT",
+     "mule:END_RESCUED",
+     "mule:END_REFUSE",
+     "mule:END_STOPPED_ALONE",
+     "mule:END_CUT_OFF",
+     "shopping:END_CS_DRAINED",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SMALL_FEE",
+     "shopping:END_SAFE",
+     "shopping:END_SILENT_COLLAPSE",
+     "investment:END_EARLY",
+     "investment:END_SMALL_LOSS",
+     "investment:END_ALL_LOST",
+     "investment:END_BROKE",
+     "investment:END_DEBT",
+     "investment:END_COLLAPSE",
+     "investment:END_FAMILY_RIFT",
+     "romance:END_RM_COLLAPSE",
+     "romance:END_RM_DEEP",
+     "romance:END_RM_STOPPED",
+     "romance:END_RM_SISTER",
+     "romance:END_RM_HOTLINE",
+     "romance:END_RM_CHECKED",
+     "marriage:END_MR_COLLAPSE",
+     "marriage:END_MR_SILENT",
+     "marriage:END_MR_PAID",
+     "marriage:END_MR_DIVORCE",
+     "marriage:END_MR_LEGAL",
+     "marriage:END_MR_ANNUL",
+     "parent:END_PA_COLLAPSE",
+     "parent:END_PA_HUSH",
+     "parent:END_PA_SILENT",
+     "parent:END_PA_BROKE_CYCLE",
+     "parent:END_PA_OPEN"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "all",
+     "from": "ending.sources",
+     "name": "各結局案件卡來源（見各線結局）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_SHOT",
+   "category": "red_flag",
+   "name": "第一次發問",
+   "description": "打針前先問「真的不痛嗎？」——習慣先確認。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "shot",
+      "choice_index": 1,
+      "text": "問：「真的不痛嗎？」"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:shot",
+     "from": "event.sources",
+     "name": "妞新聞：黃瑽寧醫師「別告訴孩子不會痛」",
+     "url": "https://www.niusnews.com/=P1rbval1"
+    },
+    {
+     "ref": "life:shot",
+     "from": "event.sources",
+     "name": "PChome 個人新聞台：診所裡的小男孩大吼「妳騙人啦！打針明明就很痛！」",
+     "url": "https://mypaper.pchome.com.tw/littlesuntaipei/post/1324600677"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_SISTER",
+   "category": "red_flag",
+   "name": "當面數清楚",
+   "description": "姐姐還錢時，你當場算了一下。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "sister_repay",
+      "choice_index": 1,
+      "text": "等等，我算一下"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:sister_repay",
+     "from": "event.sources",
+     "name": "Leo 提供的個人經驗：姐姐借100元，還錢時說「我只花了50，所以還你50」",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_OTP",
+   "category": "red_flag",
+   "name": "驗證碼不給",
+   "description": "有人說要送遊戲禮物，要你傳驗證碼——你沒傳。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "free_gift",
+      "choice_index": 1,
+      "text": "不傳"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:free_gift",
+     "from": "event.sources",
+     "name": "TVBS：手遊FB社團說要「贈禮」，孩子傳了驗證碼，媽媽遭小額盜刷",
+     "url": "https://news.tvbs.com.tw/life/1950036"
+    },
+    {
+     "ref": "life:free_gift",
+     "from": "event.sources",
+     "name": "防詐雷達：遊戲點數詐騙",
+     "url": "https://fraud.tw/guide/gaming-points"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_GAMETRADE",
+   "category": "red_flag",
+   "name": "只走平台",
+   "description": "遊戲交易只在平台內進行。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "game_trade",
+      "choice_index": 0,
+      "text": "只在平台內交易"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:game_trade",
+     "from": "event.sources",
+     "name": "巴哈姆特新楓之谷板：8591 買到與描述不符的裝備，賣家要付費才取消（stories #32）",
+     "url": "https://forum.gamer.com.tw/C.php?bsn=7650&snA=1029867"
+    },
+    {
+     "ref": "life:game_trade",
+     "from": "event.sources",
+     "name": "數位發展部：網友說家裡斷生活費，請他代買1萬點數，店員攔下（stories #60）",
+     "url": "https://ipfs.moda.gov.tw/ADI/antifraud/af-third-case/19422.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_WAGE",
+   "category": "red_flag",
+   "name": "留下證據",
+   "description": "打工被欠薪，你留紀錄、申請調解。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "part_time",
+      "choice_index": 0,
+      "text": "留紀錄申請調解"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:part_time",
+     "from": "event.sources",
+     "name": "Dcard 工作板：勞資調解心路歷程（文長）",
+     "url": "https://www.dcard.tw/f/job/p/225265409"
+    },
+    {
+     "ref": "life:part_time",
+     "from": "event.sources",
+     "name": "Dcard 工作板：勞資調解經歷分享",
+     "url": "https://www.dcard.tw/f/job/p/259725066"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RENT",
+   "category": "red_flag",
+   "name": "點交拍照",
+   "description": "入住前拍照錄影、簽點交單。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "rent",
+      "choice_index": 0,
+      "text": "拍照錄影、簽點交單"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:rent",
+     "from": "event.sources",
+     "name": "TVBS：退租驗收已過，房東仍以重新粉刷為由，19,200元押金只退8,700元",
+     "url": "https://news.tvbs.com.tw/life/2646011"
+    },
+    {
+     "ref": "life:rent",
+     "from": "event.sources",
+     "name": "Dcard 租屋板：租屋請慎選，否則押金拿不回來",
+     "url": "https://www.dcard.tw/f/rent/p/256130275"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_MLM",
+   "category": "red_flag",
+   "name": "先問清楚",
+   "description": "朋友找你「聊個機會」，你先問清楚是什麼公司。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "mlm",
+      "choice_index": 0,
+      "text": "先問清楚公司"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:mlm",
+     "from": "event.sources",
+     "name": "Dcard 閒聊板：好朋友拉我直銷",
+     "url": "https://www.dcard.tw/f/talk/p/258656458"
+    },
+    {
+     "ref": "life:mlm",
+     "from": "event.sources",
+     "name": "Dcard 心情板：十年好友開始做直銷",
+     "url": "https://www.dcard.tw/f/mood/p/254119573"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_LEND",
+   "category": "red_flag",
+   "name": "白紙黑字",
+   "description": "借錢給朋友時，用訊息寫清楚。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "lend",
+      "choice_index": 0,
+      "text": "借，訊息寫清楚"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:lend",
+     "from": "event.sources",
+     "name": "Dcard 閒聊板：本來以為是兄弟，結果借錢不還",
+     "url": "https://www.dcard.tw/f/talk/p/258243311"
+    },
+    {
+     "ref": "life:lend",
+     "from": "event.sources",
+     "name": "Dcard 心情板：借錢一直拖著不還的朋友",
+     "url": "https://www.dcard.tw/f/mood/p/258579026"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_CONTRACT",
+   "category": "red_flag",
+   "name": "帶回家比",
+   "description": "業務催你當場簽，你把條款帶回家比較。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "insurance",
+      "choice_index": 0,
+      "text": "拿條款回家比較"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:insurance",
+     "from": "event.sources",
+     "name": "Dcard 理財板：為何我不買儲蓄險",
+     "url": "https://www.dcard.tw/f/money/p/245663877"
+    },
+    {
+     "ref": "life:insurance",
+     "from": "event.sources",
+     "name": "金管會金融智慧網：保險宣導（契約撤銷期）",
+     "url": "https://moneywise.fsc.gov.tw/home.jsp?dataserno=33&id=4&mcustomize=publicizeinfo_view.jsp&parentpath=0"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_JOB",
+   "category": "red_flag",
+   "name": "查統編",
+   "description": "看到條件太好的工作，先查公司統編。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "mule",
+      "event": "job_ad",
+      "choice_index": 0,
+      "text": "查公司統編"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:job_ad",
+     "from": "event.sources",
+     "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_ACCOUNT",
+   "category": "red_flag",
+   "name": "帳戶不外借",
+   "description": "對方要你的帳戶，你拒絕了。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "mule",
+      "event": "job_offer",
+      "choice_index": 0,
+      "text": "拒絕"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:job_offer",
+     "from": "event.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_FRIENDWARN",
+   "category": "red_flag",
+   "name": "聽進勸告",
+   "description": "朋友提醒後，你決定不做了。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "mule",
+      "event": "friend_warn",
+      "choice_index": 0,
+      "text": "謝謝提醒，不做了"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+     "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+    },
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_SELFREPORT",
+   "category": "red_flag",
+   "name": "主動說明",
+   "description": "發現帳戶被拿去用，你停下來到派出所說明。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "mule",
+      "event": "account_used",
+      "choice_index": 0,
+      "text": "停止，到派出所說明"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:account_used",
+     "from": "event.sources",
+     "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_FAMILYTALK",
+   "category": "red_flag",
+   "name": "說出實情",
+   "description": "家人察覺不對勁時，你說了實話。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "mule",
+      "event": "family_notice",
+      "choice_index": 0,
+      "text": "說出實情"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_STOPPED_ALONE",
+     "from": "ending.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+     "ref": "mule:END_STOPPED_ALONE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_TICKET",
+   "category": "red_flag",
+   "name": "放大看截圖",
+   "description": "讓票前先仔細看截圖。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "shopping",
+      "event": "ticket",
+      "choice_index": 1,
+      "text": "放大截圖仔細看"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_OFFICIAL",
+   "category": "red_flag",
+   "name": "官方管道",
+   "description": "票券只走官方轉售。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "shopping",
+      "event": "ticket",
+      "choice_index": 0,
+      "text": "只走官方轉售"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_LINK",
+   "category": "red_flag",
+   "name": "不點連結",
+   "description": "便宜商品要你點連結付運費，你改從官方 App 下單。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "shopping",
+      "event": "cheap_item",
+      "choice_index": 0,
+      "text": "從官方App下單"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_CS",
+   "category": "red_flag",
+   "name": "自己查號",
+   "description": "「客服」來電說設錯分期，你掛斷後自己查號回撥。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "shopping",
+      "event": "fake_cs",
+      "choice_index": 0,
+      "text": "掛斷，自己查號回撥"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_VIDEO",
+   "category": "red_flag",
+   "name": "先視訊",
+   "description": "網友不肯視訊，你封鎖並打 165 查詢。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "investment",
+      "event": "date_refuse_video",
+      "choice_index": 0,
+      "text": "封鎖，撥165查詢"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_GROUP",
+   "category": "red_flag",
+   "name": "退群檢舉",
+   "description": "投資群組老師報明牌，你退群並檢舉。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "investment",
+      "event": "ad_group",
+      "choice_index": 0,
+      "text": "退群並檢舉"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_EARLY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_WITHDRAW",
+   "category": "red_flag",
+   "name": "停止匯款",
+   "description": "出金前被要求先繳費，你停下來去報案。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "investment",
+      "event": "withdraw_block",
+      "choice_index": 0,
+      "text": "停止匯款，去報案"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_GUESSWHO",
+   "category": "red_flag",
+   "name": "打給本人",
+   "description": "「猜猜我是誰」來借錢，你直接打給本人確認。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "guess_who",
+      "choice_index": 0,
+      "text": "打電話問本人"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:guess_who",
+     "from": "event.sources",
+     "name": "寫手提供：guess_who：假同學下錯單案（原稿 45 歲，配合家長篇改為 47 歲）（寫手提供，待查證）",
+     "url": null
+    },
+    {
+     "ref": "life:guess_who",
+     "from": "event.sources",
+     "name": "內政部：LINE名稱與兒子相同的新帳號借39萬（stories #40）",
+     "url": "https://www.moi.gov.tw/News_Content.aspx?n=4&s=330123"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_FAKEPOLICE",
+   "category": "red_flag",
+   "name": "警察不要你保密",
+   "description": "自稱警察要你配合保密，你掛斷打 165。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "fake_police",
+      "choice_index": 0,
+      "text": "掛斷，打165"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:fake_police",
+     "from": "event.sources",
+     "name": "寫手提供：fake_police：假檢警監管帳戶（原稿 55 歲，人生線只到 50 歲，改為 49 歲）（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RM_SISTER",
+   "category": "red_flag",
+   "name": "說給姐姐聽",
+   "description": "網友一直不見面，你跟姐姐聊了這件事。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "romance",
+      "event": "rm_excuse",
+      "choice_index": 0,
+      "text": "跟姐姐聊聊阿澄"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:rm_excuse",
+     "from": "event.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    },
+    {
+     "ref": "romance:rm_excuse",
+     "from": "event.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RM_PHOTO",
+   "category": "red_flag",
+   "name": "搜一下照片",
+   "description": "對方開口要錢，你先搜尋他的照片。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "romance",
+      "event": "rm_ask_invest",
+      "choice_index": 0,
+      "text": "搜尋阿澄的照片"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:rm_ask_invest",
+     "from": "event.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    },
+    {
+     "ref": "romance:rm_ask_invest",
+     "from": "event.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RM_PHOTO_L",
+   "category": "red_flag",
+   "name": "借錢前先查",
+   "description": "對方說要周轉，你先搜尋他的照片。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "romance",
+      "event": "rm_ask_loan",
+      "choice_index": 0,
+      "text": "搜尋阿澄的照片"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:rm_ask_loan",
+     "from": "event.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    },
+    {
+     "ref": "romance:rm_ask_loan",
+     "from": "event.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RM_PHOTO_S",
+   "category": "red_flag",
+   "name": "醫藥費先查",
+   "description": "對方說家人生病，你先搜尋他的照片。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "romance",
+      "event": "rm_ask_sick",
+      "choice_index": 0,
+      "text": "搜尋阿澄的照片"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:rm_ask_sick",
+     "from": "event.sources",
+     "name": "中央社 2025-02-07：陌生帳號每日問候，以母親開刀為由借錢，行員關懷後報警攔阻（台中，70 多歲，50 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202502070163.aspx"
+    },
+    {
+     "ref": "romance:rm_ask_sick",
+     "from": "event.sources",
+     "name": "刑事警察局 115-02-21：交友 App 認識網友後被帶往假投資平台，曾出金成功、再申請信貸加碼，第二次出金被要求繳訂金才發覺（桃園，累計 700 多萬元）",
+     "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=b4316ff9-f1f8-4d45-b094-5490896ee976"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RM_165",
+   "category": "red_flag",
+   "name": "被說不信任也查",
+   "description": "被說「不信任我」，你還是打了 165。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "romance",
+      "event": "rm_push",
+      "choice_index": 0,
+      "text": "打 165 問問看"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "romance:rm_push",
+     "from": "event.sources",
+     "name": "中央社 2025-07-28：網戀數月，對方稱母親重病需醫藥費，臨櫃匯款前警方識破，對方隨即已讀不回（台中，60 多歲，20 萬元未匯出）",
+     "url": "https://www.cna.com.tw/news/asoc/202507280044.aspx"
+    },
+    {
+     "ref": "romance:rm_push",
+     "from": "event.sources",
+     "name": "反詐騙討論板網友經驗分享：對方常說要來見面卻從沒出現，話題轉向虛擬貨幣，查證後停止聯絡並截圖留證",
+     "url": "https://www.dcard.tw/f/anti_fraud/p/260128103"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_MR_CREDIT",
+   "category": "red_flag",
+   "name": "查自己的信用",
+   "description": "收到沒見過的催繳信，你申請自己的信用報告。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "marriage",
+      "event": "mr_letter",
+      "choice_index": 0,
+      "text": "申請自己的信用報告"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "marriage:mr_letter",
+     "from": "event.sources",
+     "name": "三立新聞 2019-01-08：婚後 3 個月債主上門才知配偶婚前負債，配偶 5 個月後躲債失聯，法院判准離婚（桃園）",
+     "url": "https://www.setn.com/News.aspx?NewsID=482098"
+    },
+    {
+     "ref": "marriage:mr_letter",
+     "from": "event.sources",
+     "name": "聯合新聞網 2026-05-09：前配偶冒簽姓名，讓對方成為借款連帶保證人，被追債才知道；判偽造私文書 6 月、偽造有價證券 3 年 2 月（彰化）",
+     "url": "https://udn.com/news/story/7321/9492558"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_MR_RECORD",
+   "category": "red_flag",
+   "name": "查婚姻紀錄",
+   "description": "另一半要錢又要借證件，你先查戶籍與婚姻紀錄。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "marriage",
+      "event": "mr_asks",
+      "choice_index": 0,
+      "text": "查戶籍和婚姻紀錄"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "marriage:mr_asks",
+     "from": "event.sources",
+     "name": "全國法規資料庫 民法第 997 條：因被詐欺而結婚者，得於發見詐欺後六個月內向法院請求撤銷",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingleRela.aspx?FLNO=997&PCODE=B0000001&ty=J"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_PA_GAME",
+   "category": "red_flag",
+   "name": "陪他去報案",
+   "description": "孩子交出驗證碼，你陪他一起去報案。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "parent",
+      "event": "pa_game",
+      "choice_index": 1,
+      "text": "陪他一起去報案"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "parent:pa_game",
+     "from": "event.sources",
+     "name": "教育部、內政部致家長的一封信：網購或網路交友要你買遊戲點數就是詐騙",
+     "url": "https://jsps.chc.edu.tw/posts/8986"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_PA_THREAT",
+   "category": "red_flag",
+   "name": "不付錢，報警",
+   "description": "孩子被威脅要錢，你陪他報警，沒有付錢。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "parent",
+      "event": "pa_threat",
+      "choice_index": 1,
+      "text": "陪他一起去報案"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "parent:pa_threat",
+     "from": "event.sources",
+     "name": "自由時報 2025-08-11：男子以送免費遊戲點數為餌鎖定兒少，被害 20 餘名遭起訴；台中警方統計加害者為網友 40%、同學 35%、伴侶 14%，宣導「五不四要」",
+     "url": "https://news.ltn.com.tw/news/society/breakingnews/5139175"
+    },
+    {
+     "ref": "parent:pa_threat",
+     "from": "event.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_COUNTER",
+   "category": "red_flag",
+   "name": "對行員說實話",
+   "description": "臨櫃時，你跟行員說了實情。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "investment",
+      "event": "bank_counter",
+      "choice_index": 0,
+      "text": "跟行員說實情"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_STICKER",
+   "category": "red_flag",
+   "name": "先給人看看",
+   "description": "交換貼紙前先拿給哥哥看。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "sticker_trade",
+      "choice_index": 1,
+      "text": "先拿給哥哥看"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:sticker_trade",
+     "from": "event.sources",
+     "name": "寫手提供：童年受騙事件擴充（修正版）expansion-childhood-fix.md（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_TOY",
+   "category": "red_flag",
+   "name": "回家再決定",
+   "description": "陌生人賣玩具，你先回家問。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "toy_seller",
+      "choice_index": 1,
+      "text": "先回家問"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:toy_seller",
+     "from": "event.sources",
+     "name": "寫手提供：童年受騙事件擴充（修正版）expansion-childhood-fix.md（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_PERMISSION",
+   "category": "red_flag",
+   "name": "親自問老師",
+   "description": "有人說「老師說可以」，你直接去問老師。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "teacher_permission",
+      "choice_index": 1,
+      "text": "先問老師"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:teacher_permission",
+     "from": "event.sources",
+     "name": "寫手提供：童年受騙事件擴充（修正版）expansion-childhood-fix.md（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_POINTS",
+   "category": "red_flag",
+   "name": "點數不代收",
+   "description": "有人要你幫忙收點數——你拒絕了。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "points_help",
+      "choice_index": 1,
+      "text": "拒絕"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:points_help",
+     "from": "event.sources",
+     "name": "寫手提供：童年受騙事件擴充（修正版）expansion-childhood-fix.md（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_RENT_DEPOSIT",
+   "category": "red_flag",
+   "name": "先看房再付",
+   "description": "租屋要先付訂金，你堅持先看房。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "rent_deposit",
+      "choice_index": 1,
+      "text": "堅持先看房"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:rent_deposit",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_CUSTOMS",
+   "category": "red_flag",
+   "name": "掛斷自己查",
+   "description": "包裹被扣要付費？你掛斷後自己查。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "customs_fee",
+      "choice_index": 1,
+      "text": "掛斷，自己查"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:customs_fee",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_INSURANCE",
+   "category": "red_flag",
+   "name": "打回原公司",
+   "description": "保單通知可疑，你打給原本的保險公司確認。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "fake_insurance",
+      "choice_index": 0,
+      "text": "打給原保險公司"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:fake_insurance",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_GOLD",
+   "category": "red_flag",
+   "name": "先查證再說",
+   "description": "對方要你把金條交給專人，你先查證。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "gold_delivery",
+      "choice_index": 1,
+      "text": "先見面或查證"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:gold_delivery",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_LOANUSE",
+   "category": "red_flag",
+   "name": "自己規劃",
+   "description": "借來的錢，你自己規劃用途。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "loan_use",
+      "choice_index": 0,
+      "text": "自己規劃用途"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:loan_use",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SPOT_SLEEP",
+   "category": "red_flag",
+   "name": "說出來",
+   "description": "睡不著時，你找人聊聊或打專線。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "sleep_issue",
+      "choice_index": 0,
+      "text": "找人聊聊或打專線"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:sleep_issue",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    },
+    {
+     "ref": "life:sleep_issue",
+     "from": "event.sources",
+     "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+     "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_CLEAN40",
+   "category": "life",
+   "name": "四十不受騙",
+   "description": "活到 40 歲，遇到的每條詐騙線都安全離開，也沒有因詐騙損失金錢。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [
+     "life:END_LIFE_STRETCHED",
+     "life:END_LIFE_HONGBAO_GONE",
+     "life:END_LIFE_HONGBAO_SAVED",
+     "life:END_LIFE_STEADY",
+     "life:END_LIFE_RECORD",
+     "life:END_LIFE_HALTED"
+    ],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [
+     "life:scam_money_lost",
+     "life:criminal_record"
+    ],
+    "forbids_endings": [
+     "mule:END_CONVICTED",
+     "mule:END_CUT_OFF",
+     "mule:END_ACCOUNT",
+     "mule:END_RECORD",
+     "shopping:END_SILENT_COLLAPSE",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SMALL_FEE",
+     "shopping:END_CS_DRAINED",
+     "investment:END_COLLAPSE",
+     "investment:END_DEBT",
+     "investment:END_FAMILY_RIFT",
+     "investment:END_ALL_LOST",
+     "investment:END_BROKE"
+    ],
+    "min_age_lived": 40
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    },
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_ALL3_SAFE",
+   "category": "life",
+   "name": "三關全過",
+   "description": "同一輪人生遇到三條詐騙線，三條都安全離開。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "mule:END_REFUSE",
+     "shopping:END_SAFE",
+     "investment:END_EARLY"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+     "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+    },
+    {
+     "ref": "mule:END_REFUSE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_SAFE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_PASSPHRASE",
+   "category": "life",
+   "name": "通關密語",
+   "description": "爸媽靠家庭通關密語擋下假親友訊息。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:family_passphrase"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:elder",
+     "from": "event.sources",
+     "name": "內政部：LINE名稱與兒子相同的新帳號借39萬（stories #40）",
+     "url": "https://www.moi.gov.tw/News_Content.aspx?n=4&s=330123"
+    },
+    {
+     "ref": "life:elder",
+     "from": "event.sources",
+     "name": "TVBS：AI仿聲「女兒」語音要20萬，老翁打給女兒才識破（stories #39）",
+     "url": "https://news.tvbs.com.tw/local/2999037"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_TOLD",
+   "category": "life",
+   "name": "說出口了",
+   "description": "被騙時向家人坦白，讓損失停下來。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "investment",
+      "event": "pressure",
+      "choice_index": 0,
+      "text": "向家人坦白"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_SMALL_LOSS",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_RESCUED",
+   "category": "life",
+   "name": "有人拉一把",
+   "description": "帳戶出事後，身邊有人陪你處理。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "mule:END_RESCUED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "mule:END_RESCUED",
+     "from": "ending.sources",
+     "name": "洗錢防制法§22 無正當理由提供帳戶",
+     "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+     "ref": "mule:END_RESCUED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_BANKSAVED",
+   "category": "life",
+   "name": "行員攔下",
+   "description": "臨櫃時被行員攔下，沒再把錢交出去。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "investment:bank_saved"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165打詐儀表板（經韭點開始整理）",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "investment:END_ALL_LOST",
+     "from": "ending.sources",
+     "name": "165全民防騙網（撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_REPORTED",
+   "category": "life",
+   "name": "報案存證",
+   "description": "受害後選擇報案、凍結帳戶，沒有一個人撐著。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "shopping:reported"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "韭點開始整理165資料",
+     "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+     "ref": "shopping:END_CS_DRAINED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_EVIDENCE",
+   "category": "life",
+   "name": "證據習慣",
+   "description": "人生中養成保留紀錄的習慣。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:evidence_habit"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:rent",
+     "from": "event.sources",
+     "name": "TVBS：退租驗收已過，房東仍以重新粉刷為由，19,200元押金只退8,700元",
+     "url": "https://news.tvbs.com.tw/life/2646011"
+    },
+    {
+     "ref": "life:rent",
+     "from": "event.sources",
+     "name": "Dcard 租屋板：租屋請慎選，否則押金拿不回來",
+     "url": "https://www.dcard.tw/f/rent/p/256130275"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_HONGBAO",
+   "category": "life",
+   "name": "拿回存摺",
+   "description": "長大後，紅包真的存在你的存摺裡。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "life:END_LIFE_HONGBAO_SAVED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_LIFE_HONGBAO_SAVED",
+     "from": "ending.sources",
+     "name": "PTT Gossiping〈媽媽幫你存起來是真的〉：媽媽過世後整理遺產，才知道每月交給她的錢都真的存著",
+     "url": "https://www.pttweb.cc/bbs/Gossiping/M.1582284292.A.8D1"
+    },
+    {
+     "ref": "life:END_LIFE_HONGBAO_SAVED",
+     "from": "ending.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_BROKE_CYCLE",
+   "category": "life",
+   "name": "不再重複",
+   "description": "當年被責怪的你，這次先抱住了孩子。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "parent:END_PA_BROKE_CYCLE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "parent:END_PA_BROKE_CYCLE",
+     "from": "ending.sources",
+     "name": "臺北市少年警察隊：私密照外流應變與求助管道（110、113、iWIN 02-2577-5118）",
+     "url": "https://young.police.gov.taipei/News_Content.aspx?n=2F706BAC97CD7533&s=D7592B5544C17752&sms=AA60320A15BFA2FF"
+    },
+    {
+     "ref": "parent:END_PA_BROKE_CYCLE",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_CLEAN50",
+   "category": "life",
+   "name": "五十不受騙",
+   "description": "活到 50 歲，交往、婚姻、家長篇與其他詐騙線都安全度過，也沒有因詐騙損失金錢。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [
+     "life:END_LIFE_STRETCHED",
+     "life:END_LIFE_HONGBAO_GONE",
+     "life:END_LIFE_HONGBAO_SAVED",
+     "life:END_LIFE_STEADY",
+     "life:END_LIFE_RECORD",
+     "life:END_LIFE_HALTED"
+    ],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [
+     "life:scam_money_lost",
+     "life:criminal_record",
+     "life:life_halted"
+    ],
+    "forbids_endings": [
+     "mule:END_CONVICTED",
+     "mule:END_CUT_OFF",
+     "mule:END_ACCOUNT",
+     "mule:END_RECORD",
+     "shopping:END_SILENT_COLLAPSE",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SMALL_FEE",
+     "shopping:END_CS_DRAINED",
+     "investment:END_COLLAPSE",
+     "investment:END_DEBT",
+     "investment:END_FAMILY_RIFT",
+     "investment:END_ALL_LOST",
+     "investment:END_BROKE",
+     "romance:END_RM_COLLAPSE",
+     "romance:END_RM_DEEP",
+     "marriage:END_MR_PAID",
+     "marriage:END_MR_COLLAPSE",
+     "marriage:END_MR_SILENT",
+     "parent:END_PA_SILENT",
+     "parent:END_PA_HUSH",
+     "parent:END_PA_COLLAPSE"
+    ]
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    },
+    {
+     "ref": "life:END_LIFE_STEADY",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_HALTED_SEEN",
+   "category": "life",
+   "name": "停下來也沒關係",
+   "description": "你看過「停下來」這個結局。心累的時候，可以打 1925、1995，或找身邊的人說。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LIFE_HALTED"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "life:END_LIFE_HALTED",
+     "from": "ending.sources",
+     "name": "165全民防騙網（警政署，撥打165）",
+     "url": "https://165.npa.gov.tw/"
+    },
+    {
+     "ref": "life:END_LIFE_HALTED",
+     "from": "ending.sources",
+     "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+     "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIFE_OWNACCOUNT",
+   "category": "life",
+   "name": "自己的戶頭",
+   "description": "小時候請爸媽陪你開了自己的帳戶。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "hongbao",
+      "choice_index": 1,
+      "text": "請爸媽陪我去開戶"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:hongbao",
+     "from": "event.sources",
+     "name": "PTT Gossiping〈媽媽幫你存起來是真的〉：媽媽過世後整理遺產，才知道每月交給她的錢都真的存著",
+     "url": "https://www.pttweb.cc/bbs/Gossiping/M.1582284292.A.8D1"
+    },
+    {
+     "ref": "life:hongbao",
+     "from": "event.sources",
+     "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
+     "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    }
+   ]
+  }
+ ]
+}

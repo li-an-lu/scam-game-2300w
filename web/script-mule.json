@@ -1,0 +1,2825 @@
+{
+  "meta": {
+    "title": "2300萬分之1",
+    "version": "0.4",
+    "language": "zh-TW",
+    "one_life": true,
+    "content_policy": "只呈現受騙過程與法律、人生後果；不含提領、取款、規避查緝、轉帳等任何可照做的操作細節",
+    "engine_notes": "next=='__EVAL__' 時：先依 ending_rules.stat_flags 依數值設定 flag，再依 priority 判定結局。結局畫面：顯示 reason_texts 中玩家擁有之 flag 的說明；『你錯過的破綻』＝玩家擁有的 missed_* flag 依 red_flag_texts 逐條顯示，若無則顯示 missed_red_flags（通用版）。數值套用後夾在 min/max。初始存款＝init 值×(1+family.存款_mod)；family 其他數值為加減。",
+    "presentation_notes": "同投資線：presentation='chat' 以全螢幕仿聊天室呈現；畫面一律使用虛構 app 名稱與外觀。本線聊天內容只呈現詐團話術與受害者反應，不含提領、交付、規避查緝的任何做法。",
+    "no_pressure_mode": {
+      "available": true,
+      "default": false,
+      "effect": "關閉所有 pressure 倒數；不影響劇情與結局",
+      "min_timer_s": 20
+    },
+    "life_grid": {
+      "bucket_years": 5,
+      "colors": {
+        "green": "安全",
+        "yellow": "有疑點",
+        "red": "受騙損失"
+      },
+      "rule": "同投資線"
+    },
+    "real_world_stat_notes": "real_world_stat 是詐騙類型占 115-09 全國受理件數的比例，不是結局稀有度。本線沒有對應類別，全部為 null 並附 null_reason。",
+    "cross_line_notes": "跨線 flag 來自人生線（script-life.json 結束時玩家持有的 flag，見其 meta.cross_line_flags）。進入詐騙線時，把人生線 flag 併入玩家 flags；之後對每筆 cross_line_modifiers，若 if_flags.all 全有且 if_flags.none 全無，就在 target 事件套用 effect（見 common.py 註解）。同一事件多筆規則依陣列順序套用。",
+    "choice_feedback": {
+      "outcome_text": "選完立刻顯示的即時結果（1–3 句；延遲揭曉事件不劇透）",
+      "log_text": "人生紀錄用的短句"
+    },
+    "choice_label_rule": {
+      "max_chars": 15,
+      "blocklist": [
+        "騙",
+        "損失",
+        "賠",
+        "後悔",
+        "成功",
+        "失敗",
+        "才還",
+        "被抓",
+        "識破",
+        "真相",
+        "原來",
+        "結果",
+        "紅燈",
+        "警訊",
+        "＝",
+        "不合理",
+        "太緊張",
+        "正常工作",
+        "嚇壞",
+        "崩潰",
+        "倒會",
+        "已讀不回"
+      ],
+      "rule": "選項標籤只描述玩家行動，不寫結果、不做道德評價；結果放在 outcome_text 或之後的揭曉事件"
+    },
+    "ending_premise_notes": "endings[].requires_flags／forbids_flags 宣告結局文字預設的前提（validate.py 窮舉路徑檢查）。text_variants[]：{when:{flags_all,flags_none}, text, requires_flags?, forbids_flags?}，引擎依序取第一個 when 成立的變體取代 text；都不成立用 text。",
+    "help_resources_rule": "v4.7：每個結局都有 help_resources（至少 165）；有心理傷害的結局加 1925／1995；車手線刑事相關結局加法律扶助基金會 412-8518",
+    "cross_line_mode_rule": "cross_line_modifiers[].mode：all＝單線與合併模式都會套用；standalone_only＝合併模式下進場年齡範圍內拿不到該 flag，實際上只會在單線模式觸發（引擎不需特別處理，條件本來就不成立）；validate／combined 只列為 info",
+    "mental_wear": {
+      "delta": -2,
+      "applies_to": "grid 為 yellow／red 的選項（含 random 分支、解鎖選項）",
+      "design_assumption": true,
+      "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
+    },
+    "subtitle": "求職變車手線"
+  },
+  "ending_rules": {
+    "evaluation": "依 priority 由小到大檢查 endings[].conditions，第一個成立者為結局；都不成立用 fallback（v4.2：RESCUED 3 → STOPPED_ALONE 3.5 → ACCOUNT 4）（v4.4：CUT_OFF 0.5 最先檢查）（v4.5：STOPPED_ALONE 改為 2.9，條件加入 ignored_friend）（v4.6：job_check 不再直接拒絕；job_offer 拒絕需 checked_company）",
+    "fallback": "END_ACCOUNT",
+    "condition_grammar": {
+      "flags_all": "全部都要有",
+      "flags_any": "至少一個",
+      "flags_none": "都不能有",
+      "stats": "{數值:{gt|gte|lt|lte:數字}}",
+      "any_of": "子條件任一成立；與同層其他鍵為 AND"
+    },
+    "stat_flags": [
+      {
+        "flag": "savings_depleted",
+        "stats": {
+          "存款": {
+            "lte": 0
+          }
+        },
+        "text": "你的存款歸零了。"
+      },
+      {
+        "flag": "mental_collapse",
+        "stats": {
+          "心理": {
+            "lte": 20
+          }
+        },
+        "text": "長期的壓力讓你的心理狀態跌到谷底（心理≤20）。"
+      },
+      {
+        "flag": "isolated",
+        "stats": {
+          "人際": {
+            "lte": 15
+          }
+        },
+        "text": "你和身邊的人越來越疏遠，沒有人能拉你一把（人際≤15）。"
+      },
+      {
+        "flag": "has_support",
+        "stats": {
+          "人際": {
+            "gte": 20
+          }
+        },
+        "text": "身邊還有願意幫你的人（人際≥20）。"
+      }
+    ]
+  },
+  "stats": [
+    {
+      "label": "刑法§339-4 加重詐欺",
+      "value": "處一年以上七年以下有期徒刑，得併科一百萬元以下罰金",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "洗錢防制法§19 一般洗錢",
+      "value": "處三年以上十年以下有期徒刑，併科新臺幣一億元以下罰金；洗錢財物未達一億元者，處六月以上五年以下有期徒刑，併科新臺幣五千萬元以下罰金",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "洗錢防制法§22 無正當理由提供帳戶",
+      "value": "原則由警察機關裁處告誡；期約或收受對價、提供三個以上帳戶、或告誡後五年內再犯者，處三年以下有期徒刑、拘役或科或併科新臺幣一百萬元以下罰金；金融機構得暫停、限制或關閉帳戶",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "組織犯罪防制條例§3 參與犯罪組織",
+      "value": "參與者，處六月以上五年以下有期徒刑，得併科新臺幣一千萬元以下罰金。但參與情節輕微者，得減輕或免除其刑",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000013&flno=3",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "民法§185 共同侵權",
+      "value": "數人共同不法侵害他人之權利者，連帶負損害賠償責任",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "警察刑事紀錄證明核發條例§6（良民證記載範圍）",
+      "value": "明確記載有無刑事案件紀錄；但受緩刑之宣告未經撤銷者、受拘役罰金之宣告者、經易科罰金或易服社會勞動執行完畢五年內未再受有期徒刑以上刑之宣告者等，不予記載",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080088&flno=6",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "公務人員任用法§28 第1項第5款",
+      "value": "犯（內亂外患、貪污以外之）罪，判處有期徒刑以上之刑確定，尚未執行或執行未畢者，不得任用為公務人員。但受緩刑宣告者，不在此限",
+      "verified": true,
+      "source": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=S0020001&flno=28",
+      "verify_note": "2026-10-23 逐字核對",
+      "self_calculated": false
+    },
+    {
+      "label": "全國詐騙案件受理數",
+      "value": 10775,
+      "unit": "件",
+      "period": "115年9月（2026-09）全月",
+      "verified": true,
+      "verify_note": "2026-10-23 依儀表板截圖讀圖核對（官方來源）；截圖 165dashboard/05_monthly_115-09_summary.webp",
+      "source": "https://165dashboard.tw/",
+      "prev": "115年8月 10,652件，+1.2%（+123件）",
+      "self_calculated": false
+    },
+    {
+      "label": "全國詐騙財產損失",
+      "value": 39.35723,
+      "unit": "億元",
+      "period": "115年9月（2026-09）全月",
+      "verified": true,
+      "verify_note": "2026-10-23 依儀表板截圖讀圖核對（官方來源）；截圖 165dashboard/05_monthly_115-09_summary.webp",
+      "source": "https://165dashboard.tw/",
+      "display": "39億3,572.3萬",
+      "prev": "115年8月 41億757.7萬，-4.2%",
+      "self_calculated": false
+    },
+    {
+      "label": "前科對民間求職的實際影響",
+      "value": "劇本只用「可能」描述；沒有統計數據",
+      "verified": false,
+      "verify_note": "待核實：查無可引用的統計數據",
+      "self_calculated": false
+    }
+  ],
+  "stats_sources": [
+    {
+      "name": "165打詐儀表板（內政部警政署，官方；更新日期115-10-23，依瀏覽器截圖讀數）",
+      "url": "https://165dashboard.tw/",
+      "verified": true,
+      "verify_note": "前端渲染，數字依 2026-10-23 瀏覽器截圖讀圖；儀表板只提供單日與月資料（115-09、115-10），沒有年度總數、年齡分布或每件平均損失"
+    },
+    {
+      "name": "刑法§339-4 加重詐欺",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
+    },
+    {
+      "name": "洗錢防制法§19 一般洗錢",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19"
+    },
+    {
+      "name": "洗錢防制法§22 無正當理由提供帳戶",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+    },
+    {
+      "name": "組織犯罪防制條例§3",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000013&flno=3"
+    },
+    {
+      "name": "民法§185 共同侵權連帶賠償",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185"
+    },
+    {
+      "name": "警察刑事紀錄證明核發條例§6",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080088&flno=6"
+    },
+    {
+      "name": "公務人員任用法§28",
+      "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=S0020001&flno=28"
+    },
+    {
+      "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+      "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+      "verified": true,
+      "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+    },
+    {
+      "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+      "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+      "verified": true,
+      "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+    },
+    {
+      "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+      "url": "https://news.ltn.com.tw/news/society/paper/1686908",
+      "verified": true,
+      "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+    },
+    {
+      "name": "臺灣士林地方法院112年度金訴緝字第17號刑事判決（司法院裁判書系統，去識別化引用）",
+      "url": "https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=SLDM%2c112%2c%e9%87%91%e8%a8%b4%e7%b7%9d%2c17%2c20230619%2c1",
+      "verified": true,
+      "verify_note": "2026-10-23 WebFetch 官方頁核對：裁判日期112-06-19、應執行有期徒刑2年10月；curl 會被 bot-defense 擋"
+    },
+    {
+      "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+      "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+    }
+  ],
+  "player_init": {
+    "stats": {
+      "存款": {
+        "min": 0,
+        "init_range": [
+          5000,
+          80000
+        ]
+      },
+      "警覺": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          15,
+          45
+        ]
+      },
+      "人際": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          20,
+          70
+        ]
+      },
+      "心理": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          40,
+          80
+        ]
+      }
+    },
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      {
+        "name": "小康",
+        "存款_mod": 0
+      },
+      {
+        "name": "單親",
+        "存款_mod": -0.3,
+        "心理": -5
+      },
+      {
+        "name": "務農",
+        "人際": 5
+      },
+      {
+        "name": "經商",
+        "存款_mod": 0.5
+      }
+    ],
+    "start_event": "birth",
+    "flags": []
+  },
+  "events": [
+    {
+      "id": "birth",
+      "age": 0,
+      "text": "你出生在{county}的{family}家庭。這一生只有一次，選擇無法重來。",
+      "choices": [
+        {
+          "text": "長大",
+          "effects": {},
+          "next": "teen",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在家人的懷裡長大。",
+          "log_text": "出生"
+        }
+      ],
+      "sources": [
+        {
+          "name": "縣市池依據：年度縣市分布（韭點開始整理165資料）",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/",
+          "verified": true,
+          "verify_note": "年度縣市分布：165 儀表板未提供此期間數字，尚無官方原始來源"
+        },
+        {
+          "name": "縣市池補充：165打詐儀表板各縣市數據統計（官方，115-09、115-10 月資料）",
+          "url": "https://165dashboard.tw/",
+          "verified": true,
+          "verify_note": "儀表板只有月資料；年度縣市分布仍取自 fromnineon（165 儀表板未提供此期間數字，尚無官方原始來源）"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "teen",
+      "age": 16,
+      "text": "高一時，學校來宣導「不要出借帳戶」。台下同學在滑手機。",
+      "choices": [
+        {
+          "text": "認真聽，記下165",
+          "effects": {
+            "警覺": 8
+          },
+          "next": "broke",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在筆記本角落寫下「165」。",
+          "log_text": "認真聽反詐宣導"
+        },
+        {
+          "text": "趴著睡覺",
+          "effects": {},
+          "next": "broke",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你醒來時宣導已經結束，台上在發小禮物。",
+          "log_text": "宣導時睡著"
+        }
+      ],
+      "sources": [
+        {
+          "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+          "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "broke",
+      "age": 20,
+      "text": "你剛上大學（或剛出社會），房租、學貸、手機分期壓得喘不過氣，存款快見底。",
+      "choices": [
+        {
+          "text": "找家人和學校談",
+          "effects": {
+            "人際": 5,
+            "心理": 5,
+            "存款": 10000
+          },
+          "next": "job_ad",
+          "flags": {
+            "set": [
+              "asked_help"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "學校輔導老師幫你填了補助申請，家人也答應先幫一點。壓力少了一些。",
+          "log_text": "找家人和學校談經濟困難"
+        },
+        {
+          "text": "自己扛，上網找",
+          "effects": {
+            "心理": -5
+          },
+          "next": "job_ad",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你打開求職社群，一則則「快錢」貼文跳出來。",
+          "log_text": "自己扛，上網找快錢"
+        }
+      ],
+      "sources": [
+        {
+          "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+          "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "job_ad",
+      "age": 20,
+      "text": "社群上一則徵才：「居家輕鬆、日領三千、免經驗，私訊加好友」。對方很親切，說是正派公司。",
+      "choices": [
+        {
+          "text": "查公司統編",
+          "effects": {
+            "警覺": 10
+          },
+          "next": "job_check",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你搜尋了公司名稱和統編，結果什麼都查不到。",
+          "log_text": "查公司登記"
+        },
+        {
+          "text": "直接加好友私聊",
+          "effects": {
+            "警覺": -5,
+            "心理": -2
+          },
+          "next": "job_offer",
+          "flags": {
+            "set": [
+              "missed_too_good"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "對方秒回，貼圖很可愛，說話很客氣。",
+          "log_text": "加了徵才者好友",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 10,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html"
+        },
+        {
+          "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "sms_like",
+        "app_display_name": "社群動態（虛構）",
+        "theme": "neutral",
+        "contact": {
+          "name": "兼職好康分享團",
+          "avatar": "placeholder_group",
+          "status": "社團貼文"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "【急徵】居家輕鬆、日領三千、免經驗",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "正派公司，名額有限，有興趣私訊我",
+            "delay_ms": 900,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（日領三千……房租好像有救了）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "job_check",
+      "age": 20,
+      "text": "查不到公司登記，對方改口說是「新創、還沒登記」。",
+      "choices": [
+        {
+          "text": "記下疑點，先聽聽",
+          "effects": {
+            "警覺": 15
+          },
+          "next": "job_offer",
+          "flags": {
+            "set": [
+              "checked_company"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把「查不到登記」記在備忘錄裡，請對方先說工作內容。",
+          "log_text": "記下公司查不到的疑點"
+        },
+        {
+          "text": "新創也很正常吧",
+          "effects": {
+            "心理": -2
+          },
+          "next": "job_offer",
+          "flags": {
+            "set": [
+              "missed_too_good"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你回了「好喔」，對方傳來一長串工作說明。",
+          "log_text": "相信是新創公司",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 11,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html"
+        },
+        {
+          "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+          "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "人資 Amy（自稱）",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "player",
+            "text": "我查不到貴公司的登記耶",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "我們是新創，還在跑登記流程啦",
+            "delay_ms": 1500,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "很多大公司一開始也這樣，別想太多～",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "job_offer",
+      "age": 20,
+      "text": "對方說第一份任務很簡單：把你的金融卡和密碼寄過去「申請補助」，或提供帳戶給公司「代收貨款、節稅」，每本有酬勞。",
+      "choices": [
+        {
+          "text": "拒絕",
+          "effects": {
+            "警覺": 15
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "refused"
+            ],
+            "require": [
+              "checked_company"
+            ]
+          },
+          "grid": "green",
+          "outcome_text": "你拒絕了，封鎖對方並把對話截圖向165通報。錢還是很緊，但帳戶是乾淨的。",
+          "log_text": "拒絕交出金融卡和密碼"
+        },
+        {
+          "text": "問朋友意見",
+          "effects": {
+            "人際": 3
+          },
+          "next": "friend_warn",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把對話截圖傳給朋友。朋友傳了一篇新聞給你：有人因為提供帳戶被列警示戶，還被提告。",
+          "log_text": "問朋友意見"
+        },
+        {
+          "text": "照做",
+          "effects": {
+            "存款": 5000,
+            "警覺": -10,
+            "心理": -2
+          },
+          "next": "account_used",
+          "flags": {
+            "set": [
+              "gave_account",
+              "paid_for_account",
+              "missed_card_request"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你把卡寄出去了。幾天後，帳戶開始有不認識的人匯款進來，又被轉出去。",
+          "log_text": "交出帳戶",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 8,
+          "url": "https://www.dcard.tw/f/job/p/260035407"
+        },
+        {
+          "story_id": 9,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/257882793"
+        },
+        {
+          "story_id": 11,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html"
+        },
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+        }
+      ],
+      "presentation": "chat",
+      "pressure": {
+        "timer_s": 30,
+        "can_disable": true,
+        "label": "對方催你回覆"
+      },
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "人資 Amy（自稱）",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "恭喜錄取！第一份任務很簡單",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "把金融卡和密碼寄來，我們幫你「申請補助」",
+            "delay_ms": 1400,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "或提供帳戶幫公司代收貨款、節稅，每本都有酬勞",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m4",
+            "from": "scammer",
+            "text": "今天要回覆喔，後面還很多人排隊",
+            "delay_ms": 800,
+            "type": "text"
+          },
+          {
+            "id": "m5",
+            "from": "player",
+            "text": "要給卡和密碼……這樣正常嗎？",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "friend_warn",
+      "age": 20,
+      "text": "朋友傳了一篇新聞給你：「求職提供帳戶，變警示戶還被告」。",
+      "choices": [
+        {
+          "text": "謝謝提醒，不做了",
+          "effects": {
+            "警覺": 10,
+            "人際": 5
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "refused"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你回了對方「不做了」，跟朋友說謝謝。朋友回你一個大大的讚。",
+          "log_text": "聽朋友的，拒絕這份工作"
+        },
+        {
+          "text": "還是照做",
+          "effects": {
+            "存款": 5000,
+            "人際": -10,
+            "心理": -2
+          },
+          "next": "account_used",
+          "flags": {
+            "set": [
+              "gave_account",
+              "paid_for_account",
+              "missed_card_request",
+              "ignored_friend"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你已讀朋友的訊息，還是照對方的指示做了。朋友之後沒再提。",
+          "log_text": "沒聽朋友提醒",
+          "mental_wear": -2
+        },
+        {
+          "text": "只給帳號不給密碼",
+          "effects": {
+            "存款": 3000,
+            "人際": -5,
+            "心理": -2
+          },
+          "next": "account_used",
+          "flags": {
+            "set": [
+              "gave_account",
+              "paid_for_account",
+              "missed_card_request",
+              "ignored_friend"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你只傳了帳號，覺得這樣比較安全。對方說：「可以，這樣就夠了。」",
+          "log_text": "只給帳號，沒給密碼",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 11,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html"
+        },
+        {
+          "story_id": 13,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/255776339"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "大學同學 阿哲",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "friend",
+            "text": "欸你說的那個工作，是不是要你給帳戶？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "friend",
+            "text": "（傳來新聞：求職提供帳戶，變警示戶還被告）",
+            "delay_ms": 1000,
+            "type": "link"
+          },
+          {
+            "id": "m3",
+            "from": "friend",
+            "text": "正常公司不會跟你要卡跟密碼啦",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "account_used",
+      "age": 21,
+      "text": "幾天後，你的帳戶突然有好幾筆陌生人的匯款進出。對方說：「接下來升級任務，外出幫公司收款，每趟另有獎金。」",
+      "choices": [
+        {
+          "text": "停止，到派出所說明",
+          "effects": {
+            "警覺": 15,
+            "心理": -10
+          },
+          "next": "police_call",
+          "flags": {
+            "set": [
+              "self_reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你走進派出所，把手機對話一頁頁滑給員警看。",
+          "log_text": "主動到派出所說明"
+        },
+        {
+          "text": "先不做，也不聲張",
+          "effects": {
+            "心理": -10
+          },
+          "next": "police_call",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你回對方「最近比較忙」，然後把手機關靜音。",
+          "log_text": "沒接升級任務，也沒聲張"
+        },
+        {
+          "text": "接受升級任務",
+          "effects": {
+            "存款": 20000,
+            "警覺": -10,
+            "心理": -2
+          },
+          "next": "family_notice",
+          "flags": {
+            "set": [
+              "became_mule",
+              "missed_salary_from_cash"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "對方傳來一個時間和地點。你出門前看了一下鏡子裡的自己。",
+          "log_text": "接受升級任務",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 10,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html"
+        },
+        {
+          "story_id": 11,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html"
+        },
+        {
+          "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        }
+      ],
+      "presentation": "chat",
+      "interrupts": [
+        {
+          "at": "m2",
+          "from": "系統通知",
+          "text": "您的帳戶有多筆不明入帳"
+        }
+      ],
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "人資 Amy（自稱）",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "你表現很好，主管很欣賞你",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "接下來有升級任務，每趟另有獎金",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "薪水直接從經手的款項裡抽成，很方便",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m4",
+            "from": "player",
+            "text": "（帳戶裡怎麼一直有陌生人的錢……）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_notice",
+      "age": 21,
+      "text": "家人發現你最近常常臨時出門、手頭突然變寬，問你在做什麼工作。",
+      "choices": [
+        {
+          "text": "說出實情",
+          "effects": {
+            "人際": 5,
+            "心理": -5
+          },
+          "next": "police_call",
+          "flags": {
+            "set": [
+              "family_stopped"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你說完後，家人沉默了一下，然後拿起外套：「走，我陪你去。」",
+          "log_text": "向家人說實話"
+        },
+        {
+          "text": "敷衍帶過",
+          "effects": {
+            "人際": -15,
+            "心理": -12
+          },
+          "next": "arrest",
+          "flags": {
+            "set": [
+              "missed_family_warning"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "家人皺著眉看你出門，門關上的聲音特別大。",
+          "log_text": "敷衍家人，繼續做",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 10,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "in_person",
+        "app_display_name": "家裡客廳",
+        "theme": "neutral",
+        "contact": {
+          "name": "媽媽",
+          "avatar": "placeholder_silhouette",
+          "status": "面對面"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "family",
+            "text": "你最近怎麼常常臨時出門？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "family",
+            "text": "手頭好像突然變寬了，是在做什麼工作？",
+            "delay_ms": 1400,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（要說實話嗎……）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arrest",
+      "age": 21,
+      "text": "某天你在外面時被警察攔下。原來被害人早已報案，你是整條線上最容易被找到的人。",
+      "choices": [
+        {
+          "text": "配合偵查、坦承",
+          "effects": {
+            "心理": -20
+          },
+          "next": "trial",
+          "flags": {
+            "set": [
+              "arrested",
+              "confessed"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在偵訊室把知道的事一五一十說出來。筆錄寫了好幾頁。",
+          "log_text": "被捕，配合偵查"
+        },
+        {
+          "text": "堅稱只是打工",
+          "effects": {
+            "心理": -25,
+            "人際": -20
+          },
+          "next": "trial",
+          "flags": {
+            "set": [
+              "arrested"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你一直重複「我只是打工」。員警看著你，沒有說話。家人接到通知後，很久都沒打給你。",
+          "log_text": "被捕，堅稱只是打工"
+        }
+      ],
+      "sources": [
+        {
+          "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+          "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "臺灣士林地方法院112年度金訴緝字第17號刑事判決（司法院裁判書系統，去識別化引用）",
+          "url": "https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=SLDM%2c112%2c%e9%87%91%e8%a8%b4%e7%b7%9d%2c17%2c20230619%2c1",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 官方頁核對：裁判日期112-06-19、應執行有期徒刑2年10月；curl 會被 bot-defense 擋"
+        },
+        {
+          "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "trial",
+      "age": 22,
+      "text": "你被以加重詐欺、洗錢、參與犯罪組織起訴。法官說：反詐宣導這麼多年，『只是求職』很難當藉口。被害人也提起民事求償。",
+      "choices": [
+        {
+          "text": "和解、分期還款",
+          "effects": {
+            "存款": -200000,
+            "心理": -10
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "convicted",
+              "settled"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在調解室對被害人鞠躬，簽下分期還款的協議。",
+          "log_text": "和被害人和解、分期賠償"
+        },
+        {
+          "text": "不出庭",
+          "effects": {
+            "存款": -500000,
+            "人際": -10,
+            "心理": -15
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "convicted",
+              "civil_judgment"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "開庭通知堆在桌上，你一封都沒拆。",
+          "log_text": "不出庭、不理民事"
+        }
+      ],
+      "sources": [
+        {
+          "name": "刑法§339-4 加重詐欺",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
+        },
+        {
+          "name": "洗錢防制法§19 一般洗錢",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19"
+        },
+        {
+          "name": "組織犯罪防制條例§3",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000013&flno=3"
+        },
+        {
+          "name": "民法§185 共同侵權連帶賠償",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185"
+        },
+        {
+          "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+          "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+          "url": "https://news.ltn.com.tw/news/society/paper/1686908",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "police_call",
+      "age": 21,
+      "text": "警察來電：你的帳戶涉及詐欺案，被列為警示帳戶，請你到案說明。",
+      "choices": [
+        {
+          "text": "帶紀錄到案說明",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "next": "aftermath",
+          "flags": {
+            "set": [
+              "kept_evidence"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把截圖印出來帶去，員警一張張收進卷宗。",
+          "log_text": "帶著證據到案說明"
+        },
+        {
+          "text": "刪掉聊天紀錄",
+          "effects": {
+            "心理": -20,
+            "警覺": -5
+          },
+          "next": "aftermath",
+          "flags": {
+            "set": [
+              "deleted_evidence"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把聊天紀錄全刪了，手還在發抖。",
+          "log_text": "刪掉所有聊天紀錄"
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 9,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/257882793"
+        },
+        {
+          "story_id": 12,
+          "url": "https://www.dcard.tw/f/mood/p/257343629"
+        },
+        {
+          "story_id": 13,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/255776339"
+        },
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "phone_call",
+        "app_display_name": "來電",
+        "theme": "neutral",
+        "contact": {
+          "name": "轄區派出所（已自行查證號碼）",
+          "avatar": "placeholder_silhouette",
+          "status": "通話中"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "police",
+            "text": "你的帳戶涉及詐欺案，已列為警示帳戶",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "police",
+            "text": "請你到案說明，有相關紀錄可以一起帶來",
+            "delay_ms": 1400,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（腦袋一片空白……）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "aftermath",
+      "age": 22,
+      "text": "調查結果出來了，帳戶凍結期間你無法領薪、轉帳，銀行也對你另眼相看。",
+      "choices": [
+        {
+          "text": "繼續生活",
+          "effects": {
+            "心理": -5
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你繼續上課、上班，但每次用提款卡都會想起這件事。",
+          "log_text": "帳戶凍結後繼續生活"
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 12,
+          "url": "https://www.dcard.tw/f/mood/p/257343629"
+        },
+        {
+          "story_id": 13,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/255776339"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "END_ROUTER",
+      "age": 23,
+      "text": "多年後回頭看這段經歷……（引擎依 ending_rules 自動判定結局，不顯示選項）",
+      "choices": [
+        {
+          "text": "回顧",
+          "effects": {},
+          "next": "__EVAL__",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你回頭看這段經歷。",
+          "log_text": "回顧"
+        }
+      ],
+      "sources": [
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "router": true,
+      "presentation": "card"
+    }
+  ],
+  "endings": [
+    {
+      "id": "END_CONVICTED",
+      "priority": 1,
+      "conditions": {
+        "flags_all": [
+          "convicted"
+        ],
+        "flags_none": [
+          "settled"
+        ],
+        "any_of": [
+          {
+            "flags_all": [
+              "civil_judgment"
+            ]
+          },
+          {
+            "flags_all": [
+              "savings_depleted"
+            ]
+          },
+          {
+            "flags_all": [
+              "mental_collapse"
+            ]
+          }
+        ]
+      },
+      "text": "你被判有罪，留下前科，還背著民事賠償。真正的上游沒被抓到，被害人的損失落在你身上。有罪判決確定的紀錄可能會出現在「良民證」（警察刑事紀錄證明）上，碰到要繳交良民證的工作，求職可能會受影響。",
+      "case_card": {
+        "story_id": "ltn_student",
+        "summary": "一名大學生當車手，交保後又再犯，各案宣告刑合計逾7年；不出庭也沒有和解，民事被判賠被害人200萬元。",
+        "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "日領三千、免經驗的高薪輕鬆工作",
+        "薪水從經手的款項裡抽成",
+        "家人關心時選擇隱瞞",
+        "有被害人就有民事連帶賠償"
+      ],
+      "sources": [
+        {
+          "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+          "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+          "url": "https://news.ltn.com.tw/news/society/paper/1686908",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "刑法§339-4 加重詐欺",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
+        },
+        {
+          "name": "洗錢防制法§19 一般洗錢",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19"
+        },
+        {
+          "name": "組織犯罪防制條例§3",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000013&flno=3"
+        },
+        {
+          "name": "民法§185 共同侵權連帶賠償",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185"
+        },
+        {
+          "name": "警察刑事紀錄證明核發條例§6",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080088&flno=6"
+        },
+        {
+          "name": "公務人員任用法§28",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=S0020001&flno=28"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "reason_texts": [
+        {
+          "flag": "civil_judgment",
+          "text": "你沒出庭、也不處理民事，法院判你賠償全額。"
+        },
+        {
+          "flag": "savings_depleted",
+          "text": "賠償和律師費讓你的存款歸零（存款≤0）。"
+        },
+        {
+          "flag": "mental_collapse",
+          "text": "官司拖了好幾年，你的心理狀態跌到谷底（心理≤20）。"
+        }
+      ],
+      "title": "替上游扛下一切的人",
+      "title_emoji": "⛓",
+      "grid_color": "red",
+      "share_text": "我以為只是打工，結果被判有罪、還要賠錢。",
+      "rarity_key": "mule_END_CONVICTED",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "convicted",
+        "arrested",
+        "civil_judgment"
+      ],
+      "forbids_flags": [
+        "settled"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "法律扶助基金會 全國專線 412-8518（市話直撥，手機加02；免費法律諮詢，犯罪被害人也可諮詢）",
+          "url": "https://www.laf.org.tw/tel-ext",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，官網頁面載明 412-8518"
+        }
+      ]
+    },
+    {
+      "id": "END_RECORD",
+      "priority": 2,
+      "conditions": {
+        "flags_all": [
+          "convicted"
+        ]
+      },
+      "text": "你努力分期賠償，法院也有考量。但你已經有了犯罪紀錄。如果獲判緩刑，依法良民證上不會記載這筆紀錄；即使如此，往後的人生仍可能受到影響。",
+      "case_card": {
+        "story_id": "ltn_18yo",
+        "summary": "18歲學生在社群網站的兼職社團應徵，提供帳戶並轉交款項；法院認為反詐宣導已是一般常識，依洗錢防制法判4月，並須賠償被害人。",
+        "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "對方要你的帳戶",
+        "你自己都問過『這合法嗎？』，表示已經起疑",
+        "收入跟付出完全不成比例"
+      ],
+      "sources": [
+        {
+          "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "臺灣士林地方法院112年度金訴緝字第17號刑事判決（司法院裁判書系統，去識別化引用）",
+          "url": "https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=SLDM%2c112%2c%e9%87%91%e8%a8%b4%e7%b7%9d%2c17%2c20230619%2c1",
+          "verified": true,
+          "verify_note": "2026-10-23 WebFetch 官方頁核對：裁判日期112-06-19、應執行有期徒刑2年10月；curl 會被 bot-defense 擋"
+        },
+        {
+          "name": "刑法§339-4 加重詐欺",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
+        },
+        {
+          "name": "洗錢防制法§19 一般洗錢",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19"
+        },
+        {
+          "name": "民法§185 共同侵權連帶賠償",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185"
+        },
+        {
+          "name": "警察刑事紀錄證明核發條例§6",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080088&flno=6"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "留下紀錄的人",
+      "title_emoji": "📄",
+      "grid_color": "red",
+      "share_text": "我坦承、我賠償，但紀錄還是留下了。",
+      "rarity_key": "mule_END_RECORD",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "convicted",
+        "arrested",
+        "settled"
+      ],
+      "forbids_flags": [
+        "civil_judgment"
+      ],
+      "text_variants": [
+        {
+          "when": {
+            "label": "confessed",
+            "flags_all": [
+              "confessed"
+            ]
+          },
+          "requires_flags": [
+            "confessed"
+          ],
+          "text": "你坦承犯行、努力分期賠償，法院也有考量。但你已經有了犯罪紀錄。如果獲判緩刑，依法良民證上不會記載這筆紀錄；即使如此，往後的人生仍可能受到影響。"
+        },
+        {
+          "when": {
+            "label": "denied",
+            "flags_none": [
+              "confessed"
+            ]
+          },
+          "forbids_flags": [
+            "confessed"
+          ],
+          "text": "你一開始堅稱「只是打工」，後來仍努力和被害人和解、分期賠償，法院也有考量。但你已經有了犯罪紀錄。如果獲判緩刑，依法良民證上不會記載這筆紀錄；即使如此，往後的人生仍可能受到影響。"
+        }
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "法律扶助基金會 全國專線 412-8518（市話直撥，手機加02；免費法律諮詢，犯罪被害人也可諮詢）",
+          "url": "https://www.laf.org.tw/tel-ext",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，官網頁面載明 412-8518"
+        }
+      ]
+    },
+    {
+      "id": "END_ACCOUNT",
+      "priority": 4,
+      "conditions": {
+        "flags_all": [
+          "gave_account"
+        ],
+        "flags_none": [
+          "became_mule"
+        ]
+      },
+      "text": "你沒有去收款，但帳戶已經被拿去當收贓款的工具。帳戶被警示凍結，你被調查、做筆錄。就算最後沒有被起訴，好幾年裡辦帳戶、借貸都處處受限。",
+      "case_card": {
+        "story_id": 11,
+        "summary": "一名女性應徵行政助理，用自己的薪轉戶替「老闆」收大筆款項再匯出，一個月經手約3000萬；所有帳戶被凍結，本人失業並接受調查。",
+        "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "正職工作不會用員工的個人帳戶收公司款",
+        "要金融卡、密碼＝紅燈",
+        "面試地點是日租會議室",
+        "提供帳戶收取對價可能觸犯洗錢防制法§22"
+      ],
+      "sources": [
+        {
+          "story_id": 11,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1723002516.A.604.html"
+        },
+        {
+          "story_id": 9,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/257882793"
+        },
+        {
+          "story_id": 12,
+          "url": "https://www.dcard.tw/f/mood/p/257343629"
+        },
+        {
+          "story_id": 13,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/255776339"
+        },
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "reason_texts": [
+        {
+          "flag": "gave_account",
+          "text": "你的帳戶被拿去收被害人的錢。"
+        },
+        {
+          "flag": "self_reported",
+          "text": "你雖然主動說明了，但身邊沒有人陪你撐過調查（人際<20），帳戶的後遺症只能自己扛。"
+        },
+        {
+          "flag": "deleted_evidence",
+          "text": "你刪掉了聊天紀錄，很難證明自己是被騙去求職的。"
+        }
+      ],
+      "title": "帳戶被借走的人",
+      "title_emoji": "🧊",
+      "grid_color": "yellow",
+      "share_text": "我只是給了帳戶，人生就被凍結了好幾年。",
+      "rarity_key": "mule_END_ACCOUNT",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "gave_account"
+      ],
+      "forbids_flags": [
+        "became_mule",
+        "convicted",
+        "arrested"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "法律扶助基金會 全國專線 412-8518（市話直撥，手機加02；免費法律諮詢，犯罪被害人也可諮詢）",
+          "url": "https://www.laf.org.tw/tel-ext",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，官網頁面載明 412-8518"
+        }
+      ]
+    },
+    {
+      "id": "END_RESCUED",
+      "priority": 3,
+      "conditions": {
+        "flags_any": [
+          "family_stopped",
+          "self_reported"
+        ],
+        "flags_all": [
+          "gave_account",
+          "has_support"
+        ],
+        "flags_none": [
+          "convicted"
+        ]
+      },
+      "text": "你在越陷越深之前停下來了。你還是得面對調查，但你沒有走到最壞的那一步。",
+      "case_card": {
+        "story_id": 10,
+        "summary": "一名28歲女性在社群網站應徵「外務收款」，母親察覺不對而報警，警方埋伏逮到詐團成員，本人沒有受損。",
+        "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "薪水從收來的錢裡扣",
+        "外出收「公司款項」卻沒有正式公司"
+      ],
+      "sources": [
+        {
+          "story_id": 10,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html"
+        },
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "reason_texts": [
+        {
+          "flag": "family_stopped",
+          "text": "家人察覺不對，陪你一起停下來。"
+        },
+        {
+          "flag": "self_reported",
+          "text": "你相信自己的不安，主動去說明。"
+        }
+      ],
+      "title": "被拉回來的人",
+      "title_emoji": "🤝",
+      "grid_color": "yellow",
+      "share_text": "還好有人拉了我一把。",
+      "rarity_key": "mule_END_RESCUED",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "text_variants": [
+        {
+          "when": {
+            "label": "family",
+            "flags_all": [
+              "family_stopped"
+            ]
+          },
+          "requires_flags": [
+            "became_mule",
+            "family_stopped"
+          ],
+          "text": "你已經接下了「升級任務」，是家人察覺不對、陪你一起停下來去說明。你還是得面對調查，但你沒有走到最壞的那一步。"
+        },
+        {
+          "when": {
+            "label": "self",
+            "flags_all": [
+              "self_reported"
+            ]
+          },
+          "requires_flags": [
+            "self_reported"
+          ],
+          "forbids_flags": [
+            "became_mule"
+          ],
+          "text": "帳戶被拿去收陌生人的錢之後，你相信了自己的不安，主動到派出所說明，沒有接下「升級任務」。你還是得面對調查，但身邊有人陪你撐過去。"
+        }
+      ],
+      "requires_flags": [
+        "gave_account",
+        "has_support"
+      ],
+      "forbids_flags": [
+        "convicted",
+        "arrested"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        }
+      ]
+    },
+    {
+      "id": "END_REFUSE",
+      "priority": 5,
+      "conditions": {
+        "flags_all": [
+          "refused"
+        ],
+        "flags_none": [
+          "gave_account"
+        ]
+      },
+      "text": "你拒絕了那份「輕鬆高薪」的工作。錢還是很緊，但你的名字、帳戶和未來都還乾乾淨淨。",
+      "case_card": {
+        "story_id": 8,
+        "summary": "一位母親做社群網站上的居家打字工作，被要求用自己的帳戶代收款「節稅」，結果被被害人提告，必須請律師處理。對照之下，你在第一步就拒絕了。",
+        "url": "https://www.dcard.tw/f/job/p/260035407",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "你抓到了：查不到公司登記、要帳戶或金融卡、報酬高得不合理"
+      ],
+      "sources": [
+        {
+          "story_id": 8,
+          "url": "https://www.dcard.tw/f/job/p/260035407"
+        },
+        {
+          "name": "法務部詐欺防制法治教育手冊（第四章 收簿手、車手的刑事與民事責任）",
+          "url": "https://www.freemoo.com.tw/webebook/2025Tang_moj/files/basic-html/page35.html"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "第一步就說不的人",
+      "title_emoji": "🛡",
+      "grid_color": "green",
+      "share_text": "日領三千的工作，我第一步就拒絕了。你呢？",
+      "rarity_key": "mule_END_REFUSE",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "refused"
+      ],
+      "forbids_flags": [
+        "gave_account",
+        "became_mule",
+        "convicted"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        }
+      ]
+    },
+    {
+      "id": "END_STOPPED_ALONE",
+      "priority": 2.9,
+      "conditions": {
+        "flags_all": [
+          "became_mule",
+          "family_stopped"
+        ],
+        "flags_none": [
+          "convicted"
+        ],
+        "any_of": [
+          {
+            "flags_all": [
+              "ignored_friend"
+            ]
+          },
+          {
+            "flags_none": [
+              "has_support"
+            ]
+          }
+        ]
+      },
+      "text": "家人察覺不對之後，你停了下來，也去說明了。但你已經接過「升級任務」，帳戶和經手的款項都要接受調查。這段時間你和身邊的人越來越疏遠，很多事只能自己扛。",
+      "reason_texts": [
+        {
+          "flag": "became_mule",
+          "text": "你接下了「升級任務」，不只是提供帳戶而已。"
+        },
+        {
+          "flag": "family_stopped",
+          "text": "是家人讓你停下來的。"
+        },
+        {
+          "flag": "isolated",
+          "text": "你和身邊的人很疏遠（人際≤15），調查期間沒有人能陪你。"
+        },
+        {
+          "flag": "deleted_evidence",
+          "text": "你刪掉了聊天紀錄，很難證明自己是被騙去求職的。"
+        },
+        {
+          "flag": "ignored_friend",
+          "text": "朋友提醒過你，你沒聽，之後也不好意思再找他。"
+        }
+      ],
+      "case_card": {
+        "story_id": 10,
+        "summary": "一名28歲女性在社群網站應徵「外務收款」，母親察覺不對而報警，警方埋伏逮到詐團成員，本人沒有受損。",
+        "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "薪水從經手的款項裡抽成",
+        "外出替「公司」收款卻沒有正式公司",
+        "帳戶出現陌生人的匯款"
+      ],
+      "sources": [
+        {
+          "story_id": 10,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1762823791.A.A96.html"
+        },
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "requires_flags": [
+        "became_mule",
+        "family_stopped"
+      ],
+      "forbids_flags": [
+        "convicted",
+        "arrested"
+      ],
+      "title": "停下來，卻只能自己扛的人",
+      "title_emoji": "🌧",
+      "grid_color": "red",
+      "rarity_key": "mule_END_STOPPED_ALONE",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別",
+        "display": null
+      },
+      "share_text": "我停下來了，但後果只能一個人扛。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "text_variants": [
+        {
+          "when": {
+            "label": "ignored_friend",
+            "flags_all": [
+              "ignored_friend"
+            ]
+          },
+          "requires_flags": [
+            "ignored_friend"
+          ],
+          "text": "家人察覺不對之後，你停了下來，也去說明了。但你已經接過「升級任務」，帳戶和經手的款項都要接受調查。當初提醒你的朋友，你沒聽；事後你一直開不了口找他，很多事只能自己扛。"
+        },
+        {
+          "when": {
+            "label": "alone",
+            "flags_none": [
+              "has_support"
+            ]
+          },
+          "forbids_flags": [
+            "has_support"
+          ],
+          "text": "家人察覺不對之後，你停了下來，也去說明了。但你已經接過「升級任務」，帳戶和經手的款項都要接受調查。這段時間你和身邊的人越來越疏遠，很多事只能自己扛。"
+        }
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        }
+      ]
+    },
+    {
+      "id": "END_CUT_OFF",
+      "priority": 0.5,
+      "conditions": {
+        "flags_all": [
+          "convicted",
+          "isolated"
+        ]
+      },
+      "text": "你被判有罪。家人在親戚群組裡說「這是他自己選的，我們不會幫他」，之後就不再回你訊息；朋友也陸續封鎖你。開庭、找工作、面對被害人，全都只能一個人去。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。需要法律協助（刑事、民事求償、分期和解）：法律扶助基金會 412-8518（手機加02）。",
+      "text_variants": [
+        {
+          "when": {
+            "label": "civil",
+            "flags_all": [
+              "civil_judgment"
+            ],
+            "flags_none": [
+              "mental_collapse"
+            ]
+          },
+          "requires_flags": [
+            "civil_judgment"
+          ],
+          "forbids_flags": [
+            "settled",
+            "mental_collapse"
+          ],
+          "text": "你被判有罪，也沒去處理民事，法院判你賠償全額。家人在親戚群組裡說「這是他自己選的，我們不會幫他還」，之後就不再回你訊息；朋友也陸續封鎖你。前科加上一大筆債，只能一個人背。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。需要法律協助（刑事、民事求償、分期和解）：法律扶助基金會 412-8518（手機加02）。"
+        },
+        {
+          "when": {
+            "label": "settled",
+            "flags_all": [
+              "settled"
+            ],
+            "flags_none": [
+              "mental_collapse"
+            ]
+          },
+          "requires_flags": [
+            "settled"
+          ],
+          "forbids_flags": [
+            "civil_judgment",
+            "mental_collapse"
+          ],
+          "text": "你被判有罪，也努力和被害人和解、分期賠償，但家人說「這是他自己選的，我們不會幫他」，之後就不再回你訊息；朋友也陸續封鎖你。每個月的賠償款，只能一個人慢慢還。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。需要法律協助（刑事、民事求償、分期和解）：法律扶助基金會 412-8518（手機加02）。"
+        },
+        {
+          "when": {
+            "label": "collapse",
+            "flags_all": [
+              "mental_collapse"
+            ]
+          },
+          "requires_flags": [
+            "mental_collapse"
+          ],
+          "text": "你被判有罪。家人在親戚群組裡說「這是他自己選的，我們不會幫他」，之後就不再回你訊息；朋友也陸續封鎖你。開庭、找工作、面對被害人，全都只能一個人去。你開始失眠、什麼都不想做，覺得自己毀了所有人的生活。後來你去看了身心科，才知道這種狀態需要治療，不是撐一撐就會過去。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。需要法律協助（刑事、民事求償、分期和解）：法律扶助基金會 412-8518（手機加02）。"
+        }
+      ],
+      "reason_texts": [
+        {
+          "flag": "convicted",
+          "text": "你經手了被害人的錢，被依詐欺、洗錢判刑。"
+        },
+        {
+          "flag": "missed_family_warning",
+          "text": "家人提醒過你，你沒有理會。"
+        },
+        {
+          "flag": "isolated",
+          "text": "你和家人、朋友的關係已經斷了（人際≤15）。"
+        },
+        {
+          "flag": "civil_judgment",
+          "text": "你不處理民事，法院判你賠償全額。"
+        },
+        {
+          "flag": "mental_collapse",
+          "text": "判決、債務和孤立讓你的心理狀態跌到谷底（心理≤20）。"
+        }
+      ],
+      "case_card": {
+        "story_id": 70,
+        "summary": "一名成年男子涉嫌擔任詐騙車手被捕（報導當時為涉嫌、尚未判決）。他的家人公開表示和他切割、不會出面幫忙，並把孩子接回照顧。另有一件案例：一名16歲少年當車手只拿到2千元，因為未成年，父母被法院判連帶賠償157萬元。",
+        "url": "https://www.nownews.com/news/6418759",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "家人提醒時選擇不理，最後連能陪你的人都沒了",
+        "「領錢、轉交」就是車手，報酬再少也要負刑事與民事責任",
+        "刑事判決之外還有民事求償，債不會因為服刑就消失"
+      ],
+      "sources": [
+        {
+          "name": "NOWnews：家屬公開切割涉嫌擔任車手的親人（2024-05-02）",
+          "url": "https://www.nownews.com/news/6418759",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200；當事人當時為涉嫌、被捕階段，遊戲內去識別化"
+        },
+        {
+          "name": "中央社：少年詐騙車手獲2千 父母判賠157萬（2016-05-23）",
+          "url": "https://www.cna.com.tw/news/asoc/201605230144.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "民法§187 未成年人侵權，法定代理人連帶賠償",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=187"
+        },
+        {
+          "name": "立法院法制局研究報告：詐欺案件中被害人保護制度之研究－以心理支持方案為中心",
+          "url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=%7E%2FFile%2FAttach%2F255779%2FFile_19861748.pdf",
+          "verified": false,
+          "verify_note": "未取得原文：curl 逾時，只依 WebSearch 搜尋摘錄核對（摘錄提到詐騙造成心理創傷、家庭破裂與社會排擠，沒有量化統計）；請人工開啟 PDF 確認"
+        },
+        {
+          "name": "自由時報：大學生當車手交保再犯，宣告刑合計逾7年、民事判賠200萬",
+          "url": "https://news.ltn.com.tw/news/Taichung/breakingnews/4677183",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "自由時報：車手常須負民事連帶賠償，判賠數百萬至上千萬",
+          "url": "https://news.ltn.com.tw/news/society/paper/1686908",
+          "verified": true,
+          "verify_note": "依搜尋摘錄核對（直接連線回 403）"
+        },
+        {
+          "name": "刑法§339-4 加重詐欺",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
+        },
+        {
+          "name": "洗錢防制法§19 一般洗錢",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=19"
+        },
+        {
+          "name": "組織犯罪防制條例§3",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000013&flno=3"
+        },
+        {
+          "name": "民法§185 共同侵權連帶賠償",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185"
+        },
+        {
+          "name": "警察刑事紀錄證明核發條例§6",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080088&flno=6"
+        },
+        {
+          "name": "公務人員任用法§28",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=S0020001&flno=28"
+        },
+        {
+          "name": "165全民防騙網（撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true
+        },
+        {
+          "name": "法律扶助基金會 全國專線 412-8518（市話直撥，手機加02；免費法律諮詢，犯罪被害人也可諮詢）",
+          "url": "https://www.laf.org.tw/tel-ext",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，官網頁面載明 412-8518"
+        }
+      ],
+      "requires_flags": [
+        "convicted",
+        "arrested",
+        "isolated"
+      ],
+      "forbids_flags": [
+        "has_support"
+      ],
+      "title": "被所有人切割的人",
+      "title_emoji": "✂️",
+      "grid_color": "red",
+      "rarity_key": "mule_END_CUT_OFF",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "165 儀表板的受理統計以被害人遭遇的詐騙手法分類，沒有「求職被吸收成車手／提供帳戶」這個類別（車手與人頭帳戶在法律上是共犯或被告，而不是被害類型），因此算不出對應比例，不硬套其他類別；官方統計也沒有『被親友切割』的分類或人數",
+        "display": null
+      },
+      "share_text": "判決之後，家人在群組說：這是他自己選的。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "法律扶助基金會 全國專線 412-8518（市話直撥，手機加02；免費法律諮詢，犯罪被害人也可諮詢）",
+          "url": "https://www.laf.org.tw/tel-ext",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，官網頁面載明 412-8518"
+        }
+      ]
+    }
+  ],
+  "red_flag_texts": {
+    "missed_too_good": "「日領三千、免經驗、居家輕鬆」高得不合理。",
+    "missed_card_request": "正職工作不會要你的金融卡、密碼或個人帳戶。",
+    "missed_salary_from_cash": "薪水從你經手的錢裡抽成，這不是正常的工作。",
+    "missed_family_warning": "家人問起時，你選擇了隱瞞。"
+  },
+  "red_flag_anchors": {
+    "missed_too_good": [
+      {
+        "event": "job_ad",
+        "message": "m1"
+      },
+      {
+        "event": "job_check",
+        "message": "m2"
+      }
+    ],
+    "missed_card_request": [
+      {
+        "event": "job_offer",
+        "message": "m2"
+      },
+      {
+        "event": "friend_warn",
+        "message": "m3"
+      }
+    ],
+    "missed_salary_from_cash": [
+      {
+        "event": "account_used",
+        "message": "m3"
+      }
+    ],
+    "missed_family_warning": [
+      {
+        "event": "family_notice",
+        "message": "m2"
+      }
+    ]
+  },
+  "cross_line_modifiers": [
+    {
+      "id": "mule_cash_broke",
+      "if_flags": {
+        "all": [
+          "cash_strapped"
+        ]
+      },
+      "target": {
+        "event": "broke"
+      },
+      "effect": {
+        "type": "rewrite_text",
+        "field": "text",
+        "text": "你剛上大學（或剛出社會）。從小就常為錢煩惱的你，這次房租、學貸、手機分期一起到期，存款只剩幾百塊。"
+      },
+      "note": "急需用錢：開場壓力更大",
+      "mode": "all"
+    },
+    {
+      "id": "mule_cash_lure",
+      "if_flags": {
+        "all": [
+          "cash_strapped"
+        ]
+      },
+      "target": {
+        "event": "job_ad"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": -8,
+          "心理": -5
+        }
+      },
+      "note": "急需用錢讓高薪誘惑更強",
+      "mode": "all"
+    },
+    {
+      "id": "mule_cash_lure_msg",
+      "if_flags": {
+        "all": [
+          "cash_strapped"
+        ]
+      },
+      "target": {
+        "event": "job_ad"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "系統通知",
+          "text": "本期房租已逾期 3 天"
+        }
+      },
+      "note": "催繳通知加深壓力",
+      "mode": "all"
+    },
+    {
+      "id": "mule_wary",
+      "if_flags": {
+        "all": [
+          "wary_of_easy_money"
+        ]
+      },
+      "target": {
+        "event": "job_ad"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 10
+        }
+      },
+      "note": "對快錢有戒心，較容易識破",
+      "mode": "all"
+    },
+    {
+      "id": "mule_wary_unlock",
+      "if_flags": {
+        "all": [
+          "wary_of_easy_money"
+        ],
+        "none": [
+          "cash_strapped"
+        ]
+      },
+      "target": {
+        "event": "job_ad"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "不回覆，通報165",
+          "effects": {
+            "警覺": 15
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "refused"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "cross_line": true,
+          "outcome_text": "你沒有回覆，把那則貼文檢舉並通報165。",
+          "log_text": "想起輕鬆高薪通常有問題，通報貼文"
+        }
+      },
+      "note": "多一個第一步就拒絕的選項",
+      "mode": "all"
+    },
+    {
+      "id": "mule_pressure_signer",
+      "if_flags": {
+        "all": [
+          "pressure_signer"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": -5
+        }
+      },
+      "note": "容易在催促下當場答應",
+      "mode": "standalone_only",
+      "mode_note": "合併模式（人生線中途插入）下，這個 flag 在本線進場年齡範圍內還不可能拿到（pressure_signer 26歲才設定，車手線 18–22歲進場），所以只在單獨遊玩本線（standalone，人生線 flag 由前一局整段人生帶入）時生效；保留給單線模式。combined.py 會檢查：確實觸發不了才可標 standalone_only。"
+    },
+    {
+      "id": "mule_lent",
+      "if_flags": {
+        "all": [
+          "lent_money_lost"
+        ]
+      },
+      "target": {
+        "event": "friend_warn"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "內心",
+          "text": "上次借錢給朋友被倒，現在聽朋友的話好像也……"
+        }
+      },
+      "note": "借錢被倒後對朋友的信任較低",
+      "mode": "standalone_only",
+      "mode_note": "合併模式（人生線中途插入）下，這個 flag 在本線進場年齡範圍內還不可能拿到（lent_money_lost 24歲才設定，車手線 18–22歲進場），所以只在單獨遊玩本線（standalone，人生線 flag 由前一局整段人生帶入）時生效；保留給單線模式。combined.py 會檢查：確實觸發不了才可標 standalone_only。"
+    },
+    {
+      "id": "mule_lent_stat",
+      "if_flags": {
+        "all": [
+          "lent_money_lost"
+        ]
+      },
+      "target": {
+        "event": "friend_warn"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "人際": -5
+        }
+      },
+      "note": "人際-",
+      "mode": "standalone_only",
+      "mode_note": "合併模式（人生線中途插入）下，這個 flag 在本線進場年齡範圍內還不可能拿到（lent_money_lost 24歲才設定，車手線 18–22歲進場），所以只在單獨遊玩本線（standalone，人生線 flag 由前一局整段人生帶入）時生效；保留給單線模式。combined.py 會檢查：確實觸發不了才可標 standalone_only。"
+    },
+    {
+      "id": "mule_evidence",
+      "if_flags": {
+        "all": [
+          "evidence_habit"
+        ]
+      },
+      "target": {
+        "event": "police_call",
+        "choice": 0
+      },
+      "effect": {
+        "type": "rewrite_text",
+        "field": "choice_text",
+        "text": "帶完整截圖到案說明"
+      },
+      "note": "保留紀錄的習慣讓說明更有依據",
+      "mode": "all"
+    },
+    {
+      "id": "mule_family_pass",
+      "if_flags": {
+        "all": [
+          "family_passphrase"
+        ]
+      },
+      "target": {
+        "event": "family_notice"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "人際": 5
+        }
+      },
+      "note": "家裡有事先約好的通關密語、習慣互相確認，家人更容易開口、你也更願意說實話",
+      "mode": "standalone_only",
+      "mode_note": "合併模式（人生線中途插入）下，這個 flag 在本線進場年齡範圍內還不可能拿到（family_passphrase 35歲才設定，車手線 18–22歲進場），所以只在單獨遊玩本線（standalone，人生線 flag 由前一局整段人生帶入）時生效；保留給單線模式。combined.py 會檢查：確實觸發不了才可標 standalone_only。"
+    },
+    {
+      "id": "mule_told_truth",
+      "if_flags": {
+        "all": [
+          "told_truth"
+        ]
+      },
+      "target": {
+        "event": "family_notice"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "回憶",
+          "text": "你想起小學那次窗戶破掉，你舉手承認了。很難，但你做到過一次。"
+        }
+      },
+      "note": "童年 honesty 事件選了舉手承認；家人追問時多一個「說實話」的提醒（不改數值，選擇仍由玩家決定）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_v_salary_card",
+      "if_flags": {
+        "all": [
+          "mv_salary_card"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（對方補充：先把薪資卡用超商寄件寄過來「開通」，下週就能領薪。）"
+        }
+      },
+      "note": "t29u job_card_delivery → 入口變體 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_v_delivery_code",
+      "if_flags": {
+        "all": [
+          "mv_delivery_code"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（對方傳來一組寄件代碼：「到超商印單，把金融卡寄過來就能完成認證、申請補助。」）"
+        }
+      },
+      "note": "t29u delivery_code → 入口變體 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_v_kiosk",
+      "if_flags": {
+        "all": [
+          "mv_kiosk"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（對方給你一組代碼，要你到超商機台列印，再把存摺和密碼一起寄過去領補助。）"
+        }
+      },
+      "note": "t29u 超商機台代碼 → 入口變體 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_v_loan",
+      "if_flags": {
+        "all": [
+          "mv_loan_beautify"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（對方改口說也能幫你辦貸款，只要先寄金融卡和存摺「美化帳戶」。）"
+        }
+      },
+      "note": "t29u loan_beautify → 入口變體 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_v_sim",
+      "if_flags": {
+        "all": [
+          "mv_sim"
+        ]
+      },
+      "target": {
+        "event": "job_offer"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "system",
+          "text": "（對方又說，把手機SIM卡寄過來就能開通優惠方案。）"
+        }
+      },
+      "note": "t29u sim_card → 入口變體 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_fake_permission",
+      "if_flags": {
+        "all": [
+          "fake_permission"
+        ]
+      },
+      "target": {
+        "event": "account_used"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "system",
+          "text": "（你想起以前同學說「老師說可以帶小抄」的事。）"
+        }
+      },
+      "note": "t43u teacher_permission → 主管說可以 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "mule_core_flag",
+      "if_flags": {
+        "all": [
+          "mv_delivery_code"
+        ]
+      },
+      "target": {
+        "event": "friend_warn"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "system",
+          "text": "（給代碼叫你寄卡的，幾乎都是陷阱。）"
+        }
+      },
+      "note": "t29u 核心破綻：給代碼叫你寄 v1.2（寫手提供，待查證）",
+      "mode": "all"
+    }
+  ]
+}

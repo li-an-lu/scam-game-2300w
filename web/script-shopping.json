@@ -1,0 +1,1964 @@
+{
+  "meta": {
+    "title": "2300萬分之1",
+    "version": "0.4",
+    "language": "zh-TW",
+    "one_life": true,
+    "content_policy": "只描述受騙者看到什麼、經歷什麼，不寫詐騙的操作手法",
+    "amount_note": "事件中的金額取材自對應案例：票款11,400元（#18）、運費38元（#15）、解除分期約1.5萬元（#19，原案「近1.5萬」）；均為劇情設定，但與原案相近。",
+    "engine_notes": "next=='__EVAL__' 時：先依 ending_rules.stat_flags 依數值設定 flag，再依 priority 判定結局。結局畫面：顯示 reason_texts 中玩家擁有之 flag 的說明；『你錯過的破綻』＝玩家擁有的 missed_* flag 依 red_flag_texts 逐條顯示，若無則顯示 missed_red_flags（通用版）。數值套用後夾在 min/max。初始存款＝init 值×(1+family.存款_mod)；family 其他數值為加減。",
+    "presentation_notes": "同投資線：presentation='chat' 以全螢幕仿聊天室呈現；畫面一律使用虛構 app 名稱與外觀。聊天內容只呈現詐團話術與受害者反應，不寫可照做的操作步驟。",
+    "no_pressure_mode": {
+      "available": true,
+      "default": false,
+      "effect": "關閉所有 pressure 倒數；不影響劇情與結局",
+      "min_timer_s": 20
+    },
+    "life_grid": {
+      "bucket_years": 5,
+      "colors": {
+        "green": "安全",
+        "yellow": "有疑點",
+        "red": "受騙損失"
+      },
+      "rule": "同投資線"
+    },
+    "real_world_stat_notes": "real_world_stat 是假網拍占 115-09 全國受理件數的比例（3,513÷10,775），不是結局稀有度。",
+    "cross_line_notes": "跨線 flag 來自人生線（script-life.json 結束時玩家持有的 flag，見其 meta.cross_line_flags）。進入詐騙線時，把人生線 flag 併入玩家 flags；之後對每筆 cross_line_modifiers，若 if_flags.all 全有且 if_flags.none 全無，就在 target 事件套用 effect（見 common.py 註解）。同一事件多筆規則依陣列順序套用。",
+    "choice_feedback": {
+      "outcome_text": "選完立刻顯示的即時結果（1–3 句；延遲揭曉事件不劇透）",
+      "log_text": "人生紀錄用的短句"
+    },
+    "choice_label_rule": {
+      "max_chars": 15,
+      "blocklist": [
+        "騙",
+        "損失",
+        "賠",
+        "後悔",
+        "成功",
+        "失敗",
+        "才還",
+        "被抓",
+        "識破",
+        "真相",
+        "原來",
+        "結果",
+        "紅燈",
+        "警訊",
+        "＝",
+        "不合理",
+        "太緊張",
+        "正常工作",
+        "嚇壞",
+        "崩潰",
+        "倒會",
+        "已讀不回"
+      ],
+      "rule": "選項標籤只描述玩家行動，不寫結果、不做道德評價；結果放在 outcome_text 或之後的揭曉事件"
+    },
+    "ending_premise_notes": "endings[].requires_flags／forbids_flags 宣告結局文字預設的前提（validate.py 窮舉路徑檢查）。text_variants[]：{when:{flags_all,flags_none}, text, requires_flags?, forbids_flags?}，引擎依序取第一個 when 成立的變體取代 text；都不成立用 text。",
+    "help_resources_rule": "v4.7：每個結局都有 help_resources（至少 165）；有心理傷害的結局加 1925／1995；車手線刑事相關結局加法律扶助基金會 412-8518",
+    "cross_line_mode_rule": "cross_line_modifiers[].mode：all＝單線與合併模式都會套用；standalone_only＝合併模式下進場年齡範圍內拿不到該 flag，實際上只會在單線模式觸發（引擎不需特別處理，條件本來就不成立）；validate／combined 只列為 info",
+    "mental_wear": {
+      "delta": -2,
+      "applies_to": "grid 為 yellow／red 的選項（含 random 分支、解鎖選項）",
+      "design_assumption": true,
+      "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
+    },
+    "subtitle": "假網拍線"
+  },
+  "ending_rules": {
+    "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v4.4：SILENT_COLLAPSE 0.5 → CS_DRAINED 1 …）",
+    "fallback": "END_SAFE",
+    "condition_grammar": {
+      "flags_all": "全部都要有",
+      "flags_any": "至少一個",
+      "flags_none": "都不能有",
+      "any_of": "子條件任一成立"
+    },
+    "stat_flags": [
+      {
+        "flag": "savings_depleted",
+        "stats": {
+          "存款": {
+            "lte": 0
+          }
+        },
+        "text": "你的存款歸零了。"
+      },
+      {
+        "flag": "mental_collapse",
+        "stats": {
+          "心理": {
+            "lte": 20
+          }
+        },
+        "text": "長期的壓力讓你的心理狀態跌到谷底（心理≤20）。"
+      },
+      {
+        "flag": "isolated",
+        "stats": {
+          "人際": {
+            "lte": 15
+          }
+        },
+        "text": "你和身邊的人越來越疏遠，沒有人能拉你一把（人際≤15）。"
+      },
+      {
+        "flag": "has_support",
+        "stats": {
+          "人際": {
+            "gte": 20
+          }
+        },
+        "text": "身邊還有願意幫你的人（人際≥20）。"
+      }
+    ]
+  },
+  "stats": [
+    {
+      "label": "電信網路詐欺類型第1名：假網拍詐騙",
+      "value": 3513,
+      "unit": "件",
+      "period": "115年9月全月",
+      "verified": true,
+      "verify_note": "2026-10-23 依儀表板截圖核對，與 fromnineon 的 3,513 件一致；官方來源改為 165 儀表板；截圖 165dashboard/04_fraud_type_top5_115-09.webp",
+      "source": "https://165dashboard.tw/",
+      "loss": "3億2,066萬元",
+      "note": "占當月件數32.6%、財損8.1%（10,775件、39億3,572.3萬換算後一致）",
+      "self_calculated": false
+    },
+    {
+      "label": "假網拍詐騙每件平均損失（自行換算）",
+      "value": 9.1,
+      "unit": "萬元/件",
+      "period": "115年9月全月",
+      "verified": true,
+      "self_calculated": true,
+      "verify_note": "自行換算：儀表板財損 32,066 萬 ÷ 3,513 件；儀表板本身未提供每件平均損失",
+      "source": "https://165dashboard.tw/"
+    },
+    {
+      "label": "全國詐騙案件受理數",
+      "value": 10775,
+      "unit": "件",
+      "period": "115年9月（2026-09）全月",
+      "verified": true,
+      "verify_note": "2026-10-23 依儀表板截圖讀圖核對（官方來源）；截圖 165dashboard/05_monthly_115-09_summary.webp",
+      "source": "https://165dashboard.tw/",
+      "prev": "115年8月 10,652件，+1.2%（+123件）",
+      "self_calculated": false
+    },
+    {
+      "label": "全國詐騙財產損失",
+      "value": 39.35723,
+      "unit": "億元",
+      "period": "115年9月（2026-09）全月",
+      "verified": true,
+      "verify_note": "2026-10-23 依儀表板截圖讀圖核對（官方來源）；截圖 165dashboard/05_monthly_115-09_summary.webp",
+      "source": "https://165dashboard.tw/",
+      "display": "39億3,572.3萬",
+      "prev": "115年8月 41億757.7萬，-4.2%",
+      "self_calculated": false
+    },
+    {
+      "label": "2025年7月起，假網拍每月件數都多於假投資",
+      "value": "敘述",
+      "period": "2025年7月至2026年9月",
+      "verified": true,
+      "verify_note": "fromnineon 整理；165 儀表板未提供此期間數字，尚無官方原始來源（儀表板只有115-09、115-10月資料）",
+      "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
+      "self_calculated": false
+    },
+    {
+      "label": "18–23歲詐欺被害人中，假網路拍賣（購物）占比",
+      "value": 37.27,
+      "unit": "%",
+      "period": "2026年1–7月，警政統計通報",
+      "verified": true,
+      "verify_note": "fromnineon 整理；165 儀表板未提供此期間數字，尚無官方原始來源（儀表板沒有年齡分布）",
+      "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
+      "self_calculated": false
+    }
+  ],
+  "stats_sources": [
+    {
+      "name": "韭點開始整理165資料",
+      "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+    },
+    {
+      "name": "165打詐儀表板（內政部警政署，官方；更新日期115-10-23，依瀏覽器截圖讀數）",
+      "url": "https://165dashboard.tw/",
+      "verified": true,
+      "verify_note": "前端渲染，數字依 2026-10-23 瀏覽器截圖讀圖；儀表板只提供單日與月資料（115-09、115-10），沒有年度總數、年齡分布或每件平均損失"
+    }
+  ],
+  "player_init": {
+    "stats": {
+      "存款": {
+        "min": 0,
+        "init_range": [
+          20000,
+          200000
+        ]
+      },
+      "警覺": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          15,
+          45
+        ]
+      },
+      "人際": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          30,
+          70
+        ]
+      },
+      "心理": {
+        "min": 0,
+        "max": 100,
+        "init_range": [
+          40,
+          80
+        ]
+      }
+    },
+    "county_pool": [
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "臺中市",
+      "臺南市",
+      "高雄市",
+      "新竹市",
+      "新竹縣",
+      "基隆市",
+      "苗栗縣",
+      "彰化縣",
+      "南投縣",
+      "雲林縣",
+      "嘉義市",
+      "嘉義縣",
+      "屏東縣",
+      "宜蘭縣",
+      "花蓮縣",
+      "臺東縣",
+      "澎湖縣",
+      "金門縣",
+      "連江縣"
+    ],
+    "family_pool": [
+      {
+        "name": "小康",
+        "存款_mod": 0
+      },
+      {
+        "name": "單親",
+        "存款_mod": -0.3,
+        "心理": -5
+      },
+      {
+        "name": "務農",
+        "人際": 5
+      },
+      {
+        "name": "經商",
+        "存款_mod": 0.5
+      }
+    ],
+    "start_event": "birth",
+    "flags": []
+  },
+  "events": [
+    {
+      "id": "birth",
+      "age": 0,
+      "text": "你出生在{county}的{family}家庭。這一生只有一次，選擇無法重來。",
+      "choices": [
+        {
+          "text": "長大",
+          "effects": {},
+          "next": "teen",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在家人的懷裡長大。",
+          "log_text": "出生"
+        }
+      ],
+      "sources": [
+        {
+          "name": "縣市池依據：年度縣市分布（韭點開始整理165資料）",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/",
+          "verified": true,
+          "verify_note": "年度縣市分布：165 儀表板未提供此期間數字，尚無官方原始來源"
+        },
+        {
+          "name": "縣市池補充：165打詐儀表板各縣市數據統計（官方，115-09、115-10 月資料）",
+          "url": "https://165dashboard.tw/",
+          "verified": true,
+          "verify_note": "儀表板只有月資料；年度縣市分布仍取自 fromnineon（165 儀表板未提供此期間數字，尚無官方原始來源）"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "teen",
+      "age": 17,
+      "text": "你加入了好幾個二手拍賣和追星社團，每天都有人喊「私」。",
+      "choices": [
+        {
+          "text": "記住走官方管道",
+          "effects": {
+            "警覺": 8
+          },
+          "next": "ticket",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把「走官方管道」記在心裡。",
+          "log_text": "記住交易走官方管道"
+        },
+        {
+          "text": "私下交易比較方便",
+          "effects": {},
+          "next": "ticket",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你開始習慣在社團裡喊「私」。",
+          "log_text": "覺得私下交易比較方便"
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 16,
+          "url": "https://www.dcard.tw/f/entertainer/p/231476276"
+        },
+        {
+          "name": "韭點開始整理165資料",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "ticket",
+      "age": 20,
+      "text": "你最愛的歌手開演唱會，官方一下就賣光。社團裡有人說：『臨時不能去，原價讓票，私訊。』還傳來訂單截圖。",
+      "choices": [
+        {
+          "text": "只走官方轉售",
+          "effects": {
+            "警覺": 12
+          },
+          "next": "cheap_item",
+          "flags": {
+            "set": [
+              "spotted_ticket"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你守在官方轉售頁面，終於搶到一張。價格是原價。",
+          "log_text": "從官方管道買票"
+        },
+        {
+          "text": "放大截圖仔細看",
+          "effects": {
+            "警覺": 10
+          },
+          "next": "cheap_item",
+          "flags": {
+            "set": [
+              "spotted_ticket"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把截圖放大，越看越不對勁，就沒有回覆了。",
+          "log_text": "識破假讓票截圖"
+        },
+        {
+          "text": "先匯款11,400元",
+          "effects": {
+            "存款": -11400,
+            "心理": -12
+          },
+          "next": "ticket_blocked",
+          "flags": {
+            "set": [
+              "paid_ticket",
+              "missed_ticket_screenshot",
+              "missed_transfer_only"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你匯了11,400元，傳了匯款截圖給對方。對方回了一個「OK」。",
+          "log_text": "匯款買私下讓票",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 16,
+          "url": "https://www.dcard.tw/f/entertainer/p/231476276"
+        },
+        {
+          "story_id": 17,
+          "url": "https://www.dcard.tw/f/mayday/p/257524987"
+        },
+        {
+          "story_id": 18,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/241739469"
+        }
+      ],
+      "presentation": "chat",
+      "pressure": {
+        "timer_s": 30,
+        "can_disable": true,
+        "label": "「很多人在問」"
+      },
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "讓票的小雨",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "臨時不能去，原價讓票～",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "（傳來訂單截圖）",
+            "delay_ms": 1000,
+            "type": "image"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "只收轉帳喔，很多人在問，先匯先贏",
+            "delay_ms": 900,
+            "type": "text"
+          },
+          {
+            "id": "m4",
+            "from": "player",
+            "text": "截圖上的字好像有點歪……",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ticket_blocked",
+      "age": 20,
+      "text": "匯款後，對方封鎖了你。你這才發現，社團裡還有好幾個人買了同一組票號。",
+      "choices": [
+        {
+          "text": "留紀錄，打165報案",
+          "effects": {
+            "警覺": 10,
+            "心理": -5
+          },
+          "next": "cheap_item",
+          "flags": {
+            "set": [
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把對話和匯款紀錄整理好去報案，員警幫你做了筆錄。",
+          "log_text": "被封鎖後報案"
+        },
+        {
+          "text": "算了",
+          "effects": {
+            "心理": -10
+          },
+          "next": "cheap_item",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把對話刪掉，假裝這件事沒發生過。",
+          "log_text": "被騙票錢，沒報案"
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 16,
+          "url": "https://www.dcard.tw/f/entertainer/p/231476276"
+        },
+        {
+          "story_id": 17,
+          "url": "https://www.dcard.tw/f/mayday/p/257524987"
+        },
+        {
+          "story_id": 18,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/241739469"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "line_like",
+        "app_display_name": "聊聊 Chatto（虛構）",
+        "theme": "fictional_green_free",
+        "contact": {
+          "name": "讓票的小雨",
+          "avatar": "placeholder_silhouette",
+          "status": "—"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "player",
+            "text": "我匯好了，票什麼時候給我？",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "system",
+            "text": "你無法傳送訊息給此用戶",
+            "delay_ms": 1500,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（社團裡好幾個人說買到同一組票號……）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cheap_item",
+      "age": 23,
+      "text": "社群平台上有人用原價賣你找很久的限量商品。賣家說「常被放鳥」，要你先點他給的超商寄貨平台連結付運費。網址看起來很像，但又好像哪裡怪怪的。",
+      "choices": [
+        {
+          "text": "從官方App下單",
+          "effects": {
+            "警覺": 12
+          },
+          "next": "fake_cs",
+          "flags": {
+            "set": [
+              "spotted_link"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你在官方App裡找不到這個賣場，就沒有下單。",
+          "log_text": "不點陌生付款連結"
+        },
+        {
+          "text": "點連結付38元運費",
+          "effects": {
+            "存款": -38,
+            "心理": -2
+          },
+          "next": "fee_more",
+          "flags": {
+            "set": [
+              "paid_small",
+              "missed_fake_link"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你付了38元運費，頁面轉了好幾圈。",
+          "log_text": "付了陌生連結的運費",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 15,
+          "url": "https://www.dcard.tw/f/mood/p/260348727"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "shop_like",
+        "app_display_name": "拍拍集（虛構）",
+        "theme": "fictional_orange_free",
+        "contact": {
+          "name": "賣家 小晴",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "限量款原價給你～我常被放鳥，要先付運費喔",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "（傳來一個看起來很像官方的超商寄貨連結）",
+            "delay_ms": 1000,
+            "type": "link"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "網址好像跟平常的不太一樣？",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fee_more",
+      "age": 23,
+      "text": "付款後，畫面跳出「賣場未完成實名制，交易被凍結」，要你聯繫「客服」處理。付款的收款戶名竟然是某個基金會。",
+      "choices": [
+        {
+          "text": "停止，打給銀行",
+          "effects": {
+            "警覺": 12
+          },
+          "next": "fake_cs",
+          "flags": {
+            "set": [
+              "stopped_early"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你掛上銀行的電話，對方說這種頁面就是詐騙。",
+          "log_text": "戶名不對，停止付款"
+        },
+        {
+          "text": "聯繫「客服」",
+          "effects": {
+            "警覺": -5,
+            "心理": -2
+          },
+          "next": "cs_call",
+          "flags": {
+            "set": [
+              "missed_account_name"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你點了「聯繫客服」，對方很快就打來了。",
+          "log_text": "聯繫假客服",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 15,
+          "url": "https://www.dcard.tw/f/mood/p/260348727"
+        },
+        {
+          "story_id": 14,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1709868996.A.A05.html"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "shop_like",
+        "app_display_name": "拍拍集（虛構）",
+        "theme": "fictional_orange_free",
+        "contact": {
+          "name": "賣家 小晴",
+          "avatar": "placeholder_silhouette",
+          "status": "在線上"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "system",
+            "text": "賣場未完成實名制，交易已凍結",
+            "delay_ms": 800,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "你要聯繫客服解凍喔，不然錢會卡住",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（付款戶名怎麼是某個基金會？）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fake_cs",
+      "age": 26,
+      "text": "某天，你接到自稱網購平台客服的電話，說你的訂單「誤設成分期」，接著又有「銀行專員」來電，來電顯示看起來很正式。",
+      "choices": [
+        {
+          "text": "掛斷，自己查號回撥",
+          "effects": {
+            "警覺": 12
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "spotted_cs"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你掛斷後自己查了官方電話撥過去，對方說根本沒有這筆分期。",
+          "log_text": "掛斷，自己回撥確認"
+        },
+        {
+          "text": "照對方的步驟做",
+          "effects": {
+            "警覺": -10,
+            "心理": -2
+          },
+          "next": "cs_call",
+          "flags": {
+            "set": [
+              "missed_installment_call"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "outcome_text": "你拿著手機，照著對方的指示一步步走。",
+          "log_text": "照假客服的步驟處理",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 19,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
+        },
+        {
+          "story_id": 20,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html"
+        },
+        {
+          "story_id": 14,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1709868996.A.A05.html"
+        }
+      ],
+      "presentation": "chat",
+      "chat": {
+        "app": "phone_call",
+        "app_display_name": "來電",
+        "theme": "neutral",
+        "contact": {
+          "name": "自稱 網購平台客服",
+          "avatar": "placeholder_silhouette",
+          "status": "通話中"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "您好，您的訂單被誤設成分期付款",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "等一下會有銀行專員打給您協助取消",
+            "delay_ms": 1400,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "player",
+            "text": "（來電顯示看起來很正式……）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cs_call",
+      "age": 26,
+      "text": "「專員」語氣很急，說不處理每個月都會被扣款，要你到ATM或網銀照指示操作，還一直要你別掛電話。",
+      "choices": [
+        {
+          "text": "掛斷，打165",
+          "effects": {
+            "警覺": 15,
+            "心理": -5
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "stopped_early"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你掛斷電話，自己打了165。對方說這是常見的假客服手法：「你剛剛差一點。」你沒有損失。",
+          "log_text": "掛斷，打165確認"
+        },
+        {
+          "text": "照做，按確認",
+          "effects": {
+            "存款": -15000,
+            "心理": -27
+          },
+          "next": "aftermath",
+          "flags": {
+            "set": [
+              "fake_cs_paid",
+              "missed_atm_instruction",
+              "missed_stay_on_line"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "你照著指示按了好幾次確認。幾分鐘後，餘額少了一大截。",
+          "log_text": "照指示操作了好幾次",
+          "mental_wear": -2
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 19,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
+        },
+        {
+          "story_id": 20,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html"
+        }
+      ],
+      "presentation": "chat",
+      "pressure": {
+        "timer_s": 25,
+        "can_disable": true,
+        "label": "「今天不處理就會扣款」"
+      },
+      "chat": {
+        "app": "phone_call",
+        "app_display_name": "來電",
+        "theme": "neutral",
+        "contact": {
+          "name": "自稱 銀行專員",
+          "avatar": "placeholder_silhouette",
+          "status": "通話中"
+        },
+        "messages": [
+          {
+            "id": "m1",
+            "from": "scammer",
+            "text": "不處理的話，每個月都會被扣款喔",
+            "delay_ms": 900,
+            "type": "text"
+          },
+          {
+            "id": "m2",
+            "from": "scammer",
+            "text": "我現在一步一步帶您處理，很快的",
+            "delay_ms": 1200,
+            "type": "text"
+          },
+          {
+            "id": "m3",
+            "from": "scammer",
+            "text": "過程中千萬不要掛電話",
+            "delay_ms": 700,
+            "type": "text"
+          },
+          {
+            "id": "m4",
+            "from": "player",
+            "text": "（好急……可是哪裡怪怪的）",
+            "delay_ms": 1200,
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "aftermath",
+      "age": 26,
+      "text": "操作完後，餘額少了一大截。路人幫你打了165，但錢已經轉走，來不及攔下。",
+      "choices": [
+        {
+          "text": "報案、凍結帳戶",
+          "effects": {
+            "心理": 5
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "reported"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你報了案，銀行幫你凍結帳戶。看著餘額，你還是很難受。",
+          "log_text": "報案，凍結帳戶"
+        },
+        {
+          "text": "不想面對",
+          "effects": {
+            "心理": -10,
+            "人際": -5
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你把手機蓋在桌上，不想再看。",
+          "log_text": "不想面對被騙的事"
+        }
+      ],
+      "sources": [
+        {
+          "story_id": 19,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
+        }
+      ],
+      "presentation": "card"
+    },
+    {
+      "id": "END_ROUTER",
+      "age": 30,
+      "text": "多年後回頭看這段經歷……（引擎依 ending_rules 自動判定結局，不顯示選項）",
+      "choices": [
+        {
+          "text": "回顧",
+          "effects": {},
+          "next": "__EVAL__",
+          "flags": {
+            "set": [],
+            "require": []
+          },
+          "grid": "green",
+          "outcome_text": "你回頭看這段經歷。",
+          "log_text": "回顧"
+        }
+      ],
+      "sources": [
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "router": true,
+      "presentation": "card"
+    }
+  ],
+  "endings": [
+    {
+      "id": "END_CS_DRAINED",
+      "priority": 1,
+      "conditions": {
+        "flags_all": [
+          "fake_cs_paid"
+        ]
+      },
+      "text": "一通「解除分期」的電話，讓你在幾分鐘內損失了近1.5萬元。你本來以為自己很精明。",
+      "reason_texts": [
+        {
+          "flag": "savings_depleted",
+          "text": "這筆錢是你全部的存款（存款≤0）。"
+        },
+        {
+          "flag": "mental_collapse",
+          "text": "你一直責怪自己，心理狀態跌到谷底（心理≤20）。"
+        },
+        {
+          "flag": "reported",
+          "text": "你報了案，但錢已經轉走，追不回來。"
+        }
+      ],
+      "case_card": {
+        "story_id": 19,
+        "summary": "一位自認精明的網購者接到假客服說「誤設12期」，接著假銀行主任來電，要他到ATM操作「測試」，被騙近1.5萬；路人幫忙打165，但來不及凍結。",
+        "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "ATM和網銀沒有「解除分期」功能",
+        "來電要你別掛電話、照步驟操作",
+        "客服和銀行輪流打來"
+      ],
+      "sources": [
+        {
+          "story_id": 19,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
+        },
+        {
+          "story_id": 20,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html"
+        },
+        {
+          "name": "韭點開始整理165資料",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "被一通電話帶走的人",
+      "title_emoji": "📞",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": 32.6,
+        "formula": "3513/10775×100 = 32.6%",
+        "meaning": "115年9月全國受理的詐騙案件中，假網拍所占比例；與玩家拿到哪個結局無關",
+        "period": "115年9月（2026-09）全月",
+        "source": "https://165dashboard.tw/",
+        "verified": true,
+        "verify_note": "165 儀表板截圖 04_fraud_type_top5_115-09.webp、05_monthly_115-09_summary.webp；自行換算；儀表板沒有說明「假客服解除分期」案件是否歸在假網拍類，這裡依民間常見歸類引用，待核實",
+        "display": "115 年 9 月全國受理的詐騙案中，約 33% 是假網拍"
+      },
+      "share_text": "一通「解除分期」的電話，幾分鐘就騙走我的錢。",
+      "rarity_key": "shop_END_CS_DRAINED",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "fake_cs_paid"
+      ],
+      "forbids_flags": [],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_TICKET_LOST",
+      "priority": 2,
+      "conditions": {
+        "flags_all": [
+          "paid_ticket"
+        ]
+      },
+      "text": "你沒看到那場演唱會，還損失了一萬多元。",
+      "reason_texts": [
+        {
+          "flag": "reported",
+          "text": "你報了案，但訴訟很漫長。"
+        }
+      ],
+      "case_card": {
+        "story_id": 18,
+        "summary": "一名大學生在網路上買原價讓票，匯款11,400元後被封鎖，報案後等待開庭；網友提醒收款的可能是人頭帳戶。",
+        "url": "https://www.dcard.tw/f/anti_fraud/p/241739469",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "原價讓熱門票，只收匯款",
+        "訂單截圖有修圖痕跡",
+        "沒有透過官方轉售"
+      ],
+      "sources": [
+        {
+          "story_id": 18,
+          "url": "https://www.dcard.tw/f/anti_fraud/p/241739469"
+        },
+        {
+          "story_id": 16,
+          "url": "https://www.dcard.tw/f/entertainer/p/231476276"
+        },
+        {
+          "story_id": 17,
+          "url": "https://www.dcard.tw/f/mayday/p/257524987"
+        },
+        {
+          "name": "韭點開始整理165資料",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "錯過演唱會的人",
+      "title_emoji": "🎫",
+      "grid_color": "red",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": 32.6,
+        "formula": "3513/10775×100 = 32.6%",
+        "meaning": "115年9月全國受理的詐騙案件中，假網拍所占比例；與玩家拿到哪個結局無關",
+        "period": "115年9月（2026-09）全月",
+        "source": "https://165dashboard.tw/",
+        "verified": true,
+        "verify_note": "165 儀表板截圖 04_fraud_type_top5_115-09.webp、05_monthly_115-09_summary.webp；自行換算",
+        "display": "115 年 9 月全國受理的詐騙案中，約 33% 是假網拍"
+      },
+      "share_text": "我沒看到演唱會，還賠了一萬多。",
+      "rarity_key": "shop_END_TICKET_LOST",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "text_variants": [
+        {
+          "when": {
+            "label": "reported",
+            "flags_all": [
+              "reported"
+            ]
+          },
+          "requires_flags": [
+            "reported"
+          ],
+          "text": "你沒看到那場演唱會，還損失了一萬多元。報案之後要等開庭，錢遲遲拿不回來。"
+        },
+        {
+          "when": {
+            "label": "silent",
+            "flags_none": [
+              "reported"
+            ]
+          },
+          "forbids_flags": [
+            "reported"
+          ],
+          "text": "你沒看到那場演唱會，還損失了一萬多元。你覺得丟臉沒有報案，這筆錢就這樣不見了。"
+        }
+      ],
+      "requires_flags": [
+        "paid_ticket"
+      ],
+      "forbids_flags": [
+        "fake_cs_paid"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    },
+    {
+      "id": "END_SMALL_FEE",
+      "priority": 3,
+      "conditions": {
+        "flags_all": [
+          "paid_small"
+        ]
+      },
+      "text": "你只損失了幾十元，但差一點就被一步步引到更大的陷阱裡。",
+      "reason_texts": [
+        {
+          "flag": "stopped_early",
+          "text": "你在第二個警訊出現時就停下來了。"
+        }
+      ],
+      "case_card": {
+        "story_id": 15,
+        "summary": "一位買家在社群平台看到有人用原價賣限量吊飾，被要求點假的超商寄貨平台連結先付運費38元；之後對方又說「沒有實名制」，要他繼續處理。他打給銀行，沒有再付款。",
+        "url": "https://www.dcard.tw/f/mood/p/260348727",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "賣家給的連結不是官方網址",
+        "收款戶名跟賣家對不上"
+      ],
+      "sources": [
+        {
+          "story_id": 15,
+          "url": "https://www.dcard.tw/f/mood/p/260348727"
+        },
+        {
+          "story_id": 14,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1709868996.A.A05.html"
+        },
+        {
+          "name": "韭點開始整理165資料",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "只付了運費的人",
+      "title_emoji": "📦",
+      "grid_color": "yellow",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": 32.6,
+        "formula": "3513/10775×100 = 32.6%",
+        "meaning": "115年9月全國受理的詐騙案件中，假網拍所占比例；與玩家拿到哪個結局無關",
+        "period": "115年9月（2026-09）全月",
+        "source": "https://165dashboard.tw/",
+        "verified": true,
+        "verify_note": "165 儀表板截圖 04_fraud_type_top5_115-09.webp、05_monthly_115-09_summary.webp；自行換算",
+        "display": "115 年 9 月全國受理的詐騙案中，約 33% 是假網拍"
+      },
+      "share_text": "我只損失幾十元，差點就掉進更大的坑。",
+      "rarity_key": "shop_END_SMALL_FEE",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [
+        "paid_small"
+      ],
+      "forbids_flags": [
+        "paid_ticket",
+        "fake_cs_paid"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        }
+      ]
+    },
+    {
+      "id": "END_SAFE",
+      "priority": 4,
+      "conditions": {
+        "flags_none": [
+          "paid_ticket",
+          "paid_small",
+          "fake_cs_paid"
+        ]
+      },
+      "text": "三次陷阱你都避開了。你把經驗分享到社團，提醒其他人。",
+      "case_card": {
+        "story_id": 20,
+        "summary": "一位網購者接到自稱網拍商店的電話說「設錯分期」，接著有顯示銀行真實號碼的來電，但他沒有照做，沒有受騙。",
+        "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html",
+        "note": "去識別化改寫，細節以原文為準"
+      },
+      "missed_red_flags": [
+        "你抓到了：原價讓票只收匯款、陌生付款連結、要求到ATM操作"
+      ],
+      "sources": [
+        {
+          "story_id": 20,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html"
+        },
+        {
+          "story_id": 16,
+          "url": "https://www.dcard.tw/f/entertainer/p/231476276"
+        },
+        {
+          "name": "韭點開始整理165資料",
+          "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
+        },
+        {
+          "name": "165全民防騙網（警政署，撥打165）",
+          "url": "https://165.npa.gov.tw/"
+        },
+        {
+          "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
+        }
+      ],
+      "title": "三關全破的人",
+      "title_emoji": "🛡",
+      "grid_color": "green",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": null,
+        "null_reason": "沒有受騙的人不會出現在受理統計中，沒有對應的官方數字",
+        "display": null
+      },
+      "share_text": "三個網購陷阱我都避開了。你呢？",
+      "rarity_key": "shop_END_SAFE",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "requires_flags": [],
+      "forbids_flags": [
+        "paid_ticket",
+        "paid_small",
+        "fake_cs_paid"
+      ],
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true,
+          "verify_note": "警政署 165 全民防騙網官方網址"
+        }
+      ]
+    },
+    {
+      "id": "END_SILENT_COLLAPSE",
+      "priority": 0.5,
+      "conditions": {
+        "flags_all": [
+          "fake_cs_paid",
+          "mental_collapse"
+        ],
+        "flags_none": [
+          "reported"
+        ]
+      },
+      "text": "你沒有報案，也沒有告訴任何人。你一直重播那通電話，覺得自己怎麼這麼笨；開始睡不著、吃不下，上課上班都出錯，連訊息都不想回。後來你終於撐不住，去看了身心科，才知道這是被騙後很常見的創傷反應，需要治療，也需要有人陪。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。",
+      "text_variants": [
+        {
+          "when": {
+            "label": "friend_noticed",
+            "flags_all": [
+              "has_support"
+            ]
+          },
+          "requires_flags": [
+            "has_support"
+          ],
+          "text": "你沒有報案，也沒有告訴任何人。你一直重播那通電話，覺得自己怎麼這麼笨；開始睡不著、吃不下。是朋友發現你不對勁，一直追問，你才哭著說出來。朋友陪你去報案、去看身心科，你才知道這是被騙後很常見的創傷反應，不是你的錯。如果你或身邊的人也有類似的感受：1925 安心專線（24小時免付費）、1995 生命線、165 反詐騙專線。被騙不是你的錯。"
+        }
+      ],
+      "reason_texts": [
+        {
+          "flag": "fake_cs_paid",
+          "text": "你照「客服」的指示操作，錢被轉走。"
+        },
+        {
+          "flag": "mental_collapse",
+          "text": "自責和羞愧讓你的心理狀態跌到谷底（心理≤20）。"
+        },
+        {
+          "flag": "isolated",
+          "text": "你把自己關起來，沒有人能拉你一把（人際≤15）。"
+        }
+      ],
+      "case_card": {
+        "summary": "這個結局目前沒有對應的真實個案：我們找不到手法明確是假網購或假客服、又記錄了求助後康復過程的公開報導，所以不放案例。精神科醫師的經驗是，多數詐騙受害者需要3個月到1年消化情緒，就醫並有親友陪伴會有幫助（見下方來源）。",
+        "note": "v4.4 審查修正：沒有合適的個案，不放案例"
+      },
+      "case_card_note": "找不到手法明確是假網購／假客服、又有求助後康復紀錄的公開個案，所以這個結局不放個案卡（v4.4 審查修正）",
+      "missed_red_flags": [
+        "真的客服不會叫你到ATM或網銀「解除分期」",
+        "接到電話要掛掉，自己打官方客服或165查證",
+        "被騙後不報案、不說出來，只會讓你一個人越陷越深"
+      ],
+      "sources": [
+        {
+          "name": "中央社：女子網戀遭詐自責憂鬱 醫籲注意情緒變化（2024-05-14）",
+          "url": "https://www.cna.com.tw/news/ahel/202405140092.aspx",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，依原文核對"
+        },
+        {
+          "name": "公視新聞網：財產遭騙自我批判致身心症狀 精神科醫師：詐騙憂鬱症增（2024-05-14）",
+          "url": "https://news.pts.org.tw/article/694944",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，依原文核對"
+        },
+        {
+          "name": "書田診所衛教新聞稿：誤信詐騙陷自責憂鬱（2024-05-14，含三名受害者個案）",
+          "url": "https://www.shutien.org.tw/pr_news_detail.aspx?newsid=1855&unitid=51",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200，依原文核對"
+        },
+        {
+          "name": "立法院法制局研究報告：詐欺案件中被害人保護制度之研究－以心理支持方案為中心",
+          "url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=%7E%2FFile%2FAttach%2F255779%2FFile_19861748.pdf",
+          "verified": false,
+          "verify_note": "未取得原文：curl 逾時，只依 WebSearch 搜尋摘錄核對（摘錄提到詐騙造成心理創傷、家庭破裂與社會排擠，沒有量化統計）；請人工開啟 PDF 確認"
+        },
+        {
+          "name": "台大社工所碩論：詐欺被害人之創傷反應與社會支持（華藝線上圖書館）",
+          "url": "https://www.airitilibrary.com/Article/Detail/U0023-0709201116234200",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200；研究指出社會支持越多，創傷反應越輕"
+        },
+        {
+          "story_id": 19,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
+        },
+        {
+          "story_id": 20,
+          "url": "https://www.ptt.cc/bbs/Bunco/M.1188225370.A.3CC.html"
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true
+        }
+      ],
+      "requires_flags": [
+        "fake_cs_paid",
+        "mental_collapse"
+      ],
+      "forbids_flags": [
+        "reported"
+      ],
+      "title": "一個人吞下所有自責的人",
+      "title_emoji": "🌫",
+      "grid_color": "red",
+      "rarity_key": "shop_END_SILENT_COLLAPSE",
+      "real_world_stat": {
+        "kind": "share_of_reported_cases",
+        "value_pct": 32.6,
+        "formula": "3513/10775×100 = 32.6%",
+        "meaning": "115年9月全國受理的詐騙案件中，假網拍所占比例；與玩家拿到哪個結局無關",
+        "period": "115年9月（2026-09）全月",
+        "source": "https://165dashboard.tw/",
+        "verified": true,
+        "verify_note": "165 儀表板截圖 04_fraud_type_top5_115-09.webp、05_monthly_115-09_summary.webp；自行換算；儀表板沒有說明「假客服解除分期」案件是否歸在假網拍類，這裡依民間常見歸類引用，待核實",
+        "display": "115 年 9 月全國受理的詐騙案中，約 33% 是假網拍",
+        "consequence_note": "165 儀表板與官方統計只分詐騙類型與財損，沒有『受騙後憂鬱／家庭失和／被親友切割』的分類或人數；下方類型比例只代表詐騙類型，不代表這個結局有多常見"
+      },
+      "share_text": "被騙之後我什麼都沒說，這是最錯的一步。",
+      "share_card": {
+        "format": "1080x1920",
+        "fields": [
+          "title",
+          "title_emoji",
+          "life_grid",
+          "real_world_stat.display",
+          "share_text",
+          "url"
+        ],
+        "spoiler_free": true
+      },
+      "help_resources": [
+        {
+          "name": "165反詐騙諮詢專線（警政署）",
+          "url": "https://165.npa.gov.tw/",
+          "verified": true
+        },
+        {
+          "name": "1925安心專線（衛福部，24小時免付費）",
+          "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        },
+        {
+          "name": "1995生命線協談專線",
+          "url": "https://www.life1995.org.tw/",
+          "verified": true,
+          "verify_note": "2026-10-23 curl HTTP 200"
+        }
+      ]
+    }
+  ],
+  "red_flag_texts": {
+    "missed_ticket_screenshot": "訂單截圖字沒對齊，主辦方也根本沒有電子票。",
+    "missed_transfer_only": "原價讓熱門票卻只收匯款，不走官方轉售。",
+    "missed_fake_link": "賣家給的付款連結不是官方網址。",
+    "missed_account_name": "收款戶名是一個基金會，跟賣家對不上。",
+    "missed_installment_call": "「誤設分期」的電話，是假網拍裡最常見的開場。",
+    "missed_atm_instruction": "ATM和網銀根本沒有「解除分期」功能。",
+    "missed_stay_on_line": "對方一直要你別掛電話，就是不讓你有時間查證。"
+  },
+  "red_flag_anchors": {
+    "missed_ticket_screenshot": [
+      {
+        "event": "ticket",
+        "message": "m2"
+      }
+    ],
+    "missed_transfer_only": [
+      {
+        "event": "ticket",
+        "message": "m3"
+      }
+    ],
+    "missed_fake_link": [
+      {
+        "event": "cheap_item",
+        "message": "m2"
+      }
+    ],
+    "missed_account_name": [
+      {
+        "event": "fee_more",
+        "message": "m3"
+      }
+    ],
+    "missed_installment_call": [
+      {
+        "event": "fake_cs",
+        "message": "m1"
+      }
+    ],
+    "missed_atm_instruction": [
+      {
+        "event": "cs_call",
+        "message": "m2"
+      }
+    ],
+    "missed_stay_on_line": [
+      {
+        "event": "cs_call",
+        "message": "m3"
+      }
+    ]
+  },
+  "cross_line_modifiers": [
+    {
+      "id": "shop_game_scammed",
+      "if_flags": {
+        "all": [
+          "game_scammed"
+        ]
+      },
+      "target": {
+        "event": "__INIT__"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 5
+        }
+      },
+      "note": "14歲遊戲交易被騙過，學過一次教訓（人生線 README 建議 +5）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_game_scammed_msg",
+      "if_flags": {
+        "all": [
+          "game_scammed"
+        ]
+      },
+      "target": {
+        "event": "ticket"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m3",
+          "from": "內心",
+          "text": "「先匯款」……跟國中買遊戲裝備被騙那次好像"
+        }
+      },
+      "note": "喚起舊經驗",
+      "mode": "all"
+    },
+    {
+      "id": "shop_pressure_signer",
+      "if_flags": {
+        "all": [
+          "pressure_signer"
+        ]
+      },
+      "target": {
+        "event": "cs_call"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": -8
+        }
+      },
+      "note": "容易在「當場決定」的壓力下照做",
+      "mode": "all"
+    },
+    {
+      "id": "shop_family_pass",
+      "if_flags": {
+        "all": [
+          "family_passphrase"
+        ]
+      },
+      "target": {
+        "event": "cs_call"
+      },
+      "effect": {
+        "type": "unlock_choice",
+        "choice": {
+          "text": "掛斷，打給家人確認",
+          "effects": {
+            "警覺": 15,
+            "人際": 3
+          },
+          "next": "END_ROUTER",
+          "flags": {
+            "set": [
+              "stopped_early"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "cross_line": true,
+          "outcome_text": "你掛斷電話，打給家人說了通關密語。家人說：「那一定是假的。」",
+          "log_text": "用家庭通關密語確認"
+        }
+      },
+      "note": "本線沒有假親友事件；通關密語的『先掛斷、再查證』習慣套用在假客服來電",
+      "mode": "standalone_only",
+      "mode_note": "合併模式（人生線中途插入）下，這個 flag 在本線進場年齡範圍內還不可能拿到（family_passphrase 35歲才設定，假網拍線 22–28歲進場），所以只在單獨遊玩本線（standalone，人生線 flag 由前一局整段人生帶入）時生效；保留給單線模式。combined.py 會檢查：確實觸發不了才可標 standalone_only。"
+    },
+    {
+      "id": "shop_evidence",
+      "if_flags": {
+        "all": [
+          "evidence_habit"
+        ]
+      },
+      "target": {
+        "event": "ticket_blocked",
+        "choice": 0
+      },
+      "effect": {
+        "type": "rewrite_text",
+        "field": "choice_text",
+        "text": "帶齊紀錄去報案"
+      },
+      "note": "保留證據讓報案更完整（不保證追回）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_lent",
+      "if_flags": {
+        "all": [
+          "lent_money_lost"
+        ]
+      },
+      "target": {
+        "event": "aftermath"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "心理": -5
+        }
+      },
+      "note": "之前借錢被倒，再次損失更難承受",
+      "mode": "all"
+    },
+    {
+      "id": "shop_checks_first",
+      "if_flags": {
+        "all": [
+          "checks_first"
+        ]
+      },
+      "target": {
+        "event": "ticket"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "查證提示",
+          "text": "小時候的習慣浮現：先確認再說。這張截圖能向主辦方查證嗎？"
+        }
+      },
+      "note": "人生線 README 建議：第一個可疑訊息自動顯示查證提示",
+      "mode": "all"
+    },
+    {
+      "id": "shop_otp_link",
+      "if_flags": {
+        "all": [
+          "otp_scammed"
+        ]
+      },
+      "target": {
+        "event": "cheap_item"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 5
+        }
+      },
+      "note": "小時候傳過驗證碼被騙；遇到連結題警覺 +5（人生線 README 建議）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_card_scammed",
+      "if_flags": {
+        "all": [
+          "card_scammed"
+        ]
+      },
+      "target": {
+        "event": "ticket"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "回憶",
+          "text": "你想起小時候換到的那張「超限量卡」，最後發現只是吊牌。沒親眼確認過的東西，先別急著換。"
+        }
+      },
+      "note": "童年換卡被騙；私下交易、只看截圖的情境多一個提醒",
+      "mode": "all"
+    },
+    {
+      "id": "shop_card_scammed_stat",
+      "if_flags": {
+        "all": [
+          "card_scammed"
+        ]
+      },
+      "target": {
+        "event": "ticket"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "警覺": 3
+        }
+      },
+      "note": "同上，警覺 +3",
+      "mode": "all"
+    },
+    {
+      "id": "shop_trust_repaid",
+      "if_flags": {
+        "all": [
+          "trust_repaid"
+        ]
+      },
+      "target": {
+        "event": "aftermath"
+      },
+      "effect": {
+        "type": "stats_delta",
+        "stats": {
+          "人際": 5
+        }
+      },
+      "note": "信任曾被好好回報過，被騙之後比較願意開口跟朋友說（人際 +5，較容易維持 has_support）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_sister_math",
+      "if_flags": {
+        "all": [
+          "counted_change"
+        ]
+      },
+      "target": {
+        "event": "fee_more"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m2",
+          "from": "回憶",
+          "text": "你想起姐姐那句「我只花了50，所以還你50」。聽起來合理的話，也要自己算一次。"
+        }
+      },
+      "note": "童年當場算出姐姐少還50；付款後被要求「處理凍結」時多一個提醒（不改數值）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_fake_toy",
+      "if_flags": {
+        "all": [
+          "fake_toy"
+        ]
+      },
+      "target": {
+        "event": "cheap_item"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "system",
+          "text": "（你想起以前買到假玩具的事。）"
+        }
+      },
+      "note": "t43u toy_seller v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_fake_card",
+      "if_flags": {
+        "all": [
+          "card_scammed"
+        ]
+      },
+      "target": {
+        "event": "cheap_item"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "system",
+          "text": "（你想起以前換卡片被騙的事。）"
+        }
+      },
+      "note": "t43u card_swap v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_fake_sticker",
+      "if_flags": {
+        "all": [
+          "fake_sticker"
+        ]
+      },
+      "target": {
+        "event": "ticket"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "system",
+          "text": "（你想起以前用卡片換一整疊貼紙被騙的事。）"
+        }
+      },
+      "note": "t43u sticker_trade v1.2（寫手提供，待查證）",
+      "mode": "all"
+    },
+    {
+      "id": "shop_group_buy",
+      "if_flags": {
+        "all": [
+          "paid_group_buy"
+        ]
+      },
+      "target": {
+        "event": "cheap_item"
+      },
+      "effect": {
+        "type": "add_interrupt",
+        "interrupt": {
+          "at": "m1",
+          "from": "system",
+          "text": "（你想起以前團購先付錢後貨沒到的事。）"
+        }
+      },
+      "note": "t43u group_buy v1.2（寫手提供，待查證）",
+      "mode": "all"
+    }
+  ]
+}
