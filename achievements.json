@@ -2600,7 +2600,7 @@
       "line": "life",
       "event": "fake_police",
       "choice_index": 0,
-      "text": "掛斷，打165"
+      "text": "掛斷，自己打給警局"
      }
     ],
     "forbids_flags": [],
@@ -3334,19 +3334,19 @@
      "life:criminal_record"
     ],
     "forbids_endings": [
-     "mule:END_RECORD",
      "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
      "mule:END_CUT_OFF",
-     "shopping:END_TICKET_LOST",
-     "shopping:END_SMALL_FEE",
-     "shopping:END_SILENT_COLLAPSE",
+     "mule:END_RECORD",
      "shopping:END_CS_DRAINED",
-     "investment:END_COLLAPSE",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SILENT_COLLAPSE",
+     "shopping:END_SMALL_FEE",
+     "investment:END_ALL_LOST",
      "investment:END_DEBT",
-     "investment:END_BROKE",
      "investment:END_FAMILY_RIFT",
-     "investment:END_ALL_LOST"
+     "investment:END_BROKE",
+     "investment:END_COLLAPSE"
     ],
     "min_age_lived": 40
    },
@@ -3707,24 +3707,24 @@
      "life:life_halted"
     ],
     "forbids_endings": [
-     "mule:END_RECORD",
      "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
      "mule:END_CUT_OFF",
-     "shopping:END_TICKET_LOST",
-     "shopping:END_SMALL_FEE",
-     "shopping:END_SILENT_COLLAPSE",
+     "mule:END_RECORD",
      "shopping:END_CS_DRAINED",
-     "investment:END_COLLAPSE",
-     "investment:END_DEBT",
-     "investment:END_BROKE",
-     "investment:END_FAMILY_RIFT",
+     "shopping:END_TICKET_LOST",
+     "shopping:END_SILENT_COLLAPSE",
+     "shopping:END_SMALL_FEE",
      "investment:END_ALL_LOST",
+     "investment:END_DEBT",
+     "investment:END_FAMILY_RIFT",
+     "investment:END_BROKE",
+     "investment:END_COLLAPSE",
      "romance:END_RM_COLLAPSE",
      "romance:END_RM_DEEP",
+     "marriage:END_MR_SILENT",
      "marriage:END_MR_PAID",
      "marriage:END_MR_COLLAPSE",
-     "marriage:END_MR_SILENT",
      "parent:END_PA_SILENT",
      "parent:END_PA_HUSH",
      "parent:END_PA_COLLAPSE"
@@ -4051,7 +4051,7 @@
       "line": "life",
       "event": "fake_police",
       "choice_index": 0,
-      "text": "掛斷，打165"
+      "text": "掛斷，自己打給警局"
      }
     ],
     "forbids_flags": [],
@@ -4346,6 +4346,33 @@
    "source": [
     {
      "ref": "life:END_LOAN_FIRST",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ACCOUNT_LENT",
+   "category": "ending_codex",
+   "name": "我只是借了帳戶",
+   "description": "圖鑑記錄：結局「我只是借了帳戶」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_ACCOUNT_LENT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_ACCOUNT_LENT",
      "from": "stage-pool.lie_endings",
      "name": "謊言連結結局卡（寫手提供，待查證）",
      "url": null

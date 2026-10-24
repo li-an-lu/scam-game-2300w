@@ -248,7 +248,10 @@ function render(delta) {
   let fill = '';
   if (e.age - lastAge > 1) {
     const years = [...Array(Math.min(3, e.age - lastAge - 1))].map(() => lastAge + 1 + Math.floor(Math.random() * (e.age - lastAge - 1))).sort((a, b) => a - b);
-    fill = [...new Set(years)].map(y => `<div class="yearfill">${y} 歲　${(p => p[Math.floor(Math.random() * p.length)])(fillerPool())}</div>`).join('');
+    fill = [...new Set(years)].map(y => {   // v8：填空句依年齡篩選（字串＝不限年齡；物件＝{text,min_age,max_age}）
+      const p = fillerPool().filter(f => typeof f === 'string' || ((f.min_age ?? 0) <= y && y <= (f.max_age ?? 999)));
+      const f = p.length ? p[Math.floor(Math.random() * p.length)] : FALLBACK_FILLER[0];
+      return `<div class="yearfill">${y} 歲　${esc(typeof f === 'string' ? f : f.text)}</div>`; }).join('');
   }
   lastAge = e.age;
   const seen = skipSeen() && seenStore().has(e.id); markSeen(e.id);

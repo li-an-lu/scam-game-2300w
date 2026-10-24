@@ -66,7 +66,10 @@
       "design_assumption": true,
       "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
     },
-    "subtitle": "假網拍線"
+    "subtitle": "假網拍線",
+    "v8": {
+      "stat_scale": "內部 0–100，畫面 0–10（display_max）；警覺／人際／心理 的變化量皆為 10 的倍數（v8 由 apply_v8.py 四捨五入，非零至少 ±10）"
+    }
   },
   "ending_rules": {
     "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v4.4：SILENT_COLLAPSE 0.5 → CS_DRAINED 1 …）",
@@ -209,7 +212,8 @@
         "init_range": [
           15,
           45
-        ]
+        ],
+        "display_max": 10
       },
       "人際": {
         "min": 0,
@@ -217,7 +221,8 @@
         "init_range": [
           30,
           70
-        ]
+        ],
+        "display_max": 10
       },
       "心理": {
         "min": 0,
@@ -225,7 +230,8 @@
         "init_range": [
           40,
           80
-        ]
+        ],
+        "display_max": 10
       }
     },
     "county_pool": [
@@ -290,7 +296,8 @@
           },
           "grid": "green",
           "outcome_text": "你在家人的懷裡長大。",
-          "log_text": "出生"
+          "log_text": "出生",
+          "rethink": false
         }
       ],
       "sources": [
@@ -317,7 +324,7 @@
         {
           "text": "記住走官方管道",
           "effects": {
-            "警覺": 8
+            "警覺": 10
           },
           "next": "ticket",
           "flags": {
@@ -326,7 +333,8 @@
           },
           "grid": "green",
           "outcome_text": "你把「走官方管道」記在心裡。",
-          "log_text": "記住交易走官方管道"
+          "log_text": "記住交易走官方管道",
+          "rethink": false
         },
         {
           "text": "私下交易比較方便",
@@ -338,7 +346,8 @@
           },
           "grid": "green",
           "outcome_text": "你開始習慣在社團裡喊「私」。",
-          "log_text": "覺得私下交易比較方便"
+          "log_text": "覺得私下交易比較方便",
+          "rethink": false
         }
       ],
       "sources": [
@@ -351,7 +360,9 @@
           "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "ticket",
@@ -361,7 +372,7 @@
         {
           "text": "只走官方轉售",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "cheap_item",
           "flags": {
@@ -372,7 +383,8 @@
           },
           "grid": "green",
           "outcome_text": "你守在官方轉售頁面，終於搶到一張。價格是原價。",
-          "log_text": "從官方管道買票"
+          "log_text": "從官方管道買票",
+          "rethink": false
         },
         {
           "text": "放大截圖仔細看",
@@ -388,13 +400,14 @@
           },
           "grid": "green",
           "outcome_text": "你把截圖放大，越看越不對勁，就沒有回覆了。",
-          "log_text": "識破假讓票截圖"
+          "log_text": "識破假讓票截圖",
+          "rethink": false
         },
         {
           "text": "先匯款11,400元",
           "effects": {
             "存款": -11400,
-            "心理": -12
+            "心理": -10
           },
           "next": "ticket_blocked",
           "flags": {
@@ -470,7 +483,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "ticket_blocked",
@@ -481,7 +496,7 @@
           "text": "留紀錄，打165報案",
           "effects": {
             "警覺": 10,
-            "心理": -5
+            "心理": 0
           },
           "next": "cheap_item",
           "flags": {
@@ -492,7 +507,8 @@
           },
           "grid": "green",
           "outcome_text": "你把對話和匯款紀錄整理好去報案，員警幫你做了筆錄。",
-          "log_text": "被封鎖後報案"
+          "log_text": "被封鎖後報案",
+          "rethink": false
         },
         {
           "text": "算了",
@@ -506,7 +522,8 @@
           },
           "grid": "green",
           "outcome_text": "你把對話刪掉，假裝這件事沒發生過。",
-          "log_text": "被騙票錢，沒報案"
+          "log_text": "被騙票錢，沒報案",
+          "rethink": false
         }
       ],
       "sources": [
@@ -556,7 +573,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "cheap_item",
@@ -566,7 +585,7 @@
         {
           "text": "從官方App下單",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "fake_cs",
           "flags": {
@@ -577,13 +596,14 @@
           },
           "grid": "green",
           "outcome_text": "你在官方App裡找不到這個賣場，就沒有下單。",
-          "log_text": "不點陌生付款連結"
+          "log_text": "不點陌生付款連結",
+          "rethink": false
         },
         {
           "text": "點連結付38元運費",
           "effects": {
             "存款": -38,
-            "心理": -2
+            "心理": 0
           },
           "next": "fee_more",
           "flags": {
@@ -638,7 +658,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "fee_more",
@@ -648,7 +670,7 @@
         {
           "text": "停止，打給銀行",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "fake_cs",
           "flags": {
@@ -659,13 +681,14 @@
           },
           "grid": "green",
           "outcome_text": "你掛上銀行的電話，對方說這種頁面就是詐騙。",
-          "log_text": "戶名不對，停止付款"
+          "log_text": "戶名不對，停止付款",
+          "rethink": false
         },
         {
           "text": "聯繫「客服」",
           "effects": {
-            "警覺": -5,
-            "心理": -2
+            "警覺": -10,
+            "心理": 0
           },
           "next": "cs_call",
           "flags": {
@@ -723,7 +746,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "fake_cs",
@@ -733,7 +758,7 @@
         {
           "text": "掛斷，自己查號回撥",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "END_ROUTER",
           "flags": {
@@ -744,13 +769,14 @@
           },
           "grid": "green",
           "outcome_text": "你掛斷後自己查了官方電話撥過去，對方說根本沒有這筆分期。",
-          "log_text": "掛斷，自己回撥確認"
+          "log_text": "掛斷，自己回撥確認",
+          "rethink": false
         },
         {
           "text": "照對方的步驟做",
           "effects": {
             "警覺": -10,
-            "心理": -2
+            "心理": 0
           },
           "next": "cs_call",
           "flags": {
@@ -812,7 +838,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "cs_call",
@@ -822,8 +850,8 @@
         {
           "text": "掛斷，打165",
           "effects": {
-            "警覺": 15,
-            "心理": -5
+            "警覺": 20,
+            "心理": 0
           },
           "next": "END_ROUTER",
           "flags": {
@@ -834,13 +862,14 @@
           },
           "grid": "green",
           "outcome_text": "你掛斷電話，自己打了165。對方說這是常見的假客服手法：「你剛剛差一點。」你沒有損失。",
-          "log_text": "掛斷，打165確認"
+          "log_text": "掛斷，打165確認",
+          "rethink": false
         },
         {
           "text": "照做，按確認",
           "effects": {
             "存款": -15000,
-            "心理": -27
+            "心理": -30
           },
           "next": "aftermath",
           "flags": {
@@ -912,7 +941,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "aftermath",
@@ -922,7 +953,7 @@
         {
           "text": "報案、凍結帳戶",
           "effects": {
-            "心理": 5
+            "心理": 0
           },
           "next": "END_ROUTER",
           "flags": {
@@ -933,13 +964,14 @@
           },
           "grid": "green",
           "outcome_text": "你報了案，銀行幫你凍結帳戶。看著餘額，你還是很難受。",
-          "log_text": "報案，凍結帳戶"
+          "log_text": "報案，凍結帳戶",
+          "rethink": false
         },
         {
           "text": "不想面對",
           "effects": {
             "心理": -10,
-            "人際": -5
+            "人際": -10
           },
           "next": "END_ROUTER",
           "flags": {
@@ -948,7 +980,8 @@
           },
           "grid": "green",
           "outcome_text": "你把手機蓋在桌上，不想再看。",
-          "log_text": "不想面對被騙的事"
+          "log_text": "不想面對被騙的事",
+          "rethink": false
         }
       ],
       "sources": [
@@ -957,7 +990,9 @@
           "url": "https://www.ptt.cc/bbs/Bunco/M.1323108038.A.042.html"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 22,
+      "max_age": 29
     },
     {
       "id": "END_ROUTER",
@@ -974,7 +1009,8 @@
           },
           "grid": "green",
           "outcome_text": "你回頭看這段經歷。",
-          "log_text": "回顧"
+          "log_text": "回顧",
+          "rethink": false
         }
       ],
       "sources": [
@@ -988,7 +1024,9 @@
         }
       ],
       "router": true,
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 22,
+      "max_age": 29
     }
   ],
   "endings": [
@@ -1637,7 +1675,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": 5
+          "警覺": 10
         }
       },
       "note": "14歲遊戲交易被騙過，學過一次教訓（人生線 README 建議 +5）",
@@ -1677,7 +1715,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": -8
+          "警覺": -10
         }
       },
       "note": "容易在「當場決定」的壓力下照做",
@@ -1698,8 +1736,8 @@
         "choice": {
           "text": "掛斷，打給家人確認",
           "effects": {
-            "警覺": 15,
-            "人際": 3
+            "警覺": 20,
+            "人際": 0
           },
           "next": "END_ROUTER",
           "flags": {
@@ -1750,7 +1788,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "心理": -5
+          "心理": 0
         }
       },
       "note": "之前借錢被倒，再次損失更難承受",
@@ -1790,7 +1828,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": 5
+          "警覺": 10
         }
       },
       "note": "小時候傳過驗證碼被騙；遇到連結題警覺 +5（人生線 README 建議）",
@@ -1830,7 +1868,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": 3
+          "警覺": 0
         }
       },
       "note": "同上，警覺 +3",
@@ -1849,7 +1887,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "人際": 5
+          "人際": 10
         }
       },
       "note": "信任曾被好好回報過，被騙之後比較願意開口跟朋友說（人際 +5，較容易維持 has_support）",

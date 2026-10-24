@@ -19,7 +19,7 @@ for p in d["positive"]:
 for c in d["lie_endings"]:
     for k in ("text", "case", "review"):
         if not c[k]: E.append(f"{c['id']}: 缺 {k}")
-    if "待查證" not in c.get("source_note", ""): E.append(f"{c['id']}: 來源未標待查證")
+    if "待查證" not in c.get("source_note", "") and not (c.get("sources") and all(s.get("verified") is True and s.get("url") for s in c["sources"])): E.append(f"{c['id']}: 來源未標待查證")   # v8：附已查證網址者可免標
     if DEATH.search(c["text"] + c["case"]): E.append(f"{c['id']}: 死亡描述")
 for s in d["stages"]:
     L = [l for l in d["lies"] if l["stage"] == s["id"]]; P = [p for p in d["positive"] if p["stage"] == s["id"]]

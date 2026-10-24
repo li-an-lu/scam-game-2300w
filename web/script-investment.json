@@ -70,7 +70,10 @@
       "design_assumption": true,
       "note": "每個犯錯／受騙選項只多扣 2 點心理（已併入 effects，choice.mental_wear 標示）。單一選項不會造成大扣；心理歸零靠一生累積。數值是設計假設"
     },
-    "subtitle": "投資詐騙線"
+    "subtitle": "投資詐騙線",
+    "v8": {
+      "stat_scale": "內部 0–100，畫面 0–10（display_max）；警覺／人際／心理 的變化量皆為 10 的倍數（v8 由 apply_v8.py 四捨五入，非零至少 ±10）"
+    }
   },
   "ending_rules": {
     "note": "stat_flags 見 common.py",
@@ -281,7 +284,8 @@
         "init_range": [
           20,
           50
-        ]
+        ],
+        "display_max": 10
       },
       "人際": {
         "min": 0,
@@ -289,7 +293,8 @@
         "init_range": [
           30,
           70
-        ]
+        ],
+        "display_max": 10
       },
       "心理": {
         "min": 0,
@@ -297,7 +302,8 @@
         "init_range": [
           40,
           80
-        ]
+        ],
+        "display_max": 10
       }
     },
     "county_pool": [
@@ -362,7 +368,8 @@
           },
           "grid": "green",
           "outcome_text": "你在家人的懷裡長大。",
-          "log_text": "出生"
+          "log_text": "出生",
+          "rethink": false
         }
       ],
       "sources": [
@@ -389,8 +396,8 @@
         {
           "text": "好奇，問了家人",
           "effects": {
-            "警覺": 5,
-            "人際": 3
+            "警覺": 10,
+            "人際": 0
           },
           "next": "work",
           "flags": {
@@ -399,7 +406,8 @@
           },
           "grid": "green",
           "outcome_text": "家人看完影片說：「穩賺不賠的東西，通常最危險。」",
-          "log_text": "問了家人穩賺影片"
+          "log_text": "問了家人穩賺影片",
+          "rethink": false
         },
         {
           "text": "滑過去",
@@ -411,7 +419,8 @@
           },
           "grid": "green",
           "outcome_text": "影片很快被新的訊息蓋過去了。",
-          "log_text": "滑過穩賺影片"
+          "log_text": "滑過穩賺影片",
+          "rethink": false
         }
       ],
       "sources": [
@@ -420,7 +429,9 @@
           "url": "https://fromnineon.com/data/taiwan-fraud-statistics/"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "work",
@@ -430,7 +441,7 @@
         {
           "text": "下載交友軟體",
           "effects": {
-            "心理": 3
+            "心理": 0
           },
           "next": "date_match",
           "flags": {
@@ -441,7 +452,8 @@
           },
           "grid": "green",
           "outcome_text": "你下載了交友軟體，第一天就收到好幾個配對。",
-          "log_text": "下載交友軟體"
+          "log_text": "下載交友軟體",
+          "rethink": false
         },
         {
           "text": "點投資廣告",
@@ -455,7 +467,8 @@
           },
           "grid": "green",
           "outcome_text": "你點進廣告，畫面跳出一個「加入群組」的按鈕。",
-          "log_text": "點了名人投資廣告"
+          "log_text": "點了名人投資廣告",
+          "rethink": false
         }
       ],
       "sources": [
@@ -468,7 +481,9 @@
           "url": "https://www.ptt.cc/bbs/Bilk/M.1635396083.A.F45.html"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "date_match",
@@ -487,13 +502,14 @@
           },
           "grid": "green",
           "outcome_text": "你說要先視訊，他回了好長一段道歉，說鏡頭還在修。",
-          "log_text": "堅持先視訊"
+          "log_text": "堅持先視訊",
+          "rethink": false
         },
         {
           "text": "他忙，沒關係",
           "effects": {
-            "心理": 3,
-            "警覺": -5
+            "心理": 0,
+            "警覺": -10
           },
           "next": "date_invest",
           "flags": {
@@ -558,7 +574,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "date_refuse_video",
@@ -568,7 +586,7 @@
         {
           "text": "封鎖，撥165查詢",
           "effects": {
-            "警覺": 15
+            "警覺": 20
           },
           "next": "END_ROUTER",
           "flags": {
@@ -579,13 +597,14 @@
           },
           "grid": "green",
           "outcome_text": "你封鎖了對方，撥165問了一下，對方說這是很常見的手法。",
-          "log_text": "網友談投資，封鎖"
+          "log_text": "網友談投資，封鎖",
+          "rethink": false
         },
         {
           "text": "聽聽看",
           "effects": {
-            "警覺": -5,
-            "心理": -2
+            "警覺": -10,
+            "心理": 0
           },
           "next": "date_invest",
           "flags": {
@@ -639,7 +658,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "date_invest",
@@ -650,8 +671,8 @@
           "text": "查名單，只放最低額",
           "effects": {
             "存款": -1000,
-            "警覺": 5,
-            "心理": -2
+            "警覺": 10,
+            "心理": 0
           },
           "next": "small_win",
           "flags": {
@@ -670,7 +691,7 @@
           "text": "先放1,000元",
           "effects": {
             "存款": -1000,
-            "心理": -2
+            "心理": 0
           },
           "next": "small_win",
           "flags": {
@@ -735,7 +756,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "ad_group",
@@ -745,7 +768,7 @@
         {
           "text": "退群並檢舉",
           "effects": {
-            "警覺": 15
+            "警覺": 20
           },
           "next": "END_ROUTER",
           "flags": {
@@ -756,14 +779,15 @@
           },
           "grid": "green",
           "outcome_text": "你退出群組並檢舉。幾百則「感謝老師」從畫面上消失了。",
-          "log_text": "退出股票群組"
+          "log_text": "退出股票群組",
+          "rethink": false
         },
         {
           "text": "觀望幾週",
           "effects": {
-            "警覺": -5,
-            "人際": 2,
-            "心理": -2
+            "警覺": -10,
+            "人際": 0,
+            "心理": 0
           },
           "next": "group_assistant",
           "flags": {
@@ -835,7 +859,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "group_assistant",
@@ -846,8 +872,8 @@
           "text": "只放最低的1,000元",
           "effects": {
             "存款": -1000,
-            "警覺": 5,
-            "心理": -2
+            "警覺": 10,
+            "心理": 0
           },
           "next": "small_win",
           "flags": {
@@ -866,7 +892,7 @@
           "text": "先放1,000元",
           "effects": {
             "存款": -1000,
-            "心理": -2
+            "心理": 0
           },
           "next": "small_win",
           "flags": {
@@ -930,7 +956,9 @@
             "type": "link"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "small_win",
@@ -940,7 +968,7 @@
         {
           "text": "不再加碼",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "temptation",
           "flags": {
@@ -949,13 +977,14 @@
           },
           "grid": "green",
           "outcome_text": "你把錢留在原處，不再加碼。對方還是每天傳訊息。",
-          "log_text": "見好就收，不再加碼"
+          "log_text": "見好就收，不再加碼",
+          "rethink": false
         },
         {
           "text": "加碼30萬",
           "effects": {
             "存款": -300000,
-            "心理": -7
+            "心理": -10
           },
           "next": "withdraw_block",
           "flags": {
@@ -1013,7 +1042,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "temptation",
@@ -1023,7 +1054,7 @@
         {
           "text": "告訴好友",
           "effects": {
-            "人際": 5,
+            "人際": 10,
             "警覺": 10
           },
           "next": "END_ROUTER",
@@ -1036,13 +1067,14 @@
           },
           "grid": "green",
           "outcome_text": "朋友傳來幾則新聞連結，你越看越心驚，決定停手。",
-          "log_text": "告訴好友後停手"
+          "log_text": "告訴好友後停手",
+          "rethink": false
         },
         {
           "text": "再加碼30萬",
           "effects": {
             "存款": -300000,
-            "心理": -2
+            "心理": 0
           },
           "next": "withdraw_block",
           "flags": {
@@ -1100,7 +1132,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "withdraw_block",
@@ -1110,7 +1144,7 @@
         {
           "text": "停止匯款，去報案",
           "effects": {
-            "警覺": 15,
+            "警覺": 20,
             "心理": -10
           },
           "next": "report",
@@ -1122,13 +1156,14 @@
           },
           "grid": "green",
           "outcome_text": "你停止匯款，帶著手機到派出所。員警說：「出金要先付錢，就是詐騙。」",
-          "log_text": "識破出金要付費，報案"
+          "log_text": "識破出金要付費，報案",
+          "rethink": false
         },
         {
           "text": "再繳一次費用",
           "effects": {
             "存款": -200000,
-            "心理": -17
+            "心理": -20
           },
           "next": "pressure",
           "flags": {
@@ -1222,7 +1257,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "pressure",
@@ -1232,8 +1269,8 @@
         {
           "text": "向家人坦白",
           "effects": {
-            "人際": 5,
-            "心理": -5
+            "人際": 10,
+            "心理": 0
           },
           "next": "report",
           "flags": {
@@ -1245,14 +1282,15 @@
           },
           "grid": "green",
           "outcome_text": "你把事情全部告訴家人，家人陪你去報警。說出口的那一刻，你哭了。",
-          "log_text": "向家人坦白，一起報警"
+          "log_text": "向家人坦白，一起報警",
+          "rethink": false
         },
         {
           "text": "刷卡、信貸、借錢",
           "effects": {
             "存款": -500000,
             "人際": -20,
-            "心理": -18
+            "心理": -20
           },
           "next": "bank_counter",
           "flags": {
@@ -1272,7 +1310,7 @@
           "effects": {
             "存款": -500000,
             "人際": -30,
-            "心理": -7
+            "心理": -10
           },
           "next": "bank_counter",
           "flags": {
@@ -1348,7 +1386,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "bank_counter",
@@ -1359,7 +1399,7 @@
           "text": "跟行員說實情",
           "effects": {
             "警覺": 10,
-            "心理": 5
+            "心理": 0
           },
           "next": "report",
           "flags": {
@@ -1371,13 +1411,14 @@
           },
           "grid": "green",
           "outcome_text": "你把情況告訴行員。行員請你坐下，幫你打了165，這筆錢沒有交出去。但前面已經投入的錢，大多拿不回來了。",
-          "log_text": "對行員說出實情"
+          "log_text": "對行員說出實情",
+          "rethink": false
         },
         {
           "text": "照對方教的說",
           "effects": {
             "存款": -500000,
-            "心理": -14
+            "心理": -10
           },
           "next": "END_ROUTER",
           "flags": {
@@ -1431,7 +1472,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "report",
@@ -1441,7 +1484,7 @@
         {
           "text": "繼續過日子",
           "effects": {
-            "心理": 5
+            "心理": 0
           },
           "next": "END_ROUTER",
           "flags": {
@@ -1450,7 +1493,8 @@
           },
           "grid": "green",
           "outcome_text": "你做完筆錄走出派出所，天已經黑了。",
-          "log_text": "報案後繼續過日子"
+          "log_text": "報案後繼續過日子",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1467,7 +1511,9 @@
           "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 34,
+      "max_age": 40
     },
     {
       "id": "END_ROUTER",
@@ -1484,7 +1530,8 @@
           },
           "grid": "green",
           "outcome_text": "你回頭看這段經歷。",
-          "log_text": "回顧"
+          "log_text": "回顧",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1494,7 +1541,9 @@
         }
       ],
       "router": true,
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 34,
+      "max_age": 40
     }
   ],
   "endings": [
@@ -2474,7 +2523,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": 8
+          "警覺": 10
         }
       },
       "note": "人生中對「快錢」有戒心，看到報明牌群組更容易起疑",
@@ -2544,7 +2593,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": -5
+          "警覺": -10
         }
       },
       "note": "熟人介紹，戒心較低",
@@ -2584,7 +2633,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": -5
+          "警覺": -10
         }
       },
       "note": "容易在壓力下當場決定",
@@ -2621,7 +2670,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": -5
+          "警覺": -10
         }
       },
       "note": "容易相信大人；面對「平台法務部」這類權威型威脅時較難識破（人生線 README 建議）",
@@ -2661,7 +2710,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "警覺": 5
+          "警覺": 10
         }
       },
       "note": "同上，警覺 +5（人生線 README 原建議）",
@@ -2701,7 +2750,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "心理": -12
+          "心理": -10
         }
       },
       "note": "v1.0：感情詐騙借錢的債還沒還完，看到「快速回本」特別心動也特別累（設計假設）",
@@ -2720,7 +2769,7 @@
       "effect": {
         "type": "stats_delta",
         "stats": {
-          "心理": -6
+          "心理": -10
         }
       },
       "note": "v1.1：被當年沒還錢的朋友拉進群，又想討回又不好意思拒絕，心理壓力（設計假設）",

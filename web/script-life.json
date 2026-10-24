@@ -769,7 +769,8 @@
       "ending": "END_LIFE_HALTED",
       "rule": "人生線：每做完一個選擇、套用 effects 之後，若 心理 ≤ 0 立刻停止，不再前往下一個事件，直接顯示 END_LIFE_HALTED。詐騙線：照常演到該線結局並記入 scam_history（詐騙線自己的崩潰結局仍會出現），結束時若 心理 ≤ 0，不回人生線，直接顯示 END_LIFE_HALTED。age_lived＝停止時的年齡",
       "reference": "combined.py play()／play_scam()",
-      "design_assumption": true
+      "design_assumption": true,
+      "immediate_in_scam": true
     },
     "mental_time_recovery": {
       "stat": "心理",
@@ -1098,7 +1099,28 @@
       ],
       "note": "童年 13 則（10 則隨機池、3 則必出伏筆）＋成年里程碑 a_move_out/a_first_salary＋真誠線 a_help_stranger/a_still_kind；伏筆以 text_variants/outcome_variants 回收"
     },
-    "subtitle": "人生日常線"
+    "subtitle": "人生日常線",
+    "rethink": {
+      "stats": {
+        "警覺": 60,
+        "人際": 70
+      },
+      "probability": 0.6,
+      "text": "要不要再想一下？",
+      "back": "再想一下",
+      "go": "就這樣決定",
+      "friend": {
+        "stat": "人際",
+        "gte": 70,
+        "text": "朋友剛好傳訊息來：「欸，這個聽起來怪怪的，要不要先問一下？」",
+        "back": "先問問看",
+        "go": "沒事啦"
+      },
+      "note": "警覺≥6（內部60）或人際≥7（內部70）時，對沒標 rethink:false 的選項有 60% 機率跳出。friend 為人際高時的朋友版本（需引擎支援，見 HANDOFF-v8.md）。"
+    },
+    "v8": {
+      "stat_scale": "內部 0–100，畫面 0–10（display_max）；警覺／人際／心理 的變化量皆為 10 的倍數（v8 由 apply_v8.py 四捨五入，非零至少 ±10）"
+    }
   },
   "ending_rules": {
     "evaluation": "依 priority 由小到大檢查，第一個成立者為結局（v0.5：END_LIFE_RECORD 0.5 最先檢查）",
@@ -1165,7 +1187,8 @@
         "init_range": [
           15,
           45
-        ]
+        ],
+        "display_max": 10
       },
       "人際": {
         "min": 0,
@@ -1173,7 +1196,8 @@
         "init_range": [
           30,
           70
-        ]
+        ],
+        "display_max": 10
       },
       "心理": {
         "min": 0,
@@ -1181,7 +1205,8 @@
         "init_range": [
           35,
           80
-        ]
+        ],
+        "display_max": 10
       }
     },
     "county_pool": [
@@ -1250,7 +1275,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -1262,7 +1288,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -1274,7 +1301,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -1288,7 +1316,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選5",
@@ -1302,7 +1331,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選6",
@@ -1316,7 +1346,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選7",
@@ -1330,7 +1361,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選8",
@@ -1344,7 +1376,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選9",
@@ -1358,7 +1391,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選10",
@@ -1372,7 +1406,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選11",
@@ -1386,7 +1421,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選12",
@@ -1400,7 +1436,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1408,7 +1445,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "shot",
@@ -1419,8 +1458,8 @@
         {
           "text": "伸出手",
           "effects": {
-            "心理": -3,
-            "人際": 3
+            "心理": 0,
+            "人際": 0
           },
           "next": "promise_park",
           "flags": {
@@ -1431,12 +1470,13 @@
           },
           "grid": "green",
           "outcome_text": "針一下就打完了，但你哭得整條走廊都聽得到。護理師阿姨給你一張貼紙。",
-          "log_text": "打預防針，哭了"
+          "log_text": "打預防針，哭了",
+          "rethink": false
         },
         {
           "text": "問：「真的不痛嗎？」",
           "effects": {
-            "警覺": 3
+            "警覺": 0
           },
           "next": "promise_park",
           "flags": {
@@ -1447,7 +1487,8 @@
           },
           "grid": "green",
           "outcome_text": "護理師阿姨蹲下來說：「會有一點點痛，數到三就好。」你數到二，就打完了。",
-          "log_text": "打針前先問清楚"
+          "log_text": "打針前先問清楚",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1482,7 +1523,9 @@
           },
           "text": "阿嬤帶你去打流感疫苗，說：「不痛不痛，打完帶你去吃冰。」護理師阿姨已經拿起針了。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "promise_park",
@@ -1493,7 +1536,7 @@
         {
           "text": "三口吞完青菜",
           "effects": {
-            "心理": 3
+            "心理": 0
           },
           "next": "pool_c_lost_wallet",
           "flags": {
@@ -1504,12 +1547,13 @@
           },
           "grid": "green",
           "outcome_text": "盤子乾乾淨淨，爸爸摸摸你的頭。你在月曆上把星期六圈起來。",
-          "log_text": "吃完青菜，等週末"
+          "log_text": "吃完青菜，等週末",
+          "rethink": false
         },
         {
           "text": "伸出小指打勾勾",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_c_lost_wallet",
           "flags": {
@@ -1520,7 +1564,8 @@
           },
           "grid": "green",
           "outcome_text": "爸爸笑著跟你打勾勾、蓋印章。你把這件事記得牢牢的。",
-          "log_text": "跟爸爸打勾勾"
+          "log_text": "跟爸爸打勾勾",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1537,7 +1582,9 @@
           "verify_note": "原站擋自動連線，依 WebSearch 搜尋摘錄核對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_lost_wallet",
@@ -1558,7 +1605,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -1570,7 +1618,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -1584,7 +1633,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1592,7 +1642,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_lost_wallet",
@@ -1604,8 +1656,8 @@
         {
           "text": "交給攤位阿姨",
           "effects": {
-            "人際": 1,
-            "心理": 1
+            "人際": 0,
+            "心理": 0
           },
           "next": "pool_c_share_lunch",
           "flags": {
@@ -1616,12 +1668,13 @@
           },
           "outcome_text": "阿姨用麥克風廣播。一個叔叔跑過來，一直跟你說謝謝。",
           "log_text": "撿到皮夾交出去",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "偷偷收進口袋",
           "effects": {
-            "心理": -3
+            "心理": 0
           },
           "next": "pool_c_share_lunch",
           "flags": {
@@ -1640,7 +1693,9 @@
           "verified": true,
           "url": "https://www.npa.gov.tw/kids/app/artwebsite/view?id=1306&module=artwebsite&serno=e3cc7c20-ac54-4140-9552-41e41dfe2052"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_share_lunch",
@@ -1661,7 +1716,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -1675,7 +1731,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1683,7 +1740,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_share_lunch",
@@ -1695,7 +1754,7 @@
         {
           "text": "分他一半",
           "effects": {
-            "人際": 1
+            "人際": 0
           },
           "next": "park_reveal",
           "flags": {
@@ -1706,12 +1765,13 @@
           },
           "outcome_text": "他吃得好開心，說明天要帶他阿嬤做的粽子給你。",
           "log_text": "把滷蛋分給同學",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "自己吃完",
           "effects": {
-            "心理": 1
+            "心理": 0
           },
           "next": "park_reveal",
           "flags": {
@@ -1720,7 +1780,8 @@
           },
           "outcome_text": "你把便當吃完。小胖去福利社買了麵包。",
           "log_text": "自己吃完便當",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1731,7 +1792,9 @@
           "url": "https://165.npa.gov.tw/",
           "note": "無對應外部來源；連結為 165 全民防騙網首頁（泛用）"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "park_reveal",
@@ -1742,8 +1805,8 @@
         {
           "text": "等星期六",
           "effects": {
-            "心理": -5,
-            "警覺": 3
+            "心理": 0,
+            "警覺": 0
           },
           "next": "c_pinky_promise",
           "flags": {
@@ -1754,13 +1817,14 @@
           },
           "grid": "green",
           "outcome_text": "「下次啦，爸爸今天好累。」下次、下下次……公園一直在「下次」。那顆球一直放在玄關。",
-          "log_text": "公園一直在「下次」"
+          "log_text": "公園一直在「下次」",
+          "rethink": false
         },
         {
           "text": "等星期六",
           "effects": {
-            "心理": 5,
-            "人際": 5
+            "心理": 0,
+            "人際": 10
           },
           "next": "c_pinky_promise",
           "flags": {
@@ -1771,7 +1835,8 @@
           },
           "grid": "green",
           "outcome_text": "星期六早上，爸爸真的拿著球在門口等你。你們在公園跑了一整個早上，原來打勾勾有用。",
-          "log_text": "爸爸真的帶你去公園"
+          "log_text": "爸爸真的帶你去公園",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1788,7 +1853,9 @@
           "verify_note": "原站擋自動連線，依 WebSearch 搜尋摘錄核對"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_pinky_promise",
@@ -1800,8 +1867,8 @@
         {
           "text": "星期一準時還",
           "effects": {
-            "人際": 1,
-            "心理": 1
+            "人際": 0,
+            "心理": 0
           },
           "next": "pool_var_card_trade",
           "flags": {
@@ -1812,12 +1879,13 @@
           },
           "outcome_text": "你一早就把彈珠放進書包。他接過去的時候笑得好大聲。從那天起，你覺得說好的事就要做到。",
           "log_text": "說到做到還了彈珠",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "先玩幾天再說",
           "effects": {
-            "人際": -3
+            "人際": 0
           },
           "next": "pool_var_card_trade",
           "flags": {
@@ -1837,7 +1905,9 @@
           "url": "https://165.npa.gov.tw/",
           "note": "無對應外部來源；連結為 165 全民防騙網首頁（泛用）"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_var_card_trade",
@@ -1858,7 +1928,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -1872,7 +1943,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -1886,7 +1958,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1894,7 +1967,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "card_trade",
@@ -1905,7 +1980,7 @@
         {
           "text": "換！",
           "effects": {
-            "人際": 3
+            "人際": 0
           },
           "next": "pool_sticker_trade",
           "flags": {
@@ -1916,13 +1991,14 @@
           },
           "grid": "green",
           "outcome_text": "你把5張卡交出去，換回一張亮晶晶的卡，小心地夾進課本裡。",
-          "log_text": "用5張卡換1張限量卡"
+          "log_text": "用5張卡換1張限量卡",
+          "rethink": false
         },
         {
           "text": "先拿給哥哥看",
           "effects": {
-            "警覺": 3,
-            "人際": -2
+            "警覺": 0,
+            "人際": 0
           },
           "next": "pool_sticker_trade",
           "flags": {
@@ -1933,7 +2009,8 @@
           },
           "grid": "green",
           "outcome_text": "同學有點不高興，嘟囔著說「不換就算了」。你把5張卡收回口袋。",
-          "log_text": "先拿給哥哥看"
+          "log_text": "先拿給哥哥看",
+          "rethink": false
         }
       ],
       "sources": [
@@ -1974,7 +2051,9 @@
           },
           "text": "表哥拿出一張亮晶晶的「超限量卡」，說只要用你5張卡來換，「我是看你是表弟才換」。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_sticker_trade",
@@ -1995,7 +2074,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2009,7 +2089,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2017,7 +2098,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "sticker_trade",
@@ -2029,7 +2112,7 @@
         {
           "text": "換！",
           "effects": {
-            "人際": 3
+            "人際": 0
           },
           "next": "sticker_result",
           "flags": {
@@ -2043,7 +2126,7 @@
         {
           "text": "先拿給哥哥看",
           "effects": {
-            "警覺": 4
+            "警覺": 0
           },
           "next": "hongbao",
           "flags": {
@@ -2054,7 +2137,8 @@
           },
           "outcome_text": "哥哥翻了翻那疊貼紙，叫你先別換。",
           "log_text": "先拿給哥哥看",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2064,7 +2148,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "sticker_result",
@@ -2076,8 +2162,8 @@
         {
           "text": "拿給別人看",
           "effects": {
-            "心理": -4,
-            "警覺": 5
+            "心理": 0,
+            "警覺": 10
           },
           "next": "hongbao",
           "flags": {
@@ -2098,7 +2184,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_var_lottery",
@@ -2119,7 +2207,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2133,7 +2222,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -2147,7 +2237,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2155,7 +2246,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "lottery",
@@ -2167,7 +2260,7 @@
           "text": "再抽一次",
           "effects": {
             "存款": -300,
-            "心理": -5
+            "心理": 0
           },
           "next": "sister_reveal",
           "flags": {
@@ -2188,7 +2281,7 @@
         {
           "text": "在旁邊看就好",
           "effects": {
-            "心理": 2
+            "心理": 0
           },
           "next": "sister_reveal",
           "flags": {
@@ -2197,13 +2290,14 @@
           },
           "grid": "green",
           "outcome_text": "同學抽了一整排都沒中，你拿著錢去買了熱騰騰的雞蛋糕。",
-          "log_text": "沒抽，買了雞蛋糕"
+          "log_text": "沒抽，買了雞蛋糕",
+          "rethink": false
         },
         {
           "text": "再抽一次",
           "effects": {
             "存款": -200,
-            "心理": -5
+            "心理": 0
           },
           "next": "sister_reveal",
           "flags": {
@@ -2225,7 +2319,7 @@
           "text": "再抽一次",
           "effects": {
             "存款": -400,
-            "心理": -6
+            "心理": -10
           },
           "next": "sister_reveal",
           "flags": {
@@ -2321,7 +2415,9 @@
           },
           "text": "文具店的抽抽樂漲到10塊一抽，集滿「黑暗大法師」就能換怪獸對打機。你已經有「黑暗大法」了。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "sister_reveal",
@@ -2332,9 +2428,9 @@
         {
           "text": "倒出存錢筒數錢",
           "effects": {
-            "警覺": 3,
-            "人際": 2,
-            "心理": -1
+            "警覺": 0,
+            "人際": 0,
+            "心理": 0
           },
           "next": "c_stranger_pickup",
           "flags": {
@@ -2347,12 +2443,13 @@
           },
           "grid": "green",
           "outcome_text": "你在房間把存錢筒倒出來數……咦？借出去100，回來50。我姐壞壞欸。你跑去找姐姐，她吐吐舌頭補了50。",
-          "log_text": "數錢發現少了50"
+          "log_text": "數錢發現少了50",
+          "rethink": false
         },
         {
           "text": "倒出存錢筒數錢",
           "effects": {
-            "心理": 2
+            "心理": 0
           },
           "next": "c_stranger_pickup",
           "flags": {
@@ -2363,7 +2460,8 @@
           },
           "grid": "green",
           "outcome_text": "你在房間數存錢筒，一百元一塊不少。想起那天輕輕問了一句，姐姐也笑著補了。",
-          "log_text": "存錢筒一百元都在"
+          "log_text": "存錢筒一百元都在",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2374,7 +2472,9 @@
           "verify_note": "個人經驗，無公開網址；同類情節另見 lend5 事件引用的 PTT StupidClown〈所以是欠多少錢〉"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_stranger_pickup",
@@ -2386,7 +2486,7 @@
         {
           "text": "問她通關密語",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_c_lost_kid",
           "flags": {
@@ -2397,13 +2497,15 @@
           },
           "outcome_text": "阿姨說不出你家的密語，轉身就走了。你跑去找導師，導師打給媽媽，媽媽說她根本沒叫人來。",
           "log_text": "問了通關密語",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "你握緊書包帶，心還在跳，但你知道自己做對了。",
+          "rethink": false
         },
         {
           "text": "跟她走到路口",
           "effects": {
-            "警覺": 2,
-            "心理": -4
+            "警覺": 0,
+            "心理": 0
           },
           "next": "pool_c_lost_kid",
           "flags": {
@@ -2414,7 +2516,44 @@
           },
           "outcome_text": "走到路口，剛好遇到導護爸爸叫住你。阿姨一下就不見了。你心臟跳得好快。",
           "log_text": "差點跟陌生人走",
-          "grid": "red"
+          "grid": "red",
+          "mood_line": "那天晚上你一直想起那個路口，睡不太著。"
+        },
+        {
+          "text": "問她媽媽叫什麼",
+          "outcome_text": "她馬上說出媽媽的名字。你愣了一下，正要跟她走，導師從後面叫住你。後來才知道，名字很容易從別人那裡聽來。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "kid_trusts_adult"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "原來知道名字，不代表認識你。",
+          "log_text": "問她媽媽叫什麼",
+          "next": "pool_c_lost_kid"
+        },
+        {
+          "text": "回校門口找老師",
+          "outcome_text": "你跑回校門口抓住導師的手。導師打電話給媽媽，媽媽說她沒有叫任何人來。",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "kid_family_code"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "老師的手很暖，你覺得安全了。",
+          "log_text": "回校門口找老師",
+          "next": "pool_c_lost_kid",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2424,7 +2563,10 @@
           "verified": true,
           "url": "https://kpb.kinmen.gov.tw/cp.aspx?n=1E376F200F2FB2C4"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_lost_kid",
@@ -2445,7 +2587,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2459,7 +2602,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2467,7 +2611,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_lost_kid",
@@ -2479,8 +2625,8 @@
         {
           "text": "陪他去找攤販阿姨",
           "effects": {
-            "人際": 1,
-            "心理": 1
+            "人際": 0,
+            "心理": 0
           },
           "next": "pool_var_lend5",
           "flags": {
@@ -2491,13 +2637,14 @@
           },
           "outcome_text": "你牽著他去找賣菜的阿姨。阿姨用大嗓門一喊，他媽媽就跑過來了。",
           "log_text": "陪迷路小孩找大人",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "自己帶他去找",
           "effects": {
-            "人際": 1,
-            "警覺": -1
+            "人際": 0,
+            "警覺": 0
           },
           "next": "pool_var_lend5",
           "flags": {
@@ -2518,7 +2665,9 @@
           "verified": true,
           "url": "https://www.npa.gov.tw/kids/app/artwebsite/view?id=1306&module=artwebsite&serno=e3cc7c20-ac54-4140-9552-41e41dfe2052"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_var_lend5",
@@ -2539,7 +2688,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2553,7 +2703,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2561,7 +2712,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "lend5",
@@ -2573,7 +2726,7 @@
           "text": "借他",
           "effects": {
             "存款": -5,
-            "人際": 3
+            "人際": 0
           },
           "next": "card_reveal",
           "flags": {
@@ -2586,7 +2739,8 @@
           },
           "grid": "green",
           "outcome_text": "同學拿著5塊錢衝去買棒棒冰，回頭說：「明天還你！」",
-          "log_text": "借同學5塊"
+          "log_text": "借同學5塊",
+          "rethink": false
         },
         {
           "text": "說我也只剩5塊",
@@ -2598,13 +2752,14 @@
           },
           "grid": "green",
           "outcome_text": "同學說「好啦」，轉頭去問別人。",
-          "log_text": "沒借5塊"
+          "log_text": "沒借5塊",
+          "rethink": false
         },
         {
           "text": "借他",
           "effects": {
             "存款": -10,
-            "人際": 3
+            "人際": 0
           },
           "next": "card_reveal",
           "flags": {
@@ -2618,7 +2773,8 @@
           "grid": "green",
           "outcome_text": "同學拿著5塊錢衝去買棒棒冰，回頭說：「明天還你！」",
           "log_text": "借同學5塊",
-          "variant_of": 0
+          "variant_of": 0,
+          "rethink": false
         }
       ],
       "sources": [
@@ -2651,7 +2807,9 @@
           },
           "text": "隔壁同學說：「借我10塊買冰淇淋，明天一定還你！」"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "card_reveal",
@@ -2662,8 +2820,8 @@
         {
           "text": "拿卡給新同學看",
           "effects": {
-            "心理": -5,
-            "警覺": 5
+            "心理": 0,
+            "警覺": 10
           },
           "next": "pool_c_survey_gift",
           "flags": {
@@ -2676,12 +2834,13 @@
           },
           "grid": "green",
           "outcome_text": "他看了三秒：「這是便當袋上的吊牌吧？」你的臉一下子燒起來，那5張卡再也回不來了。",
-          "log_text": "限量卡是吊牌"
+          "log_text": "限量卡是吊牌",
+          "rethink": false
         },
         {
           "text": "拿卡給新同學看",
           "effects": {
-            "警覺": 3
+            "警覺": 0
           },
           "next": "pool_c_survey_gift",
           "flags": {
@@ -2692,7 +2851,8 @@
           },
           "grid": "green",
           "outcome_text": "你的5張卡都還在。哥哥那天就說了，那張「限量卡」其實是便當袋上的吊牌。",
-          "log_text": "慶幸先問了哥哥"
+          "log_text": "慶幸先問了哥哥",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2715,7 +2875,9 @@
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_survey_gift",
@@ -2736,7 +2898,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2750,7 +2913,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2758,7 +2922,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_survey_gift",
@@ -2770,7 +2936,7 @@
         {
           "text": "填了拿鉛筆",
           "effects": {
-            "心理": 1
+            "心理": 0
           },
           "next": "pool_teacher_permission",
           "flags": {
@@ -2786,7 +2952,7 @@
         {
           "text": "說要先問媽媽",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_teacher_permission",
           "flags": {
@@ -2795,7 +2961,8 @@
           },
           "outcome_text": "那個人笑著說好。媽媽說：「家裡的電話和地址，不要隨便寫給別人。」",
           "log_text": "先問媽媽",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2805,7 +2972,9 @@
           "verified": true,
           "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=f0a71d25-073b-48c8-959a-02117a240e25"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_teacher_permission",
@@ -2826,7 +2995,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2840,7 +3010,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2848,7 +3019,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "teacher_permission",
@@ -2860,8 +3033,8 @@
         {
           "text": "信了，也準備小抄",
           "effects": {
-            "心理": -5,
-            "警覺": 3
+            "心理": 0,
+            "警覺": 0
           },
           "next": "exam_result",
           "flags": {
@@ -2875,7 +3048,7 @@
         {
           "text": "先問老師",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "pool_pe_class",
           "flags": {
@@ -2886,7 +3059,8 @@
           },
           "outcome_text": "老師說：「誰說可以帶小抄？」你鬆了一口氣。",
           "log_text": "先問老師",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2896,7 +3070,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "exam_result",
@@ -2908,9 +3084,9 @@
         {
           "text": "被老師看到",
           "effects": {
-            "心理": -8,
-            "人際": -3,
-            "警覺": 5
+            "心理": -10,
+            "人際": 0,
+            "警覺": 10
           },
           "next": "pool_pe_class",
           "flags": {
@@ -2931,7 +3107,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_pe_class",
@@ -2952,7 +3130,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -2964,7 +3143,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -2978,7 +3158,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -2986,7 +3167,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pe_class",
@@ -2997,8 +3180,8 @@
         {
           "text": "問體育課何時還",
           "effects": {
-            "警覺": 3,
-            "人際": -2
+            "警覺": 0,
+            "人際": 0
           },
           "next": "pool_order_honesty",
           "flags": {
@@ -3009,12 +3192,13 @@
           },
           "grid": "green",
           "outcome_text": "全班安靜了一秒，有人偷笑。老師說下週補上。",
-          "log_text": "問體育課什麼時候還"
+          "log_text": "問體育課什麼時候還",
+          "rethink": false
         },
         {
           "text": "拿出數學課本",
           "effects": {
-            "心理": -3
+            "心理": 0
           },
           "next": "pool_order_honesty",
           "flags": {
@@ -3023,7 +3207,8 @@
           },
           "grid": "green",
           "outcome_text": "你默默拿出數學課本。老師說：「走那麼遠，有運動到了。」",
-          "log_text": "體育課變數學課"
+          "log_text": "體育課變數學課",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3040,7 +3225,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_order_honesty",
@@ -3061,7 +3248,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3073,7 +3261,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3081,7 +3270,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_var_honesty",
@@ -3102,7 +3293,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3116,7 +3308,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -3130,7 +3323,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3138,7 +3332,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "honesty",
@@ -3149,8 +3345,8 @@
         {
           "text": "舉手承認",
           "effects": {
-            "心理": -3,
-            "人際": 5
+            "心理": 0,
+            "人際": 10
           },
           "next": "slurpee",
           "flags": {
@@ -3161,13 +3357,14 @@
           },
           "grid": "green",
           "outcome_text": "教室安靜下來，老師點點頭：「謝謝你說實話。」你的手心都是汗。",
-          "log_text": "舉手承認踢破窗戶"
+          "log_text": "舉手承認踢破窗戶",
+          "rethink": false
         },
         {
           "text": "低頭不說話",
           "effects": {
-            "心理": -5,
-            "人際": -3
+            "心理": 0,
+            "人際": 0
           },
           "next": "slurpee",
           "flags": {
@@ -3176,7 +3373,8 @@
           },
           "grid": "green",
           "outcome_text": "老師盯著全班看了很久。下課時，你一直不敢看隔壁被懷疑的同學。",
-          "log_text": "沒有承認"
+          "log_text": "沒有承認",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3211,7 +3409,9 @@
           },
           "text": "音樂教室的窗戶破了。老師說：「是誰？說實話就不罰你。」其實是你踢的球。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "slurpee",
@@ -3222,7 +3422,7 @@
         {
           "text": "拚100分",
           "effects": {
-            "心理": 8
+            "心理": 10
           },
           "next": "pool_group_buy",
           "flags": {
@@ -3231,13 +3431,14 @@
           },
           "grid": "green",
           "outcome_text": "第一次考98分，你當場哭出來；下一次終於100，捧著考卷換到一杯冰沙。",
-          "log_text": "考100分換到冰沙"
+          "log_text": "考100分換到冰沙",
+          "rethink": false
         },
         {
           "text": "不去換",
           "effects": {
-            "警覺": 2,
-            "心理": -2
+            "警覺": 0,
+            "心理": 0
           },
           "next": "pool_group_buy",
           "flags": {
@@ -3246,7 +3447,8 @@
           },
           "grid": "green",
           "outcome_text": "你把考卷塞回書包，沒去店裡。隔天看到同學吸著冰沙經過，杯子上還結著水珠。",
-          "log_text": "沒去換冰沙"
+          "log_text": "沒去換冰沙",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3257,7 +3459,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "slurpee__swap",
@@ -3268,7 +3472,7 @@
         {
           "text": "拚100分",
           "effects": {
-            "心理": 8
+            "心理": 10
           },
           "next": "honesty__swap",
           "flags": {
@@ -3277,13 +3481,14 @@
           },
           "grid": "green",
           "outcome_text": "第一次考98分，你當場哭出來；下一次終於100，捧著考卷換到一杯冰沙。",
-          "log_text": "考100分換到冰沙"
+          "log_text": "考100分換到冰沙",
+          "rethink": false
         },
         {
           "text": "不去換",
           "effects": {
-            "警覺": 2,
-            "心理": -2
+            "警覺": 0,
+            "心理": 0
           },
           "next": "honesty__swap",
           "flags": {
@@ -3292,7 +3497,8 @@
           },
           "grid": "green",
           "outcome_text": "你把考卷塞回書包，沒去店裡。隔天看到同學吸著冰沙經過，杯子上還結著水珠。",
-          "log_text": "沒去換冰沙"
+          "log_text": "沒去換冰沙",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3303,7 +3509,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "honesty__swap",
@@ -3314,8 +3522,8 @@
         {
           "text": "舉手承認",
           "effects": {
-            "心理": -3,
-            "人際": 5
+            "心理": 0,
+            "人際": 10
           },
           "next": "pool_group_buy",
           "flags": {
@@ -3326,13 +3534,14 @@
           },
           "grid": "green",
           "outcome_text": "教室安靜下來，老師點點頭：「謝謝你說實話。」你的手心都是汗。",
-          "log_text": "舉手承認踢破窗戶"
+          "log_text": "舉手承認踢破窗戶",
+          "rethink": false
         },
         {
           "text": "低頭不說話",
           "effects": {
-            "心理": -5,
-            "人際": -3
+            "心理": 0,
+            "人際": 0
           },
           "next": "pool_group_buy",
           "flags": {
@@ -3341,7 +3550,8 @@
           },
           "grid": "green",
           "outcome_text": "老師盯著全班看了很久。下課時，你一直不敢看隔壁被懷疑的同學。",
-          "log_text": "沒有承認"
+          "log_text": "沒有承認",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3376,7 +3586,9 @@
           },
           "text": "音樂教室的窗戶破了。老師說：「是誰？說實話就不罰你。」其實是你踢的球。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_group_buy",
@@ -3397,7 +3609,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3409,7 +3622,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -3423,7 +3637,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -3437,7 +3652,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選5",
@@ -3451,7 +3667,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選6",
@@ -3465,7 +3682,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選7",
@@ -3479,7 +3697,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選8",
@@ -3493,7 +3712,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選9",
@@ -3507,7 +3727,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3515,7 +3736,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "group_buy",
@@ -3527,7 +3750,7 @@
           "text": "先付錢",
           "effects": {
             "存款": -200,
-            "心理": -2
+            "心理": 0
           },
           "next": "group_result",
           "flags": {
@@ -3544,7 +3767,7 @@
         {
           "text": "等看到東西再給錢",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "group_result",
           "flags": {
@@ -3555,7 +3778,8 @@
           },
           "outcome_text": "負責的同學說「隨便你啊」，把名單收了起來。",
           "log_text": "等看到東西再付錢",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3590,7 +3814,9 @@
           },
           "text": "補習班同學說要團購限定公仔，先收錢，下週交貨。"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "group_result",
@@ -3601,8 +3827,8 @@
         {
           "text": "問負責人",
           "effects": {
-            "警覺": 4,
-            "心理": -5
+            "警覺": 0,
+            "心理": 0
           },
           "next": "pool_c_chain_msg",
           "flags": {
@@ -3619,7 +3845,7 @@
         {
           "text": "問負責人",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_c_chain_msg",
           "flags": {
@@ -3630,7 +3856,8 @@
           },
           "outcome_text": "負責人說貨還沒到。付了錢的同學開始著急，你的200元還在。",
           "log_text": "沒付錢，錢還在",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3647,7 +3874,9 @@
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_chain_msg",
@@ -3668,7 +3897,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3682,7 +3912,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3690,7 +3921,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_chain_msg",
@@ -3702,8 +3935,8 @@
         {
           "text": "也轉十個人",
           "effects": {
-            "人際": 1,
-            "心理": -1
+            "人際": 0,
+            "心理": 0
           },
           "next": "pool_c_online_friend",
           "flags": {
@@ -3719,7 +3952,7 @@
         {
           "text": "不轉，問老師",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_c_online_friend",
           "flags": {
@@ -3728,7 +3961,8 @@
           },
           "outcome_text": "老師說：「不會倒楣的。會轉的人，常常也會轉到壞連結。」",
           "log_text": "沒有轉傳",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3738,7 +3972,9 @@
           "verified": true,
           "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=f0a71d25-073b-48c8-959a-02117a240e25"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_online_friend",
@@ -3759,7 +3995,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3771,7 +4008,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -3785,7 +4023,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3793,7 +4032,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_online_friend",
@@ -3805,8 +4046,8 @@
         {
           "text": "先跟爸媽說",
           "effects": {
-            "警覺": 2,
-            "人際": 1
+            "警覺": 0,
+            "人際": 0
           },
           "next": "lend_reveal",
           "flags": {
@@ -3817,13 +4058,15 @@
           },
           "outcome_text": "爸爸陪你看了對話，說真正的朋友不會要你保密。你們一起把他封鎖了。",
           "log_text": "把網友的事跟爸媽說",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "說出來以後，胸口那顆石頭放下了。",
+          "rethink": false
         },
         {
           "text": "傳學校名字就好",
           "effects": {
-            "警覺": 2,
-            "心理": -4
+            "警覺": 0,
+            "心理": 0
           },
           "next": "lend_reveal",
           "flags": {
@@ -3834,7 +4077,45 @@
           },
           "outcome_text": "你傳了學校名字。他又要照片。你覺得怪怪的，跟媽媽說了。媽媽沒有罵你，抱了你一下。",
           "log_text": "給了網友學校名字",
-          "grid": "red"
+          "grid": "red",
+          "mood_line": "你有點後悔，但也有點慶幸自己說了。"
+        },
+        {
+          "text": "先要他的照片",
+          "outcome_text": "他很快傳來一張笑得很開心的照片。過幾天你在別的網站看到同一張照片，名字不一樣。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "kid_trusts_adult"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "你盯著那張照片，第一次懷疑螢幕另一頭是誰。",
+          "log_text": "先要他的照片",
+          "next": "lend_reveal"
+        },
+        {
+          "text": "約他語音聊天",
+          "outcome_text": "電話接通，對方的聲音比你想的低很多。他要你別跟家人說。你嚇得掛掉，跑去找媽媽。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "kid_trusts_adult",
+              "kid_online_voice"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "你把平板反蓋在桌上，好久不想打開。",
+          "log_text": "約他語音聊天",
+          "next": "lend_reveal"
         }
       ],
       "sources": [
@@ -3844,7 +4125,10 @@
           "verified": true,
           "url": "https://www.npa.gov.tw/kids/app/artwebsite/view?id=1306&module=artwebsite&serno=e3cc7c20-ac54-4140-9552-41e41dfe2052"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "lend_reveal",
@@ -3855,8 +4139,8 @@
         {
           "text": "參加畢業典禮",
           "effects": {
-            "人際": 8,
-            "心理": 5
+            "人際": 10,
+            "心理": 0
           },
           "next": "pool_c_donation_box",
           "flags": {
@@ -3869,7 +4153,8 @@
           },
           "grid": "green",
           "outcome_text": "畢業典禮那天，他塞給你5塊錢和一包乖乖：「欠很久了。」你突然覺得很溫暖。",
-          "log_text": "同學還了5塊"
+          "log_text": "同學還了5塊",
+          "rethink": false
         },
         {
           "text": "參加畢業典禮",
@@ -3883,7 +4168,8 @@
           },
           "grid": "green",
           "outcome_text": "你看到有人畢業時還記得還同學5塊錢，有點羨慕。",
-          "log_text": "畢業典禮"
+          "log_text": "畢業典禮",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3900,7 +4186,9 @@
           "verify_note": "2026-10-23 curl 只確認標題，內文待核實"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_donation_box",
@@ -3921,7 +4209,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -3935,7 +4224,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3943,7 +4233,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_donation_box",
@@ -3956,7 +4248,7 @@
           "text": "投五十元",
           "effects": {
             "存款": -50,
-            "心理": 1
+            "心理": 0
           },
           "next": "first_phone",
           "flags": {
@@ -3972,7 +4264,7 @@
         {
           "text": "找許可字號",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "first_phone",
           "flags": {
@@ -3981,7 +4273,8 @@
           },
           "outcome_text": "箱子上什麼字號都沒有。你把錢留著，回家上網找了正式的動物收容單位。",
           "log_text": "先找許可字號",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -3991,7 +4284,9 @@
           "verified": true,
           "url": "https://dep.mohw.gov.tw/dosaasw/fp-609-85395-103.html"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "free_gift",
@@ -4002,8 +4297,8 @@
         {
           "text": "傳驗證碼",
           "effects": {
-            "人際": 2,
-            "心理": -2
+            "人際": 0,
+            "心理": 0
           },
           "next": "pool_c_link_drink",
           "flags": {
@@ -4016,12 +4311,13 @@
           "grid": "yellow",
           "outcome_text": "你把驗證碼傳了過去，對方回了一個笑臉，之後就沒再說話。",
           "log_text": "傳了驗證碼",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "那個笑臉讓你心裡毛毛的。"
         },
         {
           "text": "不傳",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "pool_c_link_drink",
           "flags": {
@@ -4032,7 +4328,46 @@
           },
           "grid": "green",
           "outcome_text": "你沒傳，對方很快就去問別人了。",
-          "log_text": "沒傳驗證碼"
+          "log_text": "沒傳驗證碼",
+          "mood_line": "你有點可惜那個造型，但不後悔。",
+          "rethink": false
+        },
+        {
+          "text": "先問他是誰",
+          "outcome_text": "他說自己是社團管理員，還傳了後台截圖。你覺得看起來很真，就把驗證碼傳過去了。隔天你的帳號登不進去。",
+          "effects": {
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "gave_otp",
+              "missed_otp_share"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "你一直刷新登入畫面，手心冒汗。",
+          "log_text": "先問他是誰",
+          "next": "pool_c_link_drink"
+        },
+        {
+          "text": "截圖問其他社員",
+          "outcome_text": "你把訊息截圖貼到社團問。好幾個人回：「他也私訊我了，是假的。」",
+          "effects": {
+            "警覺": 10,
+            "人際": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "原來不只你遇到，你鬆了一口氣。",
+          "log_text": "截圖問其他社員",
+          "next": "pool_c_link_drink",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4082,7 +4417,10 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "v8_key": true,
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_c_link_drink",
@@ -4103,7 +4441,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -4117,7 +4456,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4125,7 +4465,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "c_link_drink",
@@ -4137,7 +4479,7 @@
         {
           "text": "填號碼試試",
           "effects": {
-            "心理": -2
+            "心理": 0
           },
           "next": "pool_game_trade",
           "flags": {
@@ -4153,7 +4495,7 @@
         {
           "text": "問誰真的領到",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "pool_game_trade",
           "flags": {
@@ -4162,7 +4504,8 @@
           },
           "outcome_text": "那三個人都說「好像還沒」。你沒有填。",
           "log_text": "先問清楚",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4172,7 +4515,9 @@
           "verified": true,
           "url": "https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&module=news&serno=f0a71d25-073b-48c8-959a-02117a240e25"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_quiz",
@@ -4193,7 +4538,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -4205,7 +4551,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -4219,7 +4566,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -4233,7 +4581,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選5",
@@ -4247,7 +4596,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選6",
@@ -4261,7 +4611,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選7",
@@ -4275,7 +4626,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選8",
@@ -4289,7 +4641,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選9",
@@ -4303,7 +4656,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4311,7 +4665,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "quiz",
@@ -4322,8 +4678,8 @@
         {
           "text": "信了，看一點就好",
           "effects": {
-            "心理": -5,
-            "警覺": 3
+            "心理": 0,
+            "警覺": 0
           },
           "next": "otp_reveal",
           "flags": {
@@ -4332,12 +4688,13 @@
           },
           "grid": "green",
           "outcome_text": "你只看了一點點。隔天發下來是三張滿滿的A4，寫到最後一題時鐘聲響了。",
-          "log_text": "小考其實很難"
+          "log_text": "小考其實很難",
+          "rethink": false
         },
         {
           "text": "問考哪幾課",
           "effects": {
-            "警覺": 3
+            "警覺": 0
           },
           "next": "otp_reveal",
           "flags": {
@@ -4348,7 +4705,8 @@
           },
           "grid": "green",
           "outcome_text": "老師笑了：「一到三課，三張。」你晚上把三課都看過一遍。",
-          "log_text": "問清楚小考範圍"
+          "log_text": "問清楚小考範圍",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4383,7 +4741,9 @@
           },
           "text": "班導說：「明天只是隨堂考，不用緊張。」"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "otp_reveal",
@@ -4394,9 +4754,9 @@
         {
           "text": "看電話帳單",
           "effects": {
-            "人際": -5,
-            "心理": -5,
-            "警覺": 8
+            "人際": -10,
+            "心理": 0,
+            "警覺": 10
           },
           "next": "lottery_reveal",
           "flags": {
@@ -4410,12 +4770,13 @@
           },
           "grid": "green",
           "outcome_text": "媽媽拿著電話帳單問：「這幾筆小額付款是什麼？」帳單上多了幾筆你沒印象的遊戲點數。你這才知道那串數字不是送禮用的。",
-          "log_text": "驗證碼被拿去小額付款"
+          "log_text": "驗證碼被拿去小額付款",
+          "rethink": false
         },
         {
           "text": "看新聞",
           "effects": {
-            "警覺": 2
+            "警覺": 0
           },
           "next": "lottery_reveal",
           "flags": {
@@ -4426,7 +4787,8 @@
           },
           "grid": "green",
           "outcome_text": "新聞說有孩子傳驗證碼，媽媽被小額盜刷。你想起那天自己沒傳，鬆了一口氣。",
-          "log_text": "想起沒傳驗證碼"
+          "log_text": "想起沒傳驗證碼",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4443,7 +4805,9 @@
           "verify_note": "2026-10-23 curl 確認標題"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "lottery_reveal",
@@ -4454,7 +4818,7 @@
         {
           "text": "看完影片",
           "effects": {
-            "警覺": 8
+            "警覺": 10
           },
           "next": "pool_part_time_ad",
           "flags": {
@@ -4467,12 +4831,13 @@
           },
           "grid": "green",
           "outcome_text": "網紅把一整盒抽完：花800塊，換回250。那個「師」根本沒有要給你。你算了算當年的零用錢。",
-          "log_text": "抽抽樂抽不到"
+          "log_text": "抽抽樂抽不到",
+          "rethink": false
         },
         {
           "text": "看完影片",
           "effects": {
-            "心理": 2
+            "心理": 0
           },
           "next": "pool_part_time_ad",
           "flags": {
@@ -4483,7 +4848,8 @@
           },
           "grid": "green",
           "outcome_text": "網紅把一整盒抽完：花800塊，換回250。你慶幸當年只在旁邊看。",
-          "log_text": "慶幸沒抽抽樂"
+          "log_text": "慶幸沒抽抽樂",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4506,7 +4872,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_part_time_ad",
@@ -4527,7 +4895,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -4539,7 +4908,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -4553,7 +4923,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4561,7 +4932,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "part_time_ad",
@@ -4572,7 +4945,7 @@
         {
           "text": "先問家人",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "ad_result",
           "flags": {
@@ -4583,13 +4956,15 @@
           },
           "outcome_text": "家人皺眉說：「工作還沒做，怎麼先要你付錢？」你把貼文滑掉了。",
           "log_text": "先問了家人",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "被提醒的感覺有點糗，但很踏實。",
+          "rethink": false
         },
         {
           "text": "直接轉帳",
           "effects": {
             "存款": -300,
-            "心理": -5
+            "心理": 0
           },
           "next": "ad_result",
           "flags": {
@@ -4601,7 +4976,44 @@
           "outcome_text": "你轉了300元，對方回：「收到，教材這幾天寄出。」",
           "log_text": "付了300元教材費",
           "grid": "yellow",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "你一直盯著手機，等那份教材。"
+        },
+        {
+          "text": "先付一半試試",
+          "outcome_text": "對方說：「一半也可以，先幫你保留名額。」你轉了150元，之後他說要補齊才能開始。",
+          "effects": {
+            "存款": -150,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "paid_job_fee"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "你告訴自己才150元，可是心裡不太舒服。",
+          "log_text": "先付一半試試",
+          "next": "ad_result"
+        },
+        {
+          "text": "要求見面簽約",
+          "outcome_text": "你說想先看合約、到公司簽。對方說「都線上作業」，再問就不回了。",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "你把貼文滑掉，覺得自己長大了一點。",
+          "log_text": "要求見面簽約",
+          "next": "ad_result",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4612,7 +5024,10 @@
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "v8_key": true,
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "ad_result",
@@ -4623,8 +5038,8 @@
         {
           "text": "傳訊息問",
           "effects": {
-            "警覺": 4,
-            "心理": -4
+            "警覺": 0,
+            "心理": 0
           },
           "next": "pool_mule_variant",
           "flags": {
@@ -4652,7 +5067,8 @@
           },
           "outcome_text": "你沒付錢，也就沒什麼好問的。那則貼文過幾天就不見了。",
           "log_text": "貼文不見了",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4663,7 +5079,9 @@
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
       ],
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_mule_variant",
@@ -4684,7 +5102,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -4698,7 +5117,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -4712,7 +5132,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -4726,7 +5147,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選5",
@@ -4740,7 +5162,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選6",
@@ -4754,7 +5177,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4764,7 +5188,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "birth",
@@ -4782,7 +5208,8 @@
           },
           "grid": "green",
           "outcome_text": "你哭得很大聲，整個產房都笑了。這一生就這樣開始了。",
-          "log_text": "出生"
+          "log_text": "出生",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4799,7 +5226,9 @@
           "verify_note": "儀表板只有月資料；年度縣市分布仍取自 fromnineon（165 儀表板未提供此期間數字，尚無官方原始來源）"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 0
     },
     {
       "id": "hongbao",
@@ -4810,7 +5239,7 @@
         {
           "text": "交給媽媽",
           "effects": {
-            "人際": 5
+            "人際": 10
           },
           "next": "pool_c_temple_fair",
           "flags": {
@@ -4821,12 +5250,13 @@
           },
           "grid": "green",
           "outcome_text": "媽媽把紅包一個個收進抽屜。你看著那疊紅包消失，有點捨不得。",
-          "log_text": "紅包交給媽媽"
+          "log_text": "紅包交給媽媽",
+          "rethink": false
         },
         {
           "text": "請爸媽陪我去開戶",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "pool_c_temple_fair",
           "flags": {
@@ -4837,12 +5267,13 @@
           },
           "grid": "green",
           "outcome_text": "郵局阿姨幫你蓋了章，存摺上第一次印著你的名字。",
-          "log_text": "用自己名字開戶存紅包"
+          "log_text": "用自己名字開戶存紅包",
+          "rethink": false
         },
         {
           "text": "留一點買遊戲點數",
           "effects": {
-            "心理": 5,
+            "心理": 0,
             "存款": -2000
           },
           "next": "pool_c_temple_fair",
@@ -4854,7 +5285,8 @@
           },
           "grid": "green",
           "outcome_text": "遊戲裡多了閃亮的新造型，你開心了一整個寒假。",
-          "log_text": "紅包買了遊戲點數"
+          "log_text": "紅包買了遊戲點數",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4913,7 +5345,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_c_temple_fair",
@@ -4934,7 +5368,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -4948,7 +5383,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -4956,7 +5392,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "c_temple_fair",
@@ -4969,7 +5407,7 @@
           "text": "再買十個圈",
           "effects": {
             "存款": -100,
-            "心理": -2
+            "心理": 0
           },
           "next": "sister_repay",
           "flags": {
@@ -4985,8 +5423,8 @@
         {
           "text": "夠了，去吃糖葫蘆",
           "effects": {
-            "警覺": 2,
-            "心理": 1
+            "警覺": 0,
+            "心理": 0
           },
           "next": "sister_repay",
           "flags": {
@@ -4995,7 +5433,8 @@
           },
           "outcome_text": "你拿剩下的錢買了糖葫蘆，邊走邊吃，一點也不覺得虧。",
           "log_text": "不再加碼",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5006,7 +5445,9 @@
           "url": "https://165.npa.gov.tw/",
           "note": "泛用官方頁：查無對應此情境的具體官方文章，連結為 165 全民防騙網首頁"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "sister_repay",
@@ -5017,7 +5458,7 @@
         {
           "text": "好喔，收下",
           "effects": {
-            "心理": -2
+            "心理": 0
           },
           "next": "pool_toy_seller",
           "flags": {
@@ -5035,8 +5476,8 @@
         {
           "text": "等等，我算一下",
           "effects": {
-            "警覺": 3,
-            "人際": 2
+            "警覺": 0,
+            "人際": 0
           },
           "next": "pool_toy_seller",
           "flags": {
@@ -5048,7 +5489,8 @@
           },
           "grid": "green",
           "outcome_text": "你掰著手指：借100、花50、還50……「姐，那另外50呢？」姐姐愣了一下，笑著補給你：「被你抓到了。」",
-          "log_text": "算了一下姐姐還的錢"
+          "log_text": "算了一下姐姐還的錢",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5092,7 +5534,9 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_toy_seller",
@@ -5113,7 +5557,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -5127,7 +5572,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5135,7 +5581,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "toy_seller",
@@ -5148,7 +5596,7 @@
           "text": "買一隻",
           "effects": {
             "存款": -150,
-            "心理": 3
+            "心理": 0
           },
           "next": "toy_result",
           "flags": {
@@ -5162,7 +5610,7 @@
         {
           "text": "先回家問",
           "effects": {
-            "警覺": 4
+            "警覺": 0
           },
           "next": "pool_var_lottery",
           "flags": {
@@ -5173,7 +5621,8 @@
           },
           "outcome_text": "你先回家問。隔天那個攤子已經不在了。",
           "log_text": "先回家問",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5183,7 +5632,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "toy_result",
@@ -5195,8 +5646,8 @@
         {
           "text": "看看裡面",
           "effects": {
-            "心理": -5,
-            "警覺": 5
+            "心理": 0,
+            "警覺": 10
           },
           "next": "pool_var_lottery",
           "flags": {
@@ -5217,7 +5668,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "first_phone",
@@ -5228,8 +5681,8 @@
         {
           "text": "跟爸媽約好規則",
           "effects": {
-            "警覺": 5,
-            "人際": 5
+            "警覺": 10,
+            "人際": 10
           },
           "next": "pool_points_help",
           "flags": {
@@ -5240,13 +5693,14 @@
           },
           "grid": "green",
           "outcome_text": "你們把規則寫在便利貼上，貼在冰箱。爸媽放心多了。",
-          "log_text": "跟爸媽約好手機規則"
+          "log_text": "跟爸媽約好手機規則",
+          "rethink": false
         },
         {
           "text": "偷偷綁爸媽的卡",
           "effects": {
             "人際": -10,
-            "心理": -5
+            "心理": 0
           },
           "next": "pool_points_help",
           "flags": {
@@ -5257,7 +5711,8 @@
           },
           "grid": "green",
           "outcome_text": "角色抽到了，但月底帳單寄來時，家裡吵了一整晚。",
-          "log_text": "偷綁爸媽的卡抽卡"
+          "log_text": "偷綁爸媽的卡抽卡",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5268,7 +5723,9 @@
           "verify_note": "2026-10-23 curl 開啟原文比對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_points_help",
@@ -5289,7 +5746,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -5303,7 +5761,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5311,7 +5770,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "points_help",
@@ -5324,7 +5785,7 @@
           "text": "幫他買",
           "effects": {
             "存款": -300,
-            "人際": 3
+            "人際": 0
           },
           "next": "points_result",
           "flags": {
@@ -5338,7 +5799,7 @@
         {
           "text": "拒絕",
           "effects": {
-            "警覺": 4
+            "警覺": 0
           },
           "next": "free_gift",
           "flags": {
@@ -5349,7 +5810,8 @@
           },
           "outcome_text": "你回他：「不好意思，我沒辦法。」對方就沒再傳了。",
           "log_text": "拒絕代買點數",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5359,7 +5821,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "points_result",
@@ -5371,8 +5835,8 @@
         {
           "text": "問他",
           "effects": {
-            "警覺": 5,
-            "人際": -2
+            "警覺": 10,
+            "人際": 0
           },
           "next": "free_gift",
           "flags": {
@@ -5393,7 +5857,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 0,
+      "max_age": 12
     },
     {
       "id": "pool_game_trade",
@@ -5414,7 +5880,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -5426,7 +5893,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -5438,7 +5906,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -5452,7 +5921,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選5",
@@ -5466,7 +5936,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選6",
@@ -5480,7 +5951,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選7",
@@ -5494,7 +5966,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選8",
@@ -5508,7 +5981,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選9",
@@ -5522,7 +5996,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選10",
@@ -5536,7 +6011,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選11",
@@ -5550,7 +6026,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選12",
@@ -5564,7 +6041,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5572,7 +6050,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "game_trade",
@@ -5583,7 +6063,7 @@
         {
           "text": "只在平台內交易",
           "effects": {
-            "警覺": 8
+            "警覺": 10
           },
           "next": "pool_c_friend_repay",
           "flags": {
@@ -5606,13 +6086,14 @@
               "text": "你想起以前幫買遊戲點數後對方已讀不回的事。這次你沒有再幫，只在平台內交易。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "rethink": false
         },
         {
           "text": "私下交易",
           "effects": {
             "存款": -3000,
-            "心理": -7
+            "心理": -10
           },
           "next": "pool_c_friend_repay",
           "flags": {
@@ -5635,7 +6116,7 @@
           "text": "私下交易",
           "effects": {
             "存款": -2500,
-            "心理": -7
+            "心理": -10
           },
           "next": "pool_c_friend_repay",
           "flags": {
@@ -5658,7 +6139,7 @@
           "text": "私下交易",
           "effects": {
             "存款": -3500,
-            "心理": -8
+            "心理": -10
           },
           "next": "pool_c_friend_repay",
           "flags": {
@@ -5743,7 +6224,9 @@
           },
           "text": "同學轉介一個網友：「交易平台手續費好貴，我們私下交易比較便宜。」另一個網友則說家裡斷了生活費，請你幫忙買點數。"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_c_friend_repay",
@@ -5764,7 +6247,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -5778,7 +6262,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5786,7 +6271,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "c_friend_repay",
@@ -5799,7 +6286,7 @@
           "text": "借他",
           "effects": {
             "存款": -300,
-            "人際": 1
+            "人際": 0
           },
           "next": "c_grandma_call",
           "flags": {
@@ -5810,12 +6297,13 @@
           },
           "outcome_text": "月底他真的把三百塊放在你桌上，還多了一包乖乖。你覺得朋友之間，就是這樣。",
           "log_text": "借朋友300元",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "說自己也不夠",
           "effects": {
-            "心理": -1
+            "心理": 0
           },
           "next": "c_grandma_call",
           "flags": {
@@ -5824,7 +6312,8 @@
           },
           "outcome_text": "他說沒關係，去跟別人借了。",
           "log_text": "沒有借",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -5835,7 +6324,9 @@
           "url": "https://165.npa.gov.tw/",
           "note": "無對應外部來源；連結為 165 全民防騙網首頁（泛用）"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "c_grandma_call",
@@ -5847,8 +6338,8 @@
         {
           "text": "先打給表哥",
           "effects": {
-            "警覺": 2,
-            "人際": 1
+            "警覺": 0,
+            "人際": 0
           },
           "next": "pool_quiz",
           "flags": {
@@ -5859,13 +6350,14 @@
           },
           "outcome_text": "表哥接了電話，說他正在打球。阿嬤在電話那頭鬆了一口氣，說：「還好有問你。」",
           "log_text": "幫阿嬤打給表哥",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "叫阿嬤先別急",
           "effects": {
-            "警覺": 2,
-            "人際": 1
+            "警覺": 0,
+            "人際": 0
           },
           "next": "pool_quiz",
           "flags": {
@@ -5886,7 +6378,9 @@
           "verified": true,
           "url": "https://www.cib.npa.gov.tw/ch/app/data/view?id=1909&module=wg116&serno=4f04dab6-3ca5-4139-a94e-66be03b62ba3"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "part_time",
@@ -5897,8 +6391,8 @@
         {
           "text": "留紀錄申請調解",
           "effects": {
-            "警覺": 8,
-            "心理": -5,
+            "警覺": 10,
+            "心理": 0,
             "存款": 15000
           },
           "next": "hongbao_result",
@@ -5911,12 +6405,13 @@
           },
           "grid": "green",
           "outcome_text": "你把紀錄整理好送去調解，幾週後拿回了薪水。那則徵才貼文你直接滑掉。",
-          "log_text": "申請調解，拿回薪水"
+          "log_text": "申請調解，拿回薪水",
+          "rethink": false
         },
         {
           "text": "算了不想吵",
           "effects": {
-            "心理": -12
+            "心理": -10
           },
           "next": "hongbao_result",
           "flags": {
@@ -5991,7 +6486,22 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "versions": [
+        {
+          "id": "v1"
+        },
+        {
+          "id": "v2",
+          "text": "高二暑假，你在市場旁的早餐店打工，清晨五點半就要開始煎蛋餅。兩個月過去，老闆說「生意不好」，最後一個月的薪水一拖再拖。同時，社群上有個「資料登打」打工，說要先給帳戶當薪轉戶。"
+        },
+        {
+          "id": "v3",
+          "text": "高二暑假，你在補習班當櫃檯工讀，每天幫忙點名、印考卷。暑假結束，主任說最後一個月的工讀金「要等下一期學費收齊」。同時，有人私訊你一個「影片審核」打工，說要先給帳戶當薪轉戶。"
+        }
+      ],
+      "min_age": 15,
+      "max_age": 22
     },
     {
       "id": "hongbao_result",
@@ -6017,7 +6527,8 @@
           },
           "grid": "green",
           "outcome_text": "媽媽拿出一本存摺，裡面是從小到大的紅包錢，一筆都沒少。你抱了媽媽一下。",
-          "log_text": "紅包一筆都沒少"
+          "log_text": "紅包一筆都沒少",
+          "rethink": false
         },
         {
           "text": "問起紅包",
@@ -6036,7 +6547,8 @@
           },
           "grid": "green",
           "outcome_text": "爸媽說：「早就拿去包回別人家、繳學費了，養你不用錢嗎？」餐桌上安靜了很久。",
-          "log_text": "紅包已經被花掉"
+          "log_text": "紅包已經被花掉",
+          "rethink": false
         },
         {
           "text": "翻翻小時候的事",
@@ -6050,7 +6562,8 @@
           },
           "grid": "green",
           "outcome_text": "你翻出小學的存摺和舊遊戲帳號，一個有數字，一個只剩登入畫面。你盯著看了好一會兒。",
-          "log_text": "想起小時候的紅包"
+          "log_text": "想起小時候的紅包",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6116,7 +6629,9 @@
       },
       "design_assumption": true,
       "random_note": "設計設定，非統計，前台不顯示為統計。結果A／B由引擎各以50%隨機抽選。",
-      "presentation": "timeskip"
+      "presentation": "timeskip",
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "student_loan",
@@ -6128,7 +6643,7 @@
           "text": "申請學貸",
           "effects": {
             "存款": -20000,
-            "警覺": 5
+            "警覺": 10
           },
           "next": "route_loan_use",
           "flags": {
@@ -6139,7 +6654,8 @@
           },
           "grid": "green",
           "outcome_text": "你把還款表貼在書桌前，每個月要還多少一目了然。",
-          "log_text": "申請學貸"
+          "log_text": "申請學貸",
+          "rethink": false
         },
         {
           "text": "打工撐學費",
@@ -6156,7 +6672,8 @@
           },
           "grid": "green",
           "outcome_text": "你下課就去打工，上課常常打瞌睡。",
-          "log_text": "打工撐學費"
+          "log_text": "打工撐學費",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6173,7 +6690,22 @@
           "verify_note": "原站擋自動連線，依 WebSearch 搜尋摘錄核對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "versions": [
+        {
+          "id": "v1"
+        },
+        {
+          "id": "v2",
+          "text": "上大學了。你留在家裡附近的學校，每天騎車通勤四十分鐘。註冊單上的學費數字很大，你把單子摺起來塞進書包，不太想讓爸媽看到。"
+        },
+        {
+          "id": "v3",
+          "text": "上大學了。你和高中好友考上同一所學校，兩個人一起搬進宿舍。註冊那天，你們排在長長的隊伍裡，互相看了對方的學費單，都沉默了。"
+        }
+      ],
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "route_loan_use",
@@ -6195,7 +6727,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         },
         {
           "text": "條件不成立",
@@ -6209,7 +6742,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6217,7 +6751,9 @@
           "name": "設計假設：條件分流（遊戲機制）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "loan_use",
@@ -6229,7 +6765,7 @@
         {
           "text": "自己規劃用途",
           "effects": {
-            "警覺": 5
+            "警覺": 10
           },
           "next": "rent",
           "flags": {
@@ -6240,13 +6776,15 @@
           },
           "outcome_text": "你把學貸留給學費和生活費，封鎖了那個帳號。",
           "log_text": "自己規劃學貸用途",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "錢放在該放的地方，你睡得很安穩。",
+          "rethink": false
         },
         {
           "text": "聽對方建議",
           "effects": {
             "存款": -30000,
-            "心理": -5
+            "心理": 0
           },
           "next": "rent",
           "flags": {
@@ -6258,7 +6796,45 @@
           },
           "outcome_text": "你照對方的建議把錢轉出去。幾個月後，那筆錢只剩帳面上的數字，對方也不回了。",
           "log_text": "學貸被拿去「投資」",
-          "grid": "red"
+          "grid": "red",
+          "mood_line": "你每天打開帳戶，數字一天比一天陌生。"
+        },
+        {
+          "text": "先投一小筆看看",
+          "outcome_text": "第一週真的多了幾百元。你又加了一些。第二個月，對方說要先繳「解鎖費」才能領出來。",
+          "effects": {
+            "存款": -15000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "loan_invest",
+              "lost_money"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "那幾百元的獲利，現在想起來像誘餌。",
+          "log_text": "先投一小筆看看",
+          "next": "rent"
+        },
+        {
+          "text": "查他的證照和公司",
+          "outcome_text": "你照他給的名字去主管機關網站查，查不到這個人。你封鎖了帳號。",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "多花十分鐘查，你覺得很值得。",
+          "log_text": "查他的證照和公司",
+          "next": "rent",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6268,7 +6844,10 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "rent",
@@ -6279,7 +6858,7 @@
         {
           "text": "拍照錄影、簽點交單",
           "effects": {
-            "警覺": 8
+            "警覺": 10
           },
           "next": "a_move_out",
           "flags": {
@@ -6290,13 +6869,14 @@
           },
           "grid": "green",
           "outcome_text": "退租時房東說要扣押金，你拿出照片和點交單，押金全數退回。",
-          "log_text": "拍照留紀錄，拿回押金"
+          "log_text": "拍照留紀錄，拿回押金",
+          "rethink": false
         },
         {
           "text": "直接入住",
           "effects": {
             "存款": -10500,
-            "心理": -7
+            "心理": -10
           },
           "next": "a_move_out",
           "flags": {
@@ -6372,7 +6952,22 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "versions": [
+        {
+          "id": "v1"
+        },
+        {
+          "id": "v2",
+          "text": "大三搬出宿舍，你和同學分租一層老公寓，客廳的沙發是前房客留下的。房東說：「押金兩個月，退租看狀況。」一年後退租時，房東說地板刮傷，押金要扣一大半。"
+        },
+        {
+          "id": "v3",
+          "text": "大三搬出宿舍，你租了學校附近頂樓加蓋的雅房，夏天熱得睡不著。房東說：「押金兩個月，退租看狀況。」一年後退租時，房東說門鎖壞了要換，押金要扣一大半。"
+        }
+      ],
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "a_move_out",
@@ -6385,9 +6980,9 @@
           "text": "自己搬，請朋友吃飯",
           "effects": {
             "存款": -1500,
-            "人際": 1
+            "人際": 0
           },
-          "next": "pool_rent_deposit",
+          "next": "perp_account_ask",
           "flags": {
             "set": [
               "helped_by_friend"
@@ -6396,22 +6991,26 @@
           },
           "outcome_text": "朋友搬到滿身汗，你請他吃了一頓熱炒。他說：「以後你搬家都叫我。」",
           "log_text": "朋友幫忙搬家",
-          "grid": "green"
+          "grid": "green",
+          "next_v7": "pool_rent_deposit",
+          "rethink": false
         },
         {
           "text": "找搬家公司估價",
           "effects": {
             "存款": -3000,
-            "警覺": 2
+            "警覺": 0
           },
-          "next": "pool_rent_deposit",
+          "next": "perp_account_ask",
           "flags": {
             "set": [],
             "require": []
           },
           "outcome_text": "你找了兩家估價、看了合約才請人搬。多花了一點，但東西一件沒少。",
           "log_text": "比價後請人搬家",
-          "grid": "green"
+          "grid": "green",
+          "next_v7": "pool_rent_deposit",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6421,7 +7020,231 @@
           "verified": true,
           "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0060125"
         }
-      ]
+      ],
+      "versions": [
+        {
+          "id": "v1"
+        },
+        {
+          "id": "v2",
+          "text": "畢業前搬家。你把書和衣服分成八個箱子，有一半是捨不得丟的筆記。新住處離捷運站有點遠，但樓下有一間很晚才關的麵店。"
+        },
+        {
+          "id": "v3",
+          "text": "畢業前搬家。你只有一個行李箱和兩袋棉被，第一次發現自己的東西這麼少。新房間沒有窗戶，但房東說可以養植物。"
+        }
+      ],
+      "min_age": 18,
+      "max_age": 22
+    },
+    {
+      "id": "perp_account_ask",
+      "age": 21,
+      "category": "加害者線",
+      "line": "perpetrator",
+      "presentation": "card",
+      "text": "系上學長在群組私訊你：「我朋友公司在做點數代收，缺帳戶周轉。借一個月就好，給你五千，什麼都不用做。」\n你最近房租快繳不出來。",
+      "sources": [
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22",
+          "verified": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "直接拒絕",
+          "outcome_text": "你回：「帳戶不外借。」學長說你想太多，之後在群組不太理你。",
+          "effects": {
+            "警覺": 10,
+            "人際": -10
+          },
+          "flags": {
+            "set": [
+              "refused_account"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "被冷落有點難受，但你的名字還是你自己的。",
+          "log_text": "直接拒絕",
+          "next": "pool_rent_deposit",
+          "rethink": false
+        },
+        {
+          "text": "問清楚是哪家公司",
+          "outcome_text": "你問公司名字和合約。學長說「朋友的公司，不方便講」，又說「大家都這樣借」。你沒有答應。",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first",
+              "refused_account"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "問不到答案，本身就是答案。",
+          "log_text": "問清楚是哪家公司",
+          "next": "pool_rent_deposit",
+          "rethink": false
+        },
+        {
+          "text": "借一個月就好",
+          "outcome_text": "你想：只是借，又不是我去騙人。你把提款卡交給學長，收到了五千元。",
+          "effects": {
+            "存款": 5000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "perp_account_lent",
+              "account_lost"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "五千元在帳上，你卻一直覺得哪裡不對。",
+          "log_text": "借一個月就好",
+          "next": "perp_consequence"
+        },
+        {
+          "text": "先問會不會有事",
+          "outcome_text": "學長說：「放心啦，出事我負責。」你相信了，把提款卡交出去，收了錢。",
+          "effects": {
+            "存款": 5000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "perp_account_lent",
+              "account_lost",
+              "perp_trusted_promise"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "「我負責」三個字，後來誰也負責不了。",
+          "log_text": "先問會不會有事",
+          "next": "perp_consequence"
+        }
+      ],
+      "min_age": 18,
+      "max_age": 22
+    },
+    {
+      "id": "perp_consequence",
+      "age": 21,
+      "category": "加害者線",
+      "line": "perpetrator",
+      "presentation": "card",
+      "text": "兩週後，你的帳戶被銀行凍結，接著收到警察局的到案通知。你的帳戶被拿去收被害人的錢。\n你心裡一直重複：「我也是被騙的。」可是被害人的錢，是從你的帳戶經過的。\n（法律說明：無正當理由把帳戶交給別人，依洗錢防制法第22條會被警察告誡；收了報酬、交出三個以上帳戶，或告誡後五年內再犯，可處三年以下有期徒刑、拘役或罰金。若被認定參與詐騙，刑法第339條之4加重詐欺可處一年以上七年以下有期徒刑。被害人也可能依民法要求連帶賠償。實際結果由法院依個案判斷。）",
+      "sources": [
+        {
+          "name": "洗錢防制法§22 無正當理由提供帳戶",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=G0380131&flno=22",
+          "verified": true
+        },
+        {
+          "name": "刑法§339-4 加重詐欺",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000001&flno=339-4",
+          "verified": true
+        },
+        {
+          "name": "民法§185 共同侵權",
+          "url": "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=B0000001&flno=185",
+          "verified": true
+        },
+        {
+          "name": "自由時報：18歲兼職變車手，法官認定新聞常報屬常識，判4月",
+          "url": "https://news.ltn.com.tw/news/society/breakingnews/3969039",
+          "verified": true
+        },
+        {
+          "name": "臺灣士林地方法院112年度金訴緝字第17號刑事判決（去識別化引用）",
+          "url": "https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=SLDM%2c112%2c%e9%87%91%e8%a8%b4%e7%b7%9d%2c17%2c20230619%2c1",
+          "verified": true
+        }
+      ],
+      "case_note": "真實判決（去識別化）：曾有 18 歲兼職者把工作做成車手，法官認為詐騙新聞常見、應有認知，判刑 4 月（自由時報）；士林地院 112 年度金訴緝字第17號判決，車手數罪合併應執行有期徒刑 2 年 10 月。",
+      "choices": [
+        {
+          "text": "主動到案說實話",
+          "outcome_text": "你帶著和學長的對話紀錄去警局，把經過一五一十說出來。員警說之後會依程序處理，結果要看司法判斷。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "perp_cooperated"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "說完以後很累，但你不用再假裝了。",
+          "log_text": "主動到案說實話",
+          "next": "pool_rent_deposit",
+          "rethink": false
+        },
+        {
+          "text": "先跟家人說",
+          "outcome_text": "你在電話裡哭著說完。爸媽沉默了很久，然後說：「我們陪你去，先找法律協助。」",
+          "effects": {
+            "人際": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "perp_cooperated",
+              "told_family_perp"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "家人沒有放開你的手。",
+          "log_text": "先跟家人說",
+          "next": "pool_rent_deposit",
+          "rethink": false
+        },
+        {
+          "text": "去找學長問清楚",
+          "outcome_text": "學長的帳號已經刪了，群組裡沒人說得出他去哪了。你一個人坐在宿舍，到案通知還在桌上。",
+          "effects": {
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "perp_alone"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "你發現，「我負責」的人消失得最快。",
+          "log_text": "去找學長問清楚",
+          "next": "pool_rent_deposit"
+        },
+        {
+          "text": "刪掉對話紀錄",
+          "outcome_text": "你把對話全刪了，想當作沒發生。到了警局，你拿不出任何能說明經過的東西。",
+          "effects": {
+            "心理": -20
+          },
+          "flags": {
+            "set": [
+              "perp_hid_evidence"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "刪掉的是證據，留下來的是你一個人。",
+          "log_text": "刪掉對話紀錄",
+          "next": "pool_rent_deposit"
+        }
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "pool_rent_deposit",
@@ -6442,7 +7265,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -6456,7 +7280,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選3",
@@ -6470,7 +7295,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選4",
@@ -6484,7 +7310,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6492,7 +7319,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 13,
+      "max_age": 22
     },
     {
       "id": "rent_deposit",
@@ -6505,7 +7334,7 @@
           "text": "先匯訂金",
           "effects": {
             "存款": -10000,
-            "心理": -5
+            "心理": 0
           },
           "next": "rent_result",
           "flags": {
@@ -6519,12 +7348,13 @@
           },
           "outcome_text": "你匯了訂金，房東說會再約你看房時間。",
           "log_text": "先匯了訂金",
-          "grid": "yellow"
+          "grid": "yellow",
+          "mood_line": "你一邊等房東回覆，一邊開始想像新房間。"
         },
         {
           "text": "堅持先看房",
           "effects": {
-            "警覺": 8
+            "警覺": 10
           },
           "next": "mlm",
           "flags": {
@@ -6547,13 +7377,15 @@
               "text": "你想起上次押金拿不回來的事。這次你堅持先看房再給錢。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "mood_line": "你知道好房子會被搶，但你更不想被騙。",
+          "rethink": false
         },
         {
           "text": "先匯訂金",
           "effects": {
             "存款": -12000,
-            "心理": -5
+            "心理": 0
           },
           "next": "rent_result",
           "flags": {
@@ -6568,7 +7400,47 @@
           "outcome_text": "你匯了訂金，房東說會再約你看房時間。",
           "log_text": "先匯了訂金",
           "grid": "yellow",
-          "variant_of": 0
+          "variant_of": 0,
+          "mood_line": "你一邊等房東回覆，一邊開始想像新房間。"
+        },
+        {
+          "text": "先匯一半保留",
+          "outcome_text": "房東說一半也行。匯完後他說還有別人要看，要你補齊。你再傳訊息，已經讀不到了。",
+          "effects": {
+            "存款": -5000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "rent_scammed",
+              "lost_money"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "你看著已讀不回的對話框，手有點冷。",
+          "log_text": "先匯一半保留",
+          "next": "rent_result"
+        },
+        {
+          "text": "請朋友代看房",
+          "outcome_text": "住附近的朋友幫你去敲門，開門的住戶說：「這間沒有要出租啊。」",
+          "effects": {
+            "警覺": 10,
+            "人際": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first",
+              "helped_by_friend"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "有朋友在，找房子沒那麼孤單。",
+          "log_text": "請朋友代看房",
+          "next": "mlm",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6588,7 +7460,10 @@
           },
           "text": "網路上看到一間便宜套房。房東說鑰匙放在超商寄貨櫃，先付一個月租金就把取件碼給你。"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "rent_result",
@@ -6600,8 +7475,8 @@
         {
           "text": "再傳訊息",
           "effects": {
-            "警覺": 5,
-            "心理": -3
+            "警覺": 10,
+            "心理": 0
           },
           "next": "mlm",
           "flags": {
@@ -6617,8 +7492,8 @@
         {
           "text": "去取鑰匙",
           "effects": {
-            "心理": -5,
-            "警覺": 4
+            "心理": 0,
+            "警覺": 0
           },
           "next": "mlm",
           "flags": {
@@ -6639,7 +7514,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "mlm",
@@ -6651,7 +7528,7 @@
           "text": "先問清楚公司",
           "effects": {
             "警覺": 10,
-            "人際": -5
+            "人際": -10
           },
           "next": "a_first_salary",
           "flags": {
@@ -6674,14 +7551,16 @@
               "text": "你想起上次付了費用後對方就消失的事。這次你沒有再付，先查公司再決定。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "mood_line": "朋友少了一個，但你不後悔問。",
+          "rethink": false
         },
         {
           "text": "直接去現場聊",
           "effects": {
             "存款": -30000,
-            "人際": 5,
-            "心理": -2
+            "人際": 10,
+            "心理": 0
           },
           "next": "a_first_salary",
           "flags": {
@@ -6694,7 +7573,46 @@
           "grid": "red",
           "outcome_text": "你提著一袋產品回家，刷卡簽單時手有點抖。",
           "log_text": "被勸買了直銷產品",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "那袋產品堆在牆角，你每天經過都不太敢看。"
+        },
+        {
+          "text": "帶朋友一起去",
+          "outcome_text": "現場很熱鬧，大家都在分享成功故事。你們兩個都買了入門組，回家後才覺得哪裡不對。",
+          "effects": {
+            "存款": -8000,
+            "人際": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "mlm_small_buy",
+              "missed_vague_job_offer"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "有人陪著，反而更不好意思拒絕。",
+          "log_text": "帶朋友一起去",
+          "next": "a_first_salary"
+        },
+        {
+          "text": "先查公司登記",
+          "outcome_text": "你查了公司登記，營業項目跟他說的完全不一樣。你回他：「我先不去了。」",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "wary_of_easy_money"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "你關掉網頁，覺得自己有底氣。",
+          "log_text": "先查公司登記",
+          "next": "a_first_salary",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6744,7 +7662,10 @@
             "type": "text"
           }
         ]
-      }
+      },
+      "v8_key": true,
+      "min_age": 18,
+      "max_age": 22
     },
     {
       "id": "a_first_salary",
@@ -6757,8 +7678,8 @@
           "text": "請爸媽吃飯",
           "effects": {
             "存款": -3000,
-            "人際": 1,
-            "心理": 1
+            "人際": 0,
+            "心理": 0
           },
           "next": "lend",
           "flags": {
@@ -6769,14 +7690,15 @@
           },
           "outcome_text": "媽媽一直說太破費，但吃完偷偷把菜單拍下來傳給阿姨。",
           "log_text": "第一份薪水請爸媽",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "先存一半",
           "effects": {
             "存款": 5000,
-            "心理": 1,
-            "警覺": 2
+            "心理": 0,
+            "警覺": 0
           },
           "next": "lend",
           "flags": {
@@ -6787,7 +7709,8 @@
           },
           "outcome_text": "你開了一個新帳戶，把一半的薪水轉進去，取名叫「不准動」。",
           "log_text": "第一份薪水存一半",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6797,7 +7720,22 @@
           "verified": true,
           "url": "https://www.mol.gov.tw/1607/28690/87756/"
         }
-      ]
+      ],
+      "versions": [
+        {
+          "id": "v1"
+        },
+        {
+          "id": "v2",
+          "text": "第一份正職的薪水入帳了。你在午休時偷偷打開帳戶看了三次，扣掉勞健保比你想的少，但那是你自己賺的。"
+        },
+        {
+          "id": "v3",
+          "text": "第一份正職的薪水入帳了。下班後你站在便利商店門口，傳了一張帳戶截圖給家裡的群組，又馬上收回。"
+        }
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "lend",
@@ -6809,7 +7747,7 @@
           "text": "借，訊息寫清楚",
           "effects": {
             "存款": -30000,
-            "人際": 5
+            "人際": 10
           },
           "next": "pool_customs_fee",
           "flags": {
@@ -6832,7 +7770,8 @@
               "text": "你轉了三萬，傳了訊息寫清楚金額和日期，朋友回了「好，謝謝」。國中那年借出去的三百塊，朋友月底就還了。你一直以為，朋友之間就是這樣。",
               "source": "原創情境（伏筆回收：c_friend_repay）"
             }
-          ]
+          ],
+          "rethink": false
         },
         {
           "text": "借，不留紀錄",
@@ -6863,7 +7802,8 @@
               "text": "你轉了三萬過去。幾個月後，訊息一直停在「已讀」。國中那年借出去的三百塊，朋友月底就還了。你一直以為，朋友之間就是這樣。",
               "source": "原創情境（伏筆回收：c_friend_repay）"
             }
-          ]
+          ],
+          "rethink": false
         }
       ],
       "sources": [
@@ -6911,7 +7851,9 @@
           },
           "text": "好朋友說急用，跟你借三萬，「下個月一定還」。（你想起以前借同學錢買冰、說好隔天還卻沒還的事。）"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "pool_customs_fee",
@@ -6932,7 +7874,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -6946,7 +7889,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -6954,7 +7898,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "customs_fee",
@@ -6967,7 +7913,7 @@
           "text": "到超商寄出",
           "effects": {
             "存款": -20000,
-            "心理": -8
+            "心理": -10
           },
           "next": "customs_result",
           "flags": {
@@ -6979,7 +7925,8 @@
           },
           "outcome_text": "你照指示到超商寄出。對方說包裹很快就會放行。",
           "log_text": "寄出通關費",
-          "grid": "yellow"
+          "grid": "yellow",
+          "mood_line": "寄出那一刻你鬆了口氣，後來才知道那是錯覺。"
         },
         {
           "text": "掛斷，自己查",
@@ -7007,7 +7954,46 @@
               "text": "你想起以前付了錢卻什麼都沒拿到的事。這次你沒有寄，自己查了物流紀錄。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "mood_line": "電話安靜了，你的心也慢慢安靜下來。",
+          "rethink": false
+        },
+        {
+          "text": "問對方員工編號",
+          "outcome_text": "對方很流利地報了一串編號，還說可以查。你沒有查，照著寄了。",
+          "effects": {
+            "存款": -20000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "customs_scammed",
+              "lost_money"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "那串編號聽起來好正式，正式到你沒有懷疑。",
+          "log_text": "問對方員工編號",
+          "next": "customs_result"
+        },
+        {
+          "text": "回撥來電號碼",
+          "outcome_text": "你回撥，接電話的人說他是「主管」，口氣很急。你越聽越不對，先掛了。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "called_back_scammer"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "你發現回撥找到的，還是同一群人。",
+          "log_text": "回撥來電號碼",
+          "next": "insurance"
         }
       ],
       "sources": [
@@ -7017,7 +8003,10 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "customs_result",
@@ -7029,8 +8018,8 @@
         {
           "text": "再傳訊息問",
           "effects": {
-            "心理": -5,
-            "警覺": 5
+            "心理": 0,
+            "警覺": 10
           },
           "next": "insurance",
           "flags": {
@@ -7049,7 +8038,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "insurance",
@@ -7060,8 +8051,8 @@
         {
           "text": "拿條款回家比較",
           "effects": {
-            "警覺": 8,
-            "人際": -5
+            "警覺": 10,
+            "人際": -10
           },
           "next": "a_help_stranger",
           "flags": {
@@ -7072,14 +8063,15 @@
           },
           "grid": "green",
           "outcome_text": "親戚的臉沉了一下，但你把條款帶回家慢慢看。",
-          "log_text": "把保單帶回家比較"
+          "log_text": "把保單帶回家比較",
+          "rethink": false
         },
         {
           "text": "當場簽",
           "effects": {
             "存款": -20000,
-            "人際": 5,
-            "心理": -2
+            "人際": 10,
+            "心理": 0
           },
           "next": "a_help_stranger",
           "flags": {
@@ -7152,7 +8144,9 @@
           },
           "text": "親戚當上保險業務，拿來一份「穩賺的」儲蓄險，要你當場簽。（業務說「主管說可以先簽」。你想起以前同學說老師允許帶小抄的事。）"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "a_help_stranger",
@@ -7165,7 +8159,7 @@
           "text": "借他兩百",
           "effects": {
             "存款": -200,
-            "心理": 1
+            "心理": 0
           },
           "next": "rosca",
           "flags": {
@@ -7181,8 +8175,8 @@
         {
           "text": "陪他去服務台",
           "effects": {
-            "警覺": 2,
-            "人際": 1
+            "警覺": 0,
+            "人際": 0
           },
           "next": "rosca",
           "flags": {
@@ -7191,7 +8185,8 @@
           },
           "outcome_text": "你陪他走到服務台，說站務人員可以協助。他說不用了，轉身走掉。你不確定自己是不是太多心。",
           "log_text": "陪他去服務台",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7213,7 +8208,9 @@
           "text": "下班的捷運站，一位看起來很狼狽的大哥攔住你：「我錢包被偷了，可以借我兩百塊坐車回家嗎？」你想起小時候在菜市場牽著迷路小孩找媽媽的那天。",
           "source": "原創情境（伏筆回收：c_lost_kid）"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "rosca",
@@ -7224,8 +8221,8 @@
         {
           "text": "不跟會",
           "effects": {
-            "警覺": 5,
-            "人際": -5
+            "警覺": 10,
+            "人際": -10
           },
           "next": "second_scam",
           "flags": {
@@ -7234,7 +8231,8 @@
           },
           "grid": "green",
           "outcome_text": "媽媽有點失望，但你的錢留在自己的帳戶裡。",
-          "log_text": "沒有跟會"
+          "log_text": "沒有跟會",
+          "rethink": false
         },
         {
           "text": "跟會",
@@ -7252,7 +8250,8 @@
           },
           "grid": "green",
           "outcome_text": "兩年後的某天，會頭的電話打不通了。你和媽媽的錢都要不回來。",
-          "log_text": "跟會被倒"
+          "log_text": "跟會被倒",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7269,7 +8268,9 @@
           "verify_note": "原站擋自動連線，依 WebSearch 搜尋摘錄核對"
         }
       ],
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "second_scam",
@@ -7278,7 +8279,7 @@
       "text": "有人私訊你，說可以幫被騙的人「追回損失」，只要先付一筆手續費。",
       "choices": [
         {
-          "text": "打165確認",
+          "text": "找官方管道確認",
           "effects": {
             "警覺": 10
           },
@@ -7291,7 +8292,7 @@
               "lost_money"
             ]
           },
-          "outcome_text": "165的人說：說能幫你追回被騙的錢、還要先收費的，本身就是詐騙。你封鎖了對方。",
+          "outcome_text": "你找到官方的反詐騙網站核對。上面寫得很清楚：說能幫你追回被騙的錢、還要先收費的，本身就是詐騙。你封鎖了對方。",
           "log_text": "打165確認追回服務",
           "grid": "green",
           "outcome_variants": [
@@ -7305,13 +8306,17 @@
               "text": "你想起上次已經被騙過一次。這次你直接打165確認，沒有再付任何費用。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "text_v7": "打165確認",
+          "mood_line": "原來想把錢找回來的心，也會被利用。",
+          "outcome_text_v7": "165的人說：說能幫你追回被騙的錢、還要先收費的，本身就是詐騙。你封鎖了對方。",
+          "rethink": false
         },
         {
           "text": "先付一筆試試",
           "effects": {
             "存款": -30000,
-            "心理": -12
+            "心理": -10
           },
           "next": "pool_fake_insurance",
           "flags": {
@@ -7325,7 +8330,8 @@
           "outcome_text": "你付了手續費。對方又要更多錢，最後也消失了。",
           "log_text": "又被騙了一次",
           "grid": "red",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "又一次。你坐在床邊，很久沒有動。"
         },
         {
           "text": "滑掉訊息",
@@ -7339,7 +8345,49 @@
           },
           "outcome_text": "你沒有被倒過、騙過錢，覺得這訊息莫名其妙，就滑掉了。",
           "log_text": "滑掉陌生私訊",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "莫名其妙的訊息，滑掉就好。",
+          "rethink": false
+        },
+        {
+          "text": "加入受害者群組",
+          "outcome_text": "群組裡很多人說自己拿回了錢，管理員要大家先繳「律師費」。你繳了，之後群組被解散。",
+          "effects": {
+            "存款": -20000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "second_victim"
+            ],
+            "require": [
+              "lost_money"
+            ]
+          },
+          "grid": "red",
+          "mood_line": "你以為找到同伴，結果是另一個陷阱。",
+          "log_text": "加入受害者群組",
+          "next": "pool_fake_insurance"
+        },
+        {
+          "text": "請他先追回再付",
+          "outcome_text": "對方傳來一張「追回進度」截圖，說只差最後一筆保證金。你付了。",
+          "effects": {
+            "存款": -10000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "second_victim"
+            ],
+            "require": [
+              "lost_money"
+            ]
+          },
+          "grid": "yellow",
+          "mood_line": "那張截圖做得很像真的，你不知道該怪誰。",
+          "log_text": "請他先追回再付",
+          "next": "pool_fake_insurance"
         }
       ],
       "sources": [
@@ -7354,7 +8402,10 @@
         "design_assumption": true,
         "note": "寫手原稿 -50,000；人生線初始存款 80,000–200,000，改為 -30,000（設計假設，非統計）"
       },
-      "presentation": "card"
+      "presentation": "card",
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "pool_fake_insurance",
@@ -7375,7 +8426,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -7389,7 +8441,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7397,7 +8450,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "fake_insurance",
@@ -7409,7 +8464,7 @@
         {
           "text": "打給原保險公司",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "route_sleep",
           "flags": {
@@ -7432,13 +8487,15 @@
               "text": "你想起上次當場簽約後後悔的事。這次你直接打給原保險公司確認。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "mood_line": "一通電話，就把那個數字變回了泡沫。",
+          "rethink": false
         },
         {
           "text": "先付手續費",
           "effects": {
             "存款": -20000,
-            "心理": -8
+            "心理": -10
           },
           "next": "route_sleep",
           "flags": {
@@ -7450,7 +8507,46 @@
           },
           "outcome_text": "你付了手續費。對方又要更多文件費，最後消失。",
           "log_text": "付了假解約手續費",
-          "grid": "red"
+          "grid": "red",
+          "mood_line": "那筆解約金一直沒來，帳單倒是來了。"
+        },
+        {
+          "text": "請他寄文件來看",
+          "outcome_text": "他寄來的文件有章有編號，看起來很正式。你付了手續費。",
+          "effects": {
+            "存款": -20000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "insurance_fee",
+              "lost_money"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "你把文件收進抽屜，再也不想打開。",
+          "log_text": "請他寄文件來看",
+          "next": "route_sleep"
+        },
+        {
+          "text": "問懂保險的家人",
+          "outcome_text": "姊姊看了一眼說：「解約金不會要你先付錢。」你把電話設成封鎖。",
+          "effects": {
+            "警覺": 10,
+            "人際": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "家人一句話，比對方十句話都可靠。",
+          "log_text": "問懂保險的家人",
+          "next": "route_sleep",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7460,7 +8556,10 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "route_sleep",
@@ -7482,7 +8581,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         },
         {
           "text": "條件不成立",
@@ -7496,7 +8596,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7504,7 +8605,9 @@
           "name": "設計假設：條件分流（遊戲機制）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "sleep_issue",
@@ -7516,8 +8619,8 @@
         {
           "text": "找人聊聊或打專線",
           "effects": {
-            "心理": 8,
-            "人際": 5
+            "心理": 10,
+            "人際": 10
           },
           "next": "elder",
           "flags": {
@@ -7528,7 +8631,8 @@
           },
           "outcome_text": "你打了專線。對方說很多人都有類似的感覺，被騙不是你的錯。",
           "log_text": "打專線找人聊",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "自己撐",
@@ -7556,7 +8660,9 @@
           "name": "1925安心專線（衛福部心理健康司，24小時免付費）",
           "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "elder",
@@ -7579,7 +8685,7 @@
               "probability": 0.5,
               "effects": {
                 "人際": 10,
-                "警覺": 5
+                "警覺": 10
               },
               "flags_set": [
                 "family_passphrase"
@@ -7606,7 +8712,8 @@
           "random_note": {
             "design_assumption": true,
             "note": "50/50 是設計假設，不是統計：同原本兩個一模一樣的按鈕（均勻抽選＝各 50%），結局分布不變。爸媽有沒有先約好通關密語不由玩家當下決定，所以做成隨機。"
-          }
+          },
+          "rethink": false
         }
       ],
       "sources": [
@@ -7641,7 +8748,9 @@
           "text": "爸媽打電話來，聲音很急。你想起十四歲那年，阿嬤在電話裡發抖的聲音。",
           "source": "原創情境（伏筆回收，v6）"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "route_family_talk",
@@ -7663,7 +8772,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         },
         {
           "text": "條件不成立",
@@ -7677,7 +8787,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統分流）",
-          "log_text": "（分流）"
+          "log_text": "（分流）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7685,7 +8796,9 @@
           "name": "設計假設：條件分流（遊戲機制）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "family_talk",
@@ -7697,8 +8810,8 @@
         {
           "text": "跟他們說明過程",
           "effects": {
-            "人際": 3,
-            "心理": 5
+            "人際": 0,
+            "心理": 0
           },
           "next": "a_still_kind",
           "flags": {
@@ -7709,13 +8822,14 @@
           },
           "outcome_text": "你把過程一步一步說出來。有人沉默，有人說自己也差點被騙過。",
           "log_text": "跟家人說明過程",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "不再提",
           "effects": {
-            "人際": -5,
-            "心理": -8
+            "人際": -10,
+            "心理": -10
           },
           "next": "a_still_kind",
           "flags": {
@@ -7736,7 +8850,9 @@
           "verified": false,
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "a_still_kind",
@@ -7748,9 +8864,9 @@
         {
           "text": "先去醫院看看",
           "effects": {
-            "心理": 1,
-            "人際": 1,
-            "警覺": 2
+            "心理": 0,
+            "人際": 0,
+            "警覺": 0
           },
           "next": "child",
           "flags": {
@@ -7761,13 +8877,14 @@
           },
           "outcome_text": "你帶著水果去醫院，真的看到他媽媽。你借了錢，他兩週後就還了。你發現，相信人和先確認，可以同時存在。",
           "log_text": "先確認再幫忙",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         },
         {
           "text": "從此不借任何人",
           "effects": {
-            "心理": -3,
-            "人際": -4
+            "心理": 0,
+            "人際": 0
           },
           "next": "child",
           "flags": {
@@ -7800,7 +8917,9 @@
           "text": "那件事過了很久。你一直是守約的人，被騙那次最痛的不是錢，是你發現別人不一定跟你一樣。有一天，同事說他媽媽住院，問能不能先借你五千。",
           "source": "原創情境（伏筆回收：c_pinky_promise）"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "child",
@@ -7820,8 +8939,8 @@
         {
           "text": "答應自己要好好聽他說",
           "effects": {
-            "心理": 5,
-            "人際": 5,
+            "心理": 0,
+            "人際": 10,
             "存款": 60000
           },
           "next": "pool_gold_delivery",
@@ -7833,9 +8952,12 @@
           },
           "outcome_text": "你在心裡答應：以後他遇到事情，你要先聽他說完。（這些年工作慢慢存下一筆積蓄——金額為設計假設）",
           "log_text": "有了孩子",
-          "grid": "green"
+          "grid": "green",
+          "rethink": false
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "pool_gold_delivery",
@@ -7856,7 +8978,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         },
         {
           "text": "抽選2",
@@ -7870,7 +8993,8 @@
           },
           "grid": "green",
           "outcome_text": "（系統抽選，不顯示）",
-          "log_text": "（事件池）"
+          "log_text": "（事件池）",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7878,7 +9002,9 @@
           "name": "設計假設：事件池抽選（遊戲機制，非史實資料）",
           "url": "https://165.npa.gov.tw/"
         }
-      ]
+      ],
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "gold_delivery",
@@ -7891,7 +9017,7 @@
           "text": "寄出黃金",
           "effects": {
             "存款": -80000,
-            "心理": -15
+            "心理": -10
           },
           "next": "guess_who",
           "flags": {
@@ -7904,12 +9030,13 @@
           },
           "outcome_text": "你把黃金寄出去了。對方之後就消失。錢和黃金都拿不回來。",
           "log_text": "寄出黃金",
-          "grid": "red"
+          "grid": "red",
+          "mood_line": "首飾盒空了，你不敢讓家人知道。"
         },
         {
           "text": "先見面或查證",
           "effects": {
-            "警覺": 12
+            "警覺": 10
           },
           "next": "guess_who",
           "flags": {
@@ -7932,7 +9059,47 @@
               "text": "你想起上次被騙走一大筆錢的事。這次你沒有寄，選擇先見面確認。",
               "source": "expansion-flagtext.md（寫手提供，待查證）"
             }
-          ]
+          ],
+          "mood_line": "對方一推託，你反而清醒了。",
+          "rethink": false
+        },
+        {
+          "text": "先寄一小部分",
+          "outcome_text": "你只寄了一條手鍊。對方說「已經入金」，要你把剩下的也寄來。你再也聯絡不上他。",
+          "effects": {
+            "存款": -30000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "gold_sent",
+              "lost_money",
+              "scam_money_lost"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "你摸著空了一半的盒子，覺得好丟臉。",
+          "log_text": "先寄一小部分",
+          "next": "guess_who"
+        },
+        {
+          "text": "問銀行理專",
+          "outcome_text": "你拿著對話紀錄去銀行問。理專說：「投資不會要你用寄件寄黃金。」",
+          "effects": {
+            "警覺": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "專業的人一句話，你就放下了。",
+          "log_text": "問銀行理專",
+          "next": "guess_who",
+          "rethink": false
         }
       ],
       "sources": [
@@ -7943,7 +9110,10 @@
           "verify_note": "2026-10-23 Leo 轉貼的寫手擴充文件，只有文字描述、沒有網址或數字出處；待查證。不得當統計或真實案件顯示"
         }
       ],
-      "amount_note": "原稿 -500000，依 v1.0 縮放後再調為 -80000（約 0.16 倍，v1.2 為穩定結局分布，設計假設）"
+      "amount_note": "原稿 -500000，依 v1.0 縮放後再調為 -80000（約 0.16 倍，v1.2 為穩定結局分布，設計假設）",
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "guess_who",
@@ -7980,13 +9150,15 @@
           },
           "outcome_text": "本人接了電話，一頭霧水：「我沒有傳訊息給你啊。」",
           "log_text": "打給本人",
-          "grid": "green"
+          "grid": "green",
+          "mood_line": "聽到本人的聲音，你笑了出來。",
+          "rethink": false
         },
         {
           "text": "去銀行準備轉帳",
           "effects": {
-            "警覺": -5,
-            "心理": -2
+            "警覺": -10,
+            "心理": 0
           },
           "next": "fake_police",
           "flags": {
@@ -7998,9 +9170,50 @@
           "outcome_text": "你到了銀行。行員覺得不對勁，通報了警方。錢沒有匯出去。",
           "log_text": "去銀行轉帳",
           "grid": "yellow",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "被行員攔下來，你又羞又慶幸。"
+        },
+        {
+          "text": "先回訊息問細節",
+          "outcome_text": "你問他是哪一班的，他答得出學校名字。你差點就轉了，想了想還是先打給本人。",
+          "effects": {
+            "警覺": 10,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "chatted_impostor"
+            ],
+            "require": []
+          },
+          "grid": "yellow",
+          "mood_line": "他知道得太多了，你背脊發涼。",
+          "log_text": "先回訊息問細節",
+          "next": "fake_police"
+        },
+        {
+          "text": "在同學群組問",
+          "outcome_text": "你在同學群組問：「有人換號碼嗎？」好幾個人說也收到一樣的訊息。",
+          "effects": {
+            "警覺": 10,
+            "人際": 10
+          },
+          "flags": {
+            "set": [
+              "checks_first"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "大家一起笑那則訊息，你一點也不孤單。",
+          "log_text": "在同學群組問",
+          "next": "fake_police",
+          "rethink": false
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "fake_police",
@@ -8018,9 +9231,9 @@
       ],
       "choices": [
         {
-          "text": "掛斷，打165",
+          "text": "掛斷，自己打給警局",
           "effects": {
-            "警覺": 15
+            "警覺": 20
           },
           "next": "LIFE_ROUTER",
           "flags": {
@@ -8029,15 +9242,19 @@
             ],
             "require": []
           },
-          "outcome_text": "165 說：警察不會用電話做筆錄，也不會監管你的帳戶。",
+          "outcome_text": "你自己查了警局電話打過去。值班員警說：警察不會用電話做筆錄，也不會監管你的帳戶。",
           "log_text": "掛斷打165",
-          "grid": "green"
+          "grid": "green",
+          "text_v7": "掛斷，打165",
+          "outcome_text_v7": "165 說：警察不會用電話做筆錄，也不會監管你的帳戶。",
+          "mood_line": "掛掉電話，你的手還在抖，但你沒有被帶走。",
+          "rethink": false
         },
         {
           "text": "配合並保密",
           "effects": {
             "存款": -60000,
-            "心理": -14
+            "心理": -10
           },
           "next": "LIFE_ROUTER",
           "flags": {
@@ -8050,7 +9267,46 @@
           "outcome_text": "你照著指示把錢轉出去，也沒告訴家人。後來才知道那些「警察」都是假的。",
           "log_text": "配合假警察",
           "grid": "red",
-          "mental_wear": -2
+          "mental_wear": -2,
+          "mood_line": "保密兩個字，讓你一個人扛了好久。"
+        },
+        {
+          "text": "要求看他的證件",
+          "outcome_text": "對方傳來一張有照片、有警徽的證件圖，還有一份「公文」。你照著指示轉了錢。",
+          "effects": {
+            "存款": -60000,
+            "心理": -10
+          },
+          "flags": {
+            "set": [
+              "lost_money",
+              "scam_money_lost"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "mood_line": "那張證件圖做得太像了，你到現在還會夢到。",
+          "log_text": "要求看他的證件",
+          "next": "LIFE_ROUTER"
+        },
+        {
+          "text": "先跟家人商量",
+          "outcome_text": "對方說「不能告訴任何人」。你還是傳訊息給家人。家人回：「先掛掉，我們一起打給警局。」",
+          "effects": {
+            "警覺": 10,
+            "人際": 10
+          },
+          "flags": {
+            "set": [
+              "told_family_police"
+            ],
+            "require": []
+          },
+          "grid": "green",
+          "mood_line": "說出來的那一刻，你不再是一個人。",
+          "log_text": "先跟家人商量",
+          "next": "LIFE_ROUTER",
+          "rethink": false
         }
       ],
       "amount_note": {
@@ -8068,7 +9324,10 @@
           "text": "有人打電話說你的證件被冒用，接著自稱警察要做「電話筆錄」，要你保密、配合監管帳戶。對方的語氣，像極了小時候那些「大人說的就是對的」。",
           "source": "原創情境（伏筆回收，v6）"
         }
-      ]
+      ],
+      "v8_key": true,
+      "min_age": 23,
+      "max_age": 99
     },
     {
       "id": "LIFE_ROUTER",
@@ -8086,7 +9345,8 @@
           },
           "grid": "green",
           "outcome_text": "你回頭看這四十年。",
-          "log_text": "回顧人生"
+          "log_text": "回顧人生",
+          "rethink": false
         }
       ],
       "sources": [
@@ -8100,7 +9360,9 @@
         }
       ],
       "router": true,
-      "presentation": "card"
+      "presentation": "card",
+      "min_age": 23,
+      "max_age": 99
     }
   ],
   "endings": [
@@ -8843,5 +10105,82 @@
         "message": "m2"
       }
     ]
-  }
+  },
+  "year_filler": [
+    {
+      "text": "學會自己走路，跌倒很多次。",
+      "min_age": 1,
+      "max_age": 2
+    },
+    {
+      "text": "每天在家裡跑來跑去。",
+      "min_age": 1,
+      "max_age": 4
+    },
+    {
+      "text": "第一次上幼兒園，哭了一整個早上。",
+      "min_age": 3,
+      "max_age": 4
+    },
+    {
+      "text": "平凡地過了一年。",
+      "min_age": 1,
+      "max_age": 99
+    },
+    {
+      "text": "家裡養了一隻貓。",
+      "min_age": 1,
+      "max_age": 99
+    },
+    {
+      "text": "颱風假在家看卡通。",
+      "min_age": 3,
+      "max_age": 12
+    },
+    {
+      "text": "學會騎腳踏車。",
+      "min_age": 5,
+      "max_age": 10
+    },
+    {
+      "text": "每天寫作業寫到很晚。",
+      "min_age": 7,
+      "max_age": 17
+    },
+    {
+      "text": "颱風假在家追劇。",
+      "min_age": 13,
+      "max_age": 99
+    },
+    {
+      "text": "換了一支新手機。",
+      "min_age": 13,
+      "max_age": 99
+    },
+    {
+      "text": "讀書、打工、和朋友吃宵夜。",
+      "min_age": 16,
+      "max_age": 24
+    },
+    {
+      "text": "第一次自己出國旅行。",
+      "min_age": 18,
+      "max_age": 99
+    },
+    {
+      "text": "被長輩催著找穩定工作。",
+      "min_age": 22,
+      "max_age": 35
+    },
+    {
+      "text": "過年回家被問薪水。",
+      "min_age": 23,
+      "max_age": 45
+    },
+    {
+      "text": "手機裡的群組越來越多。",
+      "min_age": 13,
+      "max_age": 99
+    }
+  ]
 }

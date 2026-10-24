@@ -93,9 +93,11 @@ if "--all" in __import__("sys").argv:
         print("$"," ".join(a),flush=True)
         if subprocess.run([sys.executable,*a]).returncode: sys.exit(f"FAILED: {' '.join(a)}（未複製到 web/）")
     for g in ["life","investment","mule","shopping","family"]: run(f"gen_{g}.py")
+    run("v8/apply_v8.py","scripts")   # v8：年齡、4選項、mood_line、3版本、rethink、10倍數、加害者線
     for g in ["investment","mule","shopping","romance","marriage","parent"]: run("validate.py",f"script-{g}.json")
     run("validate.py","script-life.json","--sample")
-    run("gen_stage_pool.py"); run("validate_stage_pool.py")
+    run("gen_stage_pool.py"); run("v8/apply_v8.py","pool"); run("validate_stage_pool.py")
+    run("v8/apply_v8.py","manifest"); run("v8/validate_v8.py")
     run("gen_achievements.py"); run("validate.py","achievements.json")
     for g in ["life","investment","mule","shopping","romance","marriage","parent"]: shutil.copy(f"script-{g}.json",f"web/script-{g}.json"); print("copied",f"web/script-{g}.json")
     shutil.copy("achievements.json","web/achievements.json"); print("copied web/achievements.json")
