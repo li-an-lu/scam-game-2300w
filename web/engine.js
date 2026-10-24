@@ -52,6 +52,26 @@ const Engine = (() => {
     for (const [l, w] of ok) if ((r -= w) <= 0) return l;
     return ok.length ? ok[ok.length - 1][0] : lines[0];
   }
+  // ===== v8：年齡過濾 =====
+  const ageOk = (x, age) => !x || age == null || ((x.min_age == null || age >= x.min_age) && (x.max_age == null || age <= x.max_age));
+  // ===== v8：固定劇情 3 版本（event.versions）；localStorage.storyVersions = {eventId: [已玩過的版本 id]} =====
+  // 還有沒玩過的版本就只從沒玩過的抽（前三輪不重複）；全部玩過後隨機。
+  function pickVersions(evs, store) {
+    let st = {}; try { st = store ? store.get() : JSON.parse(localStorage.getItem('storyVersions') || '{}'); } catch (_) {}
+    const picked = {};
+    for (const e of evs) {
+      if (!Array.isArray(e.versions) || !e.versions.length) continue;
+      const vs = e.versions.map((v, i) => ({ ...v, id: v.id ?? `v${i + 1}` }));
+      const played = st[e.id] || [], fresh = vs.filter(v => !played.includes(v.id));
+      const v = pick(fresh.length ? fresh : vs);
+      for (const [k, val] of Object.entries(v)) if (k !== 'id') e[k] = clone(val);   // 版本內的欄位覆蓋事件本身（text、choices、text_variants…）
+      picked[e.id] = v.id;
+      st[e.id] = fresh.length ? [...played, v.id] : [v.id];   // 全部玩過：重新計
+      delete e.versions;
+    }
+    try { store ? store.set(st) : localStorage.setItem('storyVersions', JSON.stringify(st)); } catch (_) {}
+    return picked;
+  }
   // opts.flags：人生線帶進來的 flag（或除錯注入）
   
   // ===== 階段最低事件次數（design integration） =====
@@ -80,6 +100,7 @@ function create(script, birth, opts = {}) {
     const pi = script.player_init;
     const p = { stats: {}, flags: new Set([...(pi.flags || []), ...(opts.flags || [])]), lifeFlags: [...(opts.flags || [])], debt: 0, history: [], entered: [], stageCounts: { childhood: 0, student: 0 } };
     const [events, initMod] = applyModifiers(script, new Set(p.flags), !!opts.combined);
+    p.versions = opts.noVersions ? {} : pickVersions(events, opts.versionStore);
     const ev = Object.fromEntries(events.map(e => [e.id, e]));
     const en = Object.fromEntries(script.endings.map(e => [e.id, e]));
     // 出生縣市／家庭沿用 birth；家庭加成：存款_mod 乘、其他加；之後只夾 min/max（與 validate.py 一致）
@@ -125,7 +146,7 @@ function create(script, birth, opts = {}) {
       if (d.max != null && p.stats[k] > d.max) p.stats[k] = d.max;
     }
     const has = f => f.startsWith('!') ? !p.flags.has(f.slice(1)) : p.flags.has(f);
-    const reqOk = c => (c.flags?.require || []).every(has);
+    const reqOk = c => (c.flags?.require || []).every(has) && ageOk(c, p.age);
     function fill(t) { return (t || '').replace(/\{(\w+)\}/g, (m, k) => p[k] ?? p.stats[k] ?? m); }
     function routeEnding() {
       const sorted = [...script.endings].sort((a, b) => (a.priority ?? 999) - (b.priority ?? 999));
@@ -158,6 +179,10 @@ function create(script, birth, opts = {}) {
         if (en[cur]) return { type: 'ending', ending: en[cur], ...endingText(en[cur]) };
         const e = ev[cur];
         if (!e) { console.warn('找不到節點', cur); cur = routeEnding().id; continue; }
+        if (!ageOk(e, opts.fixedAge ?? e.age ?? p.age)) {   // v8：年齡不符就跳過，前往 skip_next（沒有就用第一個選項的 next）
+          const nx = e.skip_next ?? e.choices?.[0]?.next; if (!nx) { cur = routeEnding().id; continue; }
+          cur = nx; continue;
+        }
         if (opts.fixedAge != null) p.age = opts.fixedAge; else if (e.age != null) p.age = e.age;
         if (enteredId !== cur) {   // 進入事件：on_enter_effects 每次進入套用一次
           enteredId = cur; p.entered.push(cur); routerPick = null;
@@ -298,7 +323,15 @@ function create(script, birth, opts = {}) {
       },
       ack() { pendingEnd = null; if (slot) advance(); },
       choose(i) {
-        if (sub) { const d = sub.choose(i); last = sub.player.lastChoice; return d; }
+        if (sub) {
+          const d = sub.choose(i); last = sub.player.lastChoice;
+          if (HALT && HALT.immediate_in_scam !== false && sub.player.stats[HALT.stat] <= 0) {   // v8：詐騙線內心理歸零也立刻結束
+            const sp = sub.player; for (const k in lp.stats) lp.stats[k] = sp.stats[k]; clampLife();
+            lp.scamHistory.push({ line: subHook.line, name: subHook.name, ending_id: 'HALTED', title: '', entry_age: sub.entryAge, exit_age: sub.entryAge, internal_flags: [...new Set(sp.history.flatMap(x => x.set || []))], choices: sp.history.map(x => [x.id, x.idx, x.choice]), after: sub.after, scale: sub.fac });
+            sub = null; subHook = null; halt();
+          }
+          return d;
+        }
         const s = L.current(), e = s.event, d = L.choose(i), c = last = lp.lastChoice;
         afterLife(e, c);
         return d;
@@ -320,5 +353,5 @@ function create(script, birth, opts = {}) {
     if (!r.ok) throw new Error(`讀不到 ${url}（${r.status}）`);
     return r.json();
   }
-  return { create, createCombined, load, rollBirth, assignLine, test, applyModifiers };
+  return { create, createCombined, load, rollBirth, assignLine, test, applyModifiers, ageOk, pickVersions };
 })();

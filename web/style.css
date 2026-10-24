@@ -254,3 +254,16 @@ button.choice:hover{border-color:var(--warn)}
 .lie-end .e-text{white-space:pre-line}
 .lie-end .quote{background:var(--soft-red);border:1px solid rgba(196,92,92,.3);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px;color:#e0d0c8}
 .share-box textarea{width:100%;box-sizing:border-box;background:#1c2028;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;min-height:64px}
+
+/* v8：最多 4 個選項（320px 也排得下）、再想一下彈窗、選後狀態畫面、0–10 數字 */
+.choices{display:flex;flex-direction:column;gap:8px}
+.choices .choice{width:100%;min-height:44px;white-space:normal;word-break:break-word;line-height:1.4}
+@media (max-width:360px){.choices{gap:6px}.choices .choice{font-size:15px;padding:9px 10px}}
+.rethink-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.rethink{background:#1c2028;border:1px solid var(--line);border-radius:12px;padding:18px;max-width:340px;width:100%}
+.rethink .text{margin-bottom:12px}
+.card.mood{cursor:pointer;text-align:center;padding:32px 16px}
+.mood-line{font-size:18px}
+.mood-tap{margin-top:16px;font-size:13px;color:#888}
+.g-num{display:block;font-size:11px;color:#999}
+.delta,.r-deltas,.r-d{color:#888!important}

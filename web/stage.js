@@ -7,7 +7,8 @@ const Stage = (() => {
   function plan(P) {
     const out = [];
     for (const st of P.stages) {
-      const lies = P.lies.filter(l => l.stage === st.id), pos = P.positive.filter(p => p.stage === st.id);
+      const okA = x => (x.min_age == null || x.age >= x.min_age) && (x.max_age == null || x.age <= x.max_age);   // v8
+      const lies = P.lies.filter(l => l.stage === st.id && okA(l)), pos = P.positive.filter(p => p.stage === st.id && okA(p));
       const nL = Math.min(st.max_lies, Math.floor(st.draws / 2)), nP = st.draws - nL;   // 約 1:1
       const pickL = [], pickP = [];
       const pool = [...lies];

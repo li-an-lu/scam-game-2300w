@@ -9,6 +9,11 @@ const CHOICE_PAUSE_MS = 600;                                       // 選擇後�
 const MIN_TIMER_S = 25;                                            // 倒數下限（不論 JSON 寫多少）
 const ICON = { 存款: '💰', 警覺: '👁', 人際: '🤝', 心理: '🫀' };
 const icon = k => ICON[k] || k[0];
+// v8：0–10 顯示。有 max 的數值（警覺／人際／心理）換算成 0–10；display_max 可在 player_init.stats 覆寫
+const statTop = k => { const d = script?.player_init?.stats?.[k] || lifeScript?.player_init?.stats?.[k] || {}; return d.max != null ? d.max : null; };
+const dispMax = k => (script?.player_init?.stats?.[k] || lifeScript?.player_init?.stats?.[k] || {}).display_max ?? 10;
+const disp = (k, v) => { const t = statTop(k); return t ? Math.round(v / t * dispMax(k)) : v; };
+const dispD = (k, v) => { const t = statTop(k); if (!t || !v) return v; const r = Math.round(v / t * dispMax(k)); return r || Math.sign(v); };
 const noEmoji = t => String(t ?? '').replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}][\u{FE0F}\u{200D}\p{Extended_Pictographic}]*/gu, '').replace(/^\s+/, '');
 const HOTLINES = [{ tel: '165', label: '📞 165 反詐騙專線' }, { tel: '1925', label: '💬 1925 安心專線（24 小時）' }];
 // 虛構 App 外觀（只用自訂配色，不用任何真實 App 的品牌色或 logo）
@@ -62,14 +67,15 @@ function statHtml(delta = {}) {
     const w = Math.max(0, Math.min(100, v / top * 100));
     const fx = delta[k] ? (delta[k] > 0 ? ' flash-up' : ' flash-down') : '';
     const sub = d.max ? '' : `<small>${money(v)}${p.debt ? `<br><span class="down">負債 ${money(p.debt)}</span>` : ''}</small>`;
-    return `<div class="gauge${fx}" title="${esc(k)}"><div class="g-ring"><i style="height:${w}%"></i><span>${icon(k)}</span></div><em>${esc(k)}</em>${sub}</div>`;
+    const num = d.max ? `<small class="g-num">${disp(k, v)} / ${dispMax(k)}</small>` : '';
+    return `<div class="gauge${fx}" title="${esc(k)}"><div class="g-ring"><i style="height:${w}%"></i><span>${icon(k)}</span></div><em>${esc(k)}</em>${sub}${num}</div>`;
   }).join('');
 }
 function deltaHtml(d) {
   if (!d || !Object.keys(d).length) return '';
   return '<div class="delta">' + Object.entries(d).map(([k, v]) => {
     const good = k === '負債' ? v < 0 : v > 0;
-    return `<span class="${good ? 'up' : 'down'}">${icon(k)} ${esc(k)} ${v > 0 ? '▲' : '▼'} ${k === '存款' || k === '負債' ? wan(Math.abs(v)) : Math.abs(v)}</span>`;
+    return `<span class="${good ? 'up' : 'down'}">${icon(k)} ${esc(k)} ${v > 0 ? '▲' : '▼'} ${k === '存款' || k === '負債' ? wan(Math.abs(v)) : Math.abs(dispD(k, v))}</span>`;
   }).join('　') + '</div>';
 }
 // 選項：只顯示會影響哪些數值（圖示），不顯示數字
@@ -289,7 +295,7 @@ function stageCard(s, delta) {
     await sleep(CHOICE_PAUSE_MS);
     const r = G.posChoose(+b.dataset.si);
     $('#log-list').insertAdjacentHTML('afterbegin', `<li>${esc(r.age)} 歲：${esc(r.choice.text)}</li>`);
-    resultCard({ age: r.age }, { outcome_text: r.choice.outcome_text }, r.delta);
+    resultCard({ age: r.age }, { outcome_text: r.choice.outcome_text, mood_line: r.choice.mood_line }, r.delta);
   });
 }
 function bindChoices(root, s, e, onPicked) {
@@ -298,6 +304,7 @@ function bindChoices(root, s, e, onPicked) {
     root.querySelectorAll('button[data-i]').forEach(x => { x.disabled = true; x.classList.toggle('picked', x === b); });
     stopTimer();
     const c0 = s.choices[b.dataset.i];
+    if (!s.reveal && await rethink(e, c0)) { root.querySelectorAll('button[data-i]').forEach(x => { x.disabled = false; x.classList.remove('picked'); }); return; }
     onPicked?.(c0);
     await sleep(CHOICE_PAUSE_MS);
     const d = G.choose(+b.dataset.i);
@@ -308,9 +315,40 @@ function bindChoices(root, s, e, onPicked) {
     resultCard(e, c, d || {});
   });
 }
+// v8：「要不要再想一下？」——觀察（警覺）或人際高於門檻時，依資料機率跳出；回傳 true＝玩家要改選
+// 設定：script.meta.rethink（詐騙線沒有就用人生線的）＝{ stats:{警覺:70,人際:70}, probability:0, text, back, go }
+// 覆寫：event.rethink_probability、choice.rethink_probability；choice.rethink === false 表示這個選項不提醒
+function rethink(e, c) {
+  const R = script?.meta?.rethink || lifeScript?.meta?.rethink; if (!R || c.rethink === false) return Promise.resolve(false);
+  const st = G.player.stats, th = R.stats || { 警覺: 70, 人際: 70 };
+  const high = Object.entries(th).some(([k, t]) => (st[k === '觀察' ? '警覺' : k] ?? -1) >= t);
+  const pr = c.rethink_probability ?? e.rethink_probability ?? R.probability ?? 0;
+  if (!high || !(Math.random() < pr)) return Promise.resolve(false);
+  return new Promise(res => {
+    const ov = document.createElement('div'); ov.className = 'rethink-ov';
+    ov.innerHTML = `<div class="rethink"><div class="text">${esc(c.rethink_text || R.text || '要不要再想一下？')}</div>
+      <div class="choices"><button class="choice" data-r="1">${esc(R.back || '再想一下')}</button><button class="primary" data-r="0">${esc(R.go || '就這樣決定')}</button></div></div>`;
+    document.body.append(ov);
+    ov.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { ov.remove(); res(b.dataset.r === '1'); });
+  });
+}
+// v8：選後狀態畫面。mood_line 來源：choice.mood_line（字串或陣列）→ event.mood_line → meta.mood_lines[{stat,max,text}]（依數值區間）；都沒有就略過
+function moodLine(e, c) {
+  const one = x => Array.isArray(x) ? x[Math.floor(Math.random() * x.length)] : x;
+  if (c?.mood_line) return one(c.mood_line);
+  if (e?.mood_line) return one(e.mood_line);
+  const st = G.player.stats;
+  for (const m of script?.meta?.mood_lines || lifeScript?.meta?.mood_lines || []) if ((st[m.stat || '心理'] ?? 0) <= (m.max ?? 1e9)) return one(m.text);
+  return '';
+}
+function moodScreen(e, line, next) {
+  if (!line) return next();
+  $('#screen').innerHTML = `<div class="card mood flip-in" id="mood"><div class="age-tag">${esc(e.age ?? '')} 歲</div><div class="text mood-line">${esc(noEmoji(G.fill(line)))}</div><div class="mood-tap">點一下繼續</div></div>`;
+  $('#mood').onclick = () => { window.scrollTo(0, 0); next(); };
+}
 // 選擇後的結果卡：outcome_text（沒有就用紀錄文字）＋數值變化動畫（選前不顯示數字，選後才顯示）→「繼續」才進下一年
 const wan = n => n >= 10000 ? `${+(n / 10000).toFixed(1)} 萬` : `${Math.round(n).toLocaleString('zh-TW')} 元`;
-const fmtDelta = (k, v) => `${k} ${v > 0 ? '+' : '−'}${k === '存款' || k === '負債' ? wan(Math.abs(v)) : Math.abs(v)}`;
+const fmtDelta = (k, v) => `${k} ${v > 0 ? '+' : '−'}${k === '存款' || k === '負債' ? wan(Math.abs(v)) : Math.abs(dispD(k, v))}`;
 function resultCard(e, c, d) {
   stopTimer(); statHtml(d);
   const ks = Object.entries(d).filter(([, v]) => v);
@@ -323,7 +361,7 @@ function resultCard(e, c, d) {
     const step = now => { const f = dur ? Math.min(1, (now - t0) / dur) : 1; el.textContent = fmtDelta(k, Math.round(v * f) || Math.sign(v)); if (f < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   });
-  $('#r-go').onclick = () => { window.scrollTo(0, 0); render(); };
+  $('#r-go').onclick = () => { window.scrollTo(0, 0); moodScreen(e, moodLine(e, c), () => render()); };
 }
 // ---- 倒數：至少 25 秒、隨時可關、無壓力模式不顯示 ----
 function startTimer(pr, host) {
