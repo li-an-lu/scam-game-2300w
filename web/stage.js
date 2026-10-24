@@ -86,7 +86,8 @@ const Stage = (() => {
       const heavy = F.has('scam_money_lost') || F.has('lost_money') || F.has('life_halted') || [...F].some(f => /_lost$|^lost_/.test(f));
       const pool = P.lie_endings.filter(c => c.pool === (heavy ? 'heavy' : 'light') && c.requires.every(f => F.has(f)));
       const w = c => Math.max(c.base, ...Object.entries(c.boost).map(([f, v]) => (f === '_no_core' ? core.length === 0 : F.has(f)) ? v : 0));
-      const card = wpick(pool, w);
+      const forced = P.lie_endings.filter(c => c.force && c.requires.length && c.requires.every(f => F.has(f)));   // v8：force:true 且 requires 全成立就必出
+      const card = forced.length ? forced[0] : wpick(pool, w);
       const linked = lp.firedLies.filter(l => l.flags.some(f => card.review_flags.includes(f)));
       const quotes = (linked.length ? linked : lp.firedLies).slice(0, 2);
       return { card, quotes, core };
