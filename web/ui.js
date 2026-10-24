@@ -324,13 +324,16 @@ function bindChoices(root, s, e, onPicked) {
 function rethink(e, c) {
   const R = script?.meta?.rethink || lifeScript?.meta?.rethink; if (!R || c.rethink === false) return Promise.resolve(false);
   const st = G.player.stats, th = R.stats || { 警覺: 70, 人際: 70 };
-  const high = Object.entries(th).some(([k, t]) => (st[k === '觀察' ? '警覺' : k] ?? -1) >= t);
+  const hit = Object.entries(th).filter(([k, t]) => (st[k === '觀察' ? '警覺' : k] ?? -1) >= t).map(([k]) => k === '觀察' ? '警覺' : k), high = hit.length > 0;
+  // v8：meta.rethink.friend＝{stat:'人際', gte:70, text, back, go}；只有人際門檻觸發（警覺沒觸發）時改由朋友提醒
+  const F = R.friend, fs = F?.stat || '人際', fOn = F && (st[fs] ?? -1) >= (F.gte ?? th[fs] ?? 70) && !hit.some(k => k !== fs);
+  const T = fOn ? { text: F.text, back: F.back, go: F.go, cls: ' friend' } : { text: c.rethink_text || R.text, back: R.back, go: R.go, cls: '' };
   const pr = c.rethink_probability ?? e.rethink_probability ?? R.probability ?? 0;
   if (!high || !(Math.random() < pr)) return Promise.resolve(false);
   return new Promise(res => {
     const ov = document.createElement('div'); ov.className = 'rethink-ov';
-    ov.innerHTML = `<div class="rethink"><div class="text">${esc(c.rethink_text || R.text || '要不要再想一下？')}</div>
-      <div class="choices"><button class="choice" data-r="1">${esc(R.back || '再想一下')}</button><button class="primary" data-r="0">${esc(R.go || '就這樣決定')}</button></div></div>`;
+    ov.innerHTML = `<div class="rethink${T.cls}"><div class="text">${esc(T.text || '要不要再想一下？')}</div>
+      <div class="choices"><button class="choice" data-r="1">${esc(T.back || '再想一下')}</button><button class="primary" data-r="0">${esc(T.go || '就這樣決定')}</button></div></div>`;
     document.body.append(ov);
     ov.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { ov.remove(); res(b.dataset.r === '1'); });
   });
