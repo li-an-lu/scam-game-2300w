@@ -5251,7 +5251,8 @@
           "grid": "green",
           "outcome_text": "媽媽把紅包一個個收進抽屜。你看著那疊紅包消失，有點捨不得。",
           "log_text": "紅包交給媽媽",
-          "rethink": false
+          "rethink": false,
+          "mood_line": "有點捨不得，但覺得安心。"
         },
         {
           "text": "請爸媽陪我去開戶",
@@ -5268,7 +5269,8 @@
           "grid": "green",
           "outcome_text": "郵局阿姨幫你蓋了章，存摺上第一次印著你的名字。",
           "log_text": "用自己名字開戶存紅包",
-          "rethink": false
+          "rethink": false,
+          "mood_line": "存摺上有自己的名字，好驕傲。"
         },
         {
           "text": "留一點買遊戲點數",
@@ -5286,7 +5288,26 @@
           "grid": "green",
           "outcome_text": "遊戲裡多了閃亮的新造型，你開心了一整個寒假。",
           "log_text": "紅包買了遊戲點數",
-          "rethink": false
+          "rethink": false,
+          "mood_line": "開心是真的，錢也真的花掉了。"
+        },
+        {
+          "text": "交給說會讓錢變多的表哥",
+          "effects": {
+            "人際": 10,
+            "存款": -3000
+          },
+          "next": "pool_c_temple_fair",
+          "flags": {
+            "set": [
+              "hongbao_cousin"
+            ],
+            "require": []
+          },
+          "grid": "red",
+          "outcome_text": "表哥說他「懂理財」，過完年就還你兩倍。後來每次問，他都說「再等一下」。那疊紅包再也沒回來。",
+          "log_text": "紅包交給說會翻倍的表哥",
+          "mood_line": "他是家人，應該不會騙我吧……"
         }
       ],
       "sources": [
@@ -5347,7 +5368,8 @@
       ],
       "presentation": "card",
       "min_age": 0,
-      "max_age": 12
+      "max_age": 12,
+      "v8_key": true
     },
     {
       "id": "pool_c_temple_fair",
@@ -9976,7 +9998,8 @@
       "case_card": {
         "summary": "這個結局沒有對應單一真實案件。遊戲把每一次被騙、被倒、被為難都算成一點點心理消耗，累積到撐不住為止，提醒你：壓力是會累積的，不必等到最低點才求助。",
         "url": "https://dep.mohw.gov.tw/DOMHAOH/cp-4906-54077-107.html",
-        "note": "設計說明，非真實案件；連結為 1925 安心專線"
+        "note": "",
+        "note_v7": "設計說明，非真實案件；連結為 1925 安心專線"
       },
       "missed_red_flags": [
         "累了很久，卻一直沒有跟人說",

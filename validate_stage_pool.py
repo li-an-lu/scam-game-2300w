@@ -17,6 +17,7 @@ for p in d["positive"]:
     for c in p["choices"]:
         if len(c["text"]) > 15: E.append(f"{p['id']}: 選項超過 15 字「{c['text']}」")
 for c in d["lie_endings"]:
+    c = {**c, "case": c["case"] or c.get("case_v7", ""), "source_note": c.get("source_note") or c.get("source_note_v7", "")}   # v8 公開版：未查證案件移到 *_v7 不上畫面
     for k in ("text", "case", "review"):
         if not c[k]: E.append(f"{c['id']}: 缺 {k}")
     if "待查證" not in c.get("source_note", "") and not (c.get("sources") and all(s.get("verified") is True and s.get("url") for s in c["sources"])): E.append(f"{c['id']}: 來源未標待查證")   # v8：附已查證網址者可免標

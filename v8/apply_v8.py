@@ -2,7 +2,7 @@
 用法：python3 v8/apply_v8.py scripts   （改 script-*.json）
       python3 v8/apply_v8.py pool      （改 stage-pool.json）
       python3 v8/apply_v8.py manifest  （改 web/manifest.json 的 year_filler）"""
-import json, sys, os, copy
+import json, sys, os, copy, re
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rules import texts, kw_min, stage_of, MENTAL, r10, leo10
 import content as K
@@ -90,9 +90,31 @@ def scripts():
             k, _ = kw_min(all_text(e))
             if e.get("age_keyword_ok"): k = 0
             e["min_age"], e["max_age"] = max(lo, k), hi
+        for e in d["events"]:
+            for label, patch in K.HOTLINE_FIX.get((g, e["id"]), []):
+                for c in e["choices"]:
+                    if c["text"] == label or c.get("text_v7") == label:
+                        if "text" in patch and "text_v7" not in c: c["text_v7"] = c["text"]
+                        if "outcome_text_v7" not in c: c["outcome_text_v7"] = c["outcome_text"]
+                        c.update(patch)
+            if g == "life" and e["id"] == "hongbao" and not e.get("v8_key"):
+                e["v8_key"] = True
+                for c in e["choices"]: c.setdefault("mood_line", K.HONGBAO_MOOD[c["text"]])
+                e["choices"].append(copy.deepcopy(K.HONGBAO_4TH))
+        public_clean(d)
         if g == "mule": mule_thresholds(d)
         dump(d, f"script-{g}.json")
     print("v8 scripts applied")
+
+DEVNOTE = re.compile(r"設計說明|審查修正|非真實|待查證|寫手提供|^v\d")
+def public_clean(d):
+    """公開版：沒有官方原始來源的統計不顯示；給作者看的案件卡註記清空（原文留 *_v7）。"""
+    for st in d.get("stats", []):
+        if "尚無官方原始來源" in (st.get("verify_note") or "") and st.get("display") is not False:
+            st["display_v7"] = st.get("display"); st["display"] = False
+    for en in d.get("endings", []):
+        cc = en.get("case_card") or {}
+        if DEVNOTE.search(cc.get("note") or ""): cc["note_v7"] = cc["note"]; cc["note"] = ""
 
 def pool():
     S = load("stage-pool.json")
@@ -115,6 +137,9 @@ def pool():
         if e["id"] in K.ENDING_FIRSTLINE:
             e["text_v7"] = e["text"]; lines = e["text"].split("\n"); lines[0] = K.ENDING_FIRSTLINE[e["id"]]; e["text"] = "\n".join(lines)
         e["boost"].update(K.ENDING_BOOST.get(e["id"], {}))
+    for e in S["lie_endings"]:   # 未查證的案件對照不上公開畫面（原文留 *_v7）
+        if re.search(r"待查證|寫手提供", e.get("source_note", "")):
+            e["case_v7"], e["source_note_v7"] = e.get("case", ""), e["source_note"]; e["case"] = ""; e["source_note"] = ""
     if not any(e["id"] == K.PERP_ENDING["id"] for e in S["lie_endings"]): S["lie_endings"].append(copy.deepcopy(K.PERP_ENDING))
     dump(S, "stage-pool.json"); print("v8 pool applied")
 

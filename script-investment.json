@@ -134,7 +134,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理數字；165 儀表板未提供此期間數字，尚無官方原始來源",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     },
     {
       "label": "2025年全年詐騙財損",
@@ -144,7 +146,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理數字；165 儀表板未提供此期間數字，尚無官方原始來源",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     },
     {
       "label": "投資詐騙平均每件損失",
@@ -154,7 +158,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理數字；165 儀表板未提供此期間數字，尚無官方原始來源（儀表板沒有每件平均損失）",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     },
     {
       "label": "2025年投資詐騙占電信網路詐騙財損",
@@ -164,7 +170,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理數字；165 儀表板未提供此期間數字，尚無官方原始來源",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     },
     {
       "label": "加重詐欺刑度",
@@ -584,7 +592,7 @@
       "text": "他一再找藉口，接著突然說：『我學長帶我做投資，想讓你也一起過好日子。』",
       "choices": [
         {
-          "text": "封鎖，撥165查詢",
+          "text": "封鎖，打電話查證",
           "effects": {
             "警覺": 20
           },
@@ -596,9 +604,11 @@
             "require": []
           },
           "grid": "green",
-          "outcome_text": "你封鎖了對方，撥165問了一下，對方說這是很常見的手法。",
+          "outcome_text": "你封鎖了對方，打電話去反詐騙單位問了一下，對方說這是很常見的手法。",
           "log_text": "網友談投資，封鎖",
-          "rethink": false
+          "rethink": false,
+          "text_v7": "封鎖，撥165查詢",
+          "outcome_text_v7": "你封鎖了對方，撥165問了一下，對方說這是很常見的手法。"
         },
         {
           "text": "聽聽看",
@@ -1410,9 +1420,10 @@
             "require": []
           },
           "grid": "green",
-          "outcome_text": "你把情況告訴行員。行員請你坐下，幫你打了165，這筆錢沒有交出去。但前面已經投入的錢，大多拿不回來了。",
+          "outcome_text": "你把情況告訴行員。行員請你坐下，幫你打電話找警方查證，這筆錢沒有交出去。但前面已經投入的錢，大多拿不回來了。",
           "log_text": "對行員說出實情",
-          "rethink": false
+          "rethink": false,
+          "outcome_text_v7": "你把情況告訴行員。行員請你坐下，幫你打了165，這筆錢沒有交出去。但前面已經投入的錢，大多拿不回來了。"
         },
         {
           "text": "照對方教的說",

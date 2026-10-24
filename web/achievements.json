@@ -2448,7 +2448,7 @@
       "line": "investment",
       "event": "date_refuse_video",
       "choice_index": 0,
-      "text": "封鎖，撥165查詢"
+      "text": "封鎖，打電話查證"
      }
     ],
     "forbids_flags": [],
@@ -2784,7 +2784,7 @@
       "line": "romance",
       "event": "rm_push",
       "choice_index": 0,
-      "text": "打 165 問問看"
+      "text": "打電話查證"
      }
     ],
     "forbids_flags": [],
@@ -3334,19 +3334,19 @@
      "life:criminal_record"
     ],
     "forbids_endings": [
-     "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
-     "mule:END_CUT_OFF",
      "mule:END_RECORD",
+     "mule:END_CUT_OFF",
+     "mule:END_ACCOUNT",
      "shopping:END_CS_DRAINED",
      "shopping:END_TICKET_LOST",
      "shopping:END_SILENT_COLLAPSE",
      "shopping:END_SMALL_FEE",
      "investment:END_ALL_LOST",
      "investment:END_DEBT",
-     "investment:END_FAMILY_RIFT",
+     "investment:END_COLLAPSE",
      "investment:END_BROKE",
-     "investment:END_COLLAPSE"
+     "investment:END_FAMILY_RIFT"
     ],
     "min_age_lived": 40
    },
@@ -3707,27 +3707,27 @@
      "life:life_halted"
     ],
     "forbids_endings": [
-     "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
-     "mule:END_CUT_OFF",
      "mule:END_RECORD",
+     "mule:END_CUT_OFF",
+     "mule:END_ACCOUNT",
      "shopping:END_CS_DRAINED",
      "shopping:END_TICKET_LOST",
      "shopping:END_SILENT_COLLAPSE",
      "shopping:END_SMALL_FEE",
      "investment:END_ALL_LOST",
      "investment:END_DEBT",
-     "investment:END_FAMILY_RIFT",
-     "investment:END_BROKE",
      "investment:END_COLLAPSE",
-     "romance:END_RM_COLLAPSE",
+     "investment:END_BROKE",
+     "investment:END_FAMILY_RIFT",
      "romance:END_RM_DEEP",
-     "marriage:END_MR_SILENT",
-     "marriage:END_MR_PAID",
+     "romance:END_RM_COLLAPSE",
      "marriage:END_MR_COLLAPSE",
-     "parent:END_PA_SILENT",
+     "marriage:END_MR_PAID",
+     "marriage:END_MR_SILENT",
      "parent:END_PA_HUSH",
-     "parent:END_PA_COLLAPSE"
+     "parent:END_PA_COLLAPSE",
+     "parent:END_PA_SILENT"
     ]
    },
    "hidden": true,

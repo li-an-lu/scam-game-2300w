@@ -53,7 +53,7 @@ for g in LINES:
         for c in e.get("choices", []):
             for h in HELPLINE_WORDS:
                 if h in c["text"] + c.get("outcome_text", "") and not (e.get("v8_key") or e["id"] in NEW_IDS):
-                    WARN.append(f"{w}: 非結局文字出現專線「{h}」（Leo 原稿）")
+                    ERR.append(f"{w}: 非結局文字出現專線「{h}」")
 for eid, vs in K.VERSIONS.items():
     e = next(x for x in L["events"] if x["id"] == eid)
     if len(e.get("versions", [])) != 3: ERR.append(f"{eid}: 需要 3 個版本")

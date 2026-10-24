@@ -1,0 +1,131 @@
+--- /workspace/scam-game-repo/web/ui.js	2026-10-24 20:09:41.288863601 +0800
++++ ui.js	2026-10-24 20:15:11.784712364 +0800
+@@ -29,7 +29,7 @@
+   const v = s.display ?? `${typeof s.value === 'number' ? s.value.toLocaleString() : s.value} ${s.unit || ''}`;
+   return `${esc(s.label)}：<b>${esc(v)}</b>${s.period ? `<span class="tag">${esc(s.period)}</span>` : ''}${s.self_calculated ? '<span class="tag calc">自行換算</span>' : ''} <a href="${esc(s.source)}" target="_blank" rel="noopener">來源</a>${note(s)}`;
+ };
+-const note = s => s.verify_note ? `<span class="src">（${esc(s.verify_note)}）</span>` : '';
++const note = s => '';   // 公開版：核對紀錄（verify_note）只留在資料裡，不上畫面
+ const allStats = () => Object.values(scripts).flatMap(x => x.stats || []).filter(s => verifiedOk(s) && !('display' in s && (s.display == null || s.display === false)));
+ // 無壓力模式：localStorage > ?nopressure > meta.no_pressure_mode.default
+ const noPressure = () => Q.get('nopressure') === '1' || (localStorage.getItem('noPressure') ?? String(!!script?.meta?.no_pressure_mode?.default)) === 'true';
+@@ -50,8 +50,9 @@
+   } catch (_) {}
+ }
+ function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.append(d); setTimeout(() => d.remove(), 1800); }
++const pubSrc = s => s && s.verified !== false && !/寫手提供|待查證/.test(s.name || '');   // 公開版：未查證來源不上畫面
+ function srcHtml(sources = []) {
+-  return sources.map(s => {
++  return sources.filter(pubSrc).map(s => {
+     const label = s.name || (s.story_id != null ? `案例 #${s.story_id}` : '來源') + (s.url ? `（${new URL(s.url).hostname}）` : '');
+     return s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(label)}</a>` : esc(label);
+   }).join('、');
+@@ -143,18 +144,10 @@
+   return `<details class="seen"><summary><span class="seen-tag">已看過</span> ${esc(one.length > 22 ? one.slice(0, 22) + '…' : one)}</summary><div class="text">${esc(txt)}</div></details>`;
+ }
+ // v7 開始頁：依 leo-design/start-page.html（動態數字、事實輪播、警語、四數值、分享經驗輪播、暗金／酒紅基調）
+-const FACTS = [   // 第一則已查證（165 打詐儀表板）；其餘為寫手提供，待查證
+-  { t: '2026年9月，台灣平均每天約359件詐騙案，一天被騙走1.3億元。', src: 'https://165dashboard.tw', note: '165打詐儀表板，2026年9月' },
+-  { t: '多數人一天說 0～2 個謊，其中約 90% 是無傷大雅的小謊。' }, { t: '10 分鐘的日常對話裡，約 60% 的成年人會至少說一次謊。' },
+-  { t: '超過 95% 的民眾曾收過假訊息，投資理財類最常出現。' }, { t: '孩子大約 2～3 歲就會開始有意識地說第一個謊。' },
+-  { t: '履歷裡約有 30～40% 含有不同程度的誇大。' }, { t: '假投資詐騙雖然件數不一定最多，但財損金額往往最高。' }];
+-const factHtml = f => `${esc(f.t)}${f.src ? ` <small><a href="${esc(f.src)}" target="_blank" rel="noopener">${esc(f.note)}</a></small>` : ' <small>（寫手提供，待查證）</small>'}`;
+-const DEMO_EXP = [   // 示範短句（非真實投稿）；之後由審核清單取代
+-  { tag: '受騙', quote: '「對方說再轉一次就解凍。我真的轉了。」', who: '高雄 · 45 歲' }, { tag: '有驚無險', quote: '「差點匯出去，後來打給家人確認才停手。」', who: '台中 · 32 歲' },
+-  { tag: '風平浪靜', quote: '「這一生沒遇過什麼大事。薪水不多，但每個月都過得去。」', who: '台南 · 58 歲' }, { tag: '懊悔', quote: '「我一直覺得自己不會上當。結果還是轉了。」', who: '台北 · 29 歲' },
+-  { tag: '受騙', quote: '「他每天跟我說早安。三個月後，我把積蓄都給了他。」', who: '新北 · 51 歲' }, { tag: '有驚無險', quote: '「網拍賣家一直催我私下交易。我沒理他，後來他消失了。」', who: '桃園 · 27 歲' },
+-  { tag: '風平浪靜', quote: '「沒有人騙過我，也沒有人特別幫過我。這樣也好。」', who: '彰化 · 64 歲' }, { tag: '懊悔', quote: '「我媽叫我不要點那個連結。我還是點了。」', who: '台中 · 23 歲' },
+-  { tag: '受騙', quote: '「投資群組裡每個人都在曬獲利。我進去的隔天，群組就不見了。」', who: '高雄 · 38 歲' }, { tag: '有驚無險', quote: '「假警察打來時，我掛掉後打給真正的派出所。他們說沒這回事。」', who: '台北 · 41 歲' }];
++const FACTS = [   // 公開版只放已查證的事實
++  { t: '2026年9月，台灣平均每天約359件詐騙案，一天被騙走1.3億元。', src: 'https://165dashboard.tw', note: '165打詐儀表板，2026年9月' }];
++const factHtml = f => `${esc(f.t)}${f.src ? ` <small><a href="${esc(f.src)}" target="_blank" rel="noopener">${esc(f.note)}</a></small>` : ''}`;
++const DEMO_EXP = [];   // 公開版：不放示範短句，沒有審核通過的句子就顯示空狀態
+ // 分享短句暫行方案：玩家留言存 localStorage.sharedPending；輪播只顯示 localStorage.sharedApproved（手動匯入審核後的 JSON）
+ const lsJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || '') ?? d; } catch (_) { return d; } };
+ const approvedExp = () => { const a = lsJ('sharedApproved', []); return Array.isArray(a) && a.length ? a.filter(x => x && x.quote && x.approved !== false) : DEMO_EXP; };
+@@ -164,7 +157,7 @@
+   if ($('#log').parentElement !== $('#app')) $('#app').append($('#log'));
+   closePhone(); $('#hud').hidden = true; $('#log').hidden = true;
+   const prev = JSON.parse(localStorage.getItem('lives') || '[]');
+-  const dbg = debugFlags(), EXP = approvedExp(), demo = EXP === DEMO_EXP;
++  const dbg = debugFlags(), EXP = approvedExp(), review = Q.get('review') === '1';
+   const title = lifeScript?.meta?.title || manifest?.title || '2300萬分之1';
+   const tm = title.match(/^(.*萬)分之(\d+)$/);
+   $('#screen').innerHTML = `<div class="start-v7">
+@@ -172,7 +165,6 @@
+   <div class="start-hero"><h1>${tm ? `${esc(tm[1])}<span class="of">分之</span><span class="one">${esc(tm[2])}</span>` : esc(title)}</h1>
+     <p class="sub">你是其中一個。<br>大多數謊言很小，但有些會變成轉機。</p></div>
+   <div class="live-row">
+-    <div class="live-card"><div class="num" id="live-lies">0</div><div class="lbl">打開這個頁面後<br>被說出的小謊<small>示意動畫，非實際統計</small></div></div>
+     <div class="live-card"><div class="num" id="live-cases">0</div><div class="lbl">今天到現在全台約受理<br>的詐騙案件<small>依每天約359件換算（165打詐儀表板，2026年9月）</small></div></div>
+   </div>
+   <div class="fact-ticker" id="fact-ticker">${factHtml(FACTS[0])}</div>
+@@ -182,34 +174,32 @@
+     ${prev.length ? `<p class="src">你已經活過 ${prev.length} 次人生。</p>` : ''}
+     <label class="np"><input type="checkbox" id="np" ${noPressure() ? 'checked' : ''}> 無壓力模式（關閉所有倒數）</label>
+     ${prev.length ? `<label class="np"><input type="checkbox" id="skipseen" ${skipSeen() ? 'checked' : ''}> 跳過已看過的劇情</label>` : ''}
+-    ${dbg.length ? `<p class="debug">🧪 除錯 flags：${esc(dbg.join(', '))}</p>` : ''}
+     <button class="primary" id="go">開始這一生 →</button>
+     ${ACH ? `<button class="ghost" id="ach">成就 ${achCount()} / ${ACH.length}</button>` : ''}</div>
+   <p class="footer">上當的人不笨，往往只是太真誠。</p>
+   <div class="shared-section"><h2>他們分享的經驗</h2><p class="sub">走完一生的人，留下一句話。沒有名字，只有當時的感覺。</p>
+     <div class="carousel" id="exp-carousel"></div>
+     <div class="nav-row"><button id="exp-prev">←</button><div class="dots" id="exp-dots"></div><button id="exp-next">→</button></div>
+-    <div class="shared-note"><strong>備註：</strong>${demo ? '目前為預設示範短句（非真實投稿），一次顯示 3 則並輪播。' : '以下為審核通過的玩家短句。'}玩家在結局時可留下「一句想說的話」，經審核後才會出現在這裡。
+-      <details><summary>審核清單匯入（管理用）</summary><p class="src">貼上 JSON 陣列：[{"tag":"有驚無險","quote":"「…」","who":"台中 · 32 歲"}]</p>
+-      <textarea id="exp-json" rows="3" style="width:100%"></textarea><button id="exp-import">匯入審核清單</button><button id="exp-export">匯出待審短句</button></details></div></div>
++    ${EXP.length ? '' : '<p class="src exp-empty">還沒有人留下句子。走完一生，你可以留下第一句。</p>'}
++    ${review ? `<details><summary>審核清單匯入</summary><textarea id="exp-json" rows="3" style="width:100%"></textarea><button id="exp-import">匯入審核清單</button><button id="exp-export">匯出待審短句</button></details>` : ''}</div>
+   </div>`;
+   if (ACH) $('#ach').onclick = showAchievements;
+   $('#skipseen') && ($('#skipseen').onchange = e => localStorage.setItem('skipSeen', String(e.target.checked)));
+   $('#np').onchange = e => localStorage.setItem('noPressure', String(e.target.checked));
+   // 動態數字
+-  let lies = 0; const casesNow = () => { const d = new Date(), f = (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()) / 86400; return Math.floor(359 * f); };
++  const casesNow = () => { const d = new Date(), f = (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()) / 86400; return Math.floor(359 * f); };
+   $('#live-cases').textContent = casesNow().toLocaleString();
+-  startTimers.push(setInterval(() => { lies += Math.random() > 0.4 ? 1 : 2; const el = $('#live-lies'); if (el) el.textContent = lies.toLocaleString(); }, 1600));
+   startTimers.push(setInterval(() => { const el = $('#live-cases'); if (el) el.textContent = casesNow().toLocaleString(); }, 3200));
+-  let fi = 0; startTimers.push(setInterval(() => { const el = $('#fact-ticker'); if (!el) return; fi = (fi + 1) % FACTS.length; el.style.opacity = 0; setTimeout(() => { el.innerHTML = factHtml(FACTS[fi]); el.style.opacity = 1; }, 280); }, 4200));
++  let fi = 0; if (FACTS.length > 1) startTimers.push(setInterval(() => { const el = $('#fact-ticker'); if (!el) return; fi = (fi + 1) % FACTS.length; el.style.opacity = 0; setTimeout(() => { el.innerHTML = factHtml(FACTS[fi]); el.style.opacity = 1; }, 280); }, 4200));
+   // 經驗輪播
++  if (!EXP.length) { $('#exp-carousel').hidden = true; $('.shared-section .nav-row').hidden = true; }
+   let page = 0; const per = 3, pages = Math.max(1, Math.ceil(EXP.length / per));
+   const draw = () => { $('#exp-carousel').innerHTML = EXP.slice(page * per, page * per + per).map(e => `<div class="exp-card"><div class="tag">${esc(e.tag)}</div><p class="quote">${esc(e.quote)}</p><div class="who">${esc(e.who || '')}</div></div>`).join('');
+     $('#exp-dots').innerHTML = Array.from({ length: pages }, (_, i) => `<span class="${i === page ? 'on' : ''}"></span>`).join(''); };
+   $('#exp-next').onclick = () => { page = (page + 1) % pages; draw(); }; $('#exp-prev').onclick = () => { page = (page - 1 + pages) % pages; draw(); };
+   draw(); startTimers.push(setInterval(() => { if ($('#exp-carousel')) { page = (page + 1) % pages; draw(); } }, 7000));
+-  $('#exp-import').onclick = () => { try { const a = JSON.parse($('#exp-json').value); if (!Array.isArray(a)) throw 0; localStorage.setItem('sharedApproved', JSON.stringify(a.filter(x => x && x.quote).map(x => ({ tag: String(x.tag || ''), quote: String(x.quote).slice(0, 60), who: String(x.who || '') })))); toast('已匯入審核清單'); start(); } catch (_) { toast('JSON 格式不正確'); } };
+-  $('#exp-export').onclick = () => { $('#exp-json').value = JSON.stringify(lsJ('sharedPending', []), null, 1); toast('待審短句已放入文字框'); };
++  if (review) $('#exp-import').onclick = () => { try { const a = JSON.parse($('#exp-json').value); if (!Array.isArray(a)) throw 0; localStorage.setItem('sharedApproved', JSON.stringify(a.filter(x => x && x.quote).map(x => ({ tag: String(x.tag || ''), quote: String(x.quote).slice(0, 60), who: String(x.who || '') })))); toast('已匯入審核清單'); start(); } catch (_) { toast('JSON 格式不正確'); } };
++  if (review) $('#exp-export').onclick = () => { $('#exp-json').value = JSON.stringify(lsJ('sharedPending', []), null, 1); toast('待審短句已放入文字框'); };
+   $('#go').onclick = () => {
+     startTimers.forEach(clearInterval); startTimers = [];
+     track('start');
+@@ -259,7 +249,7 @@
+     $('#screen').innerHTML = `${deltaHtml(d)}${fill}<div class="card pres-reveal flip-in"><div class="age-tag">${e.age} 歲・揭曉</div>
+       ${textHtml(e, s.text, seen)}<div class="text reveal-r">${esc(G.fill(s.choices[0].text))}</div>
+       <div class="choices"><button class="btn choice reveal-go" data-i="0">繼續 ›</button></div>
+-      <div class="src">依據：${srcHtml(e.sources)}</div></div>`;
++      ${srcHtml(e.sources) ? `<div class="src">依據：${srcHtml(e.sources)}</div>` : ''}</div>`;
+     return bindChoices($('#screen'), s, e);
+   }
+   const pres = e.presentation || 'card';
+@@ -273,7 +263,7 @@
+   $('#screen').innerHTML = `${deltaHtml(d)}${fill}<div class="card pres-${pres} flip-in">${head}
+     ${textHtml(e, s.text, seen)}
+     <div class="choices">${s.choices.map(choiceHtml).join('')}</div>
+-    <div class="src">依據：${srcHtml(e.sources)}</div></div>`;
++    ${srcHtml(e.sources) ? `<div class="src">依據：${srcHtml(e.sources)}</div>` : ''}</div>`;
+   bindChoices($('#screen'), s, e);
+   if (e.pressure) startTimer(e.pressure, $('#screen .card:last-child'));
+ }
+@@ -533,7 +523,7 @@
+   return `<div class="card act lie-end" id="lie-end" data-card="${esc(c.id)}"><h3>這一生的謊言回顧</h3><h2>${esc(c.name)}</h2>
+     <p class="e-text">${esc(c.text)}</p>
+     ${LE.quotes.length ? `<p class="src">回顧連結：${esc(c.review)}</p>${LE.quotes.map(q => `<div class="quote">${esc(q.age)} 歲・${esc(q.text.split('\n')[0])}</div>`).join('')}` : `<p class="src">回顧連結：這一局沒有聽到相關的話。</p>`}
+-    <details><summary class="src">真實案件卡與破綻</summary><p class="src" style="white-space:pre-line">${esc(c.case)}</p><ul class="flags">${c.missed.map(m => `<li>${esc(m)}</li>`).join('')}</ul><p class="src">（${esc(c.source_note)}）</p></details></div>`;
++    <details><summary class="src">${c.case ? '真實案件卡與破綻' : '破綻'}</summary>${c.case ? `<p class="src" style="white-space:pre-line">${esc(c.case)}</p>` : ''}<ul class="flags">${c.missed.map(m => `<li>${esc(m)}</li>`).join('')}</ul>${c.source_note ? `<p class="src">（${esc(c.source_note)}）</p>` : ''}</details></div>`;
+ }
+ function ending(en, s = {}) {
+   const p = G.player;

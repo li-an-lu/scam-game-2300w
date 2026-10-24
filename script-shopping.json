@@ -172,7 +172,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理；165 儀表板未提供此期間數字，尚無官方原始來源（儀表板只有115-09、115-10月資料）",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     },
     {
       "label": "18–23歲詐欺被害人中，假網路拍賣（購物）占比",
@@ -182,7 +184,9 @@
       "verified": true,
       "verify_note": "fromnineon 整理；165 儀表板未提供此期間數字，尚無官方原始來源（儀表板沒有年齡分布）",
       "source": "https://fromnineon.com/data/taiwan-fraud-statistics/",
-      "self_calculated": false
+      "self_calculated": false,
+      "display_v7": null,
+      "display": false
     }
   ],
   "stats_sources": [
@@ -493,7 +497,7 @@
       "text": "匯款後，對方封鎖了你。你這才發現，社團裡還有好幾個人買了同一組票號。",
       "choices": [
         {
-          "text": "留紀錄，打165報案",
+          "text": "留紀錄，去報案",
           "effects": {
             "警覺": 10,
             "心理": 0
@@ -508,7 +512,9 @@
           "grid": "green",
           "outcome_text": "你把對話和匯款紀錄整理好去報案，員警幫你做了筆錄。",
           "log_text": "被封鎖後報案",
-          "rethink": false
+          "rethink": false,
+          "text_v7": "留紀錄，打165報案",
+          "outcome_text_v7": "你把對話和匯款紀錄整理好去報案，員警幫你做了筆錄。"
         },
         {
           "text": "算了",
@@ -848,7 +854,7 @@
       "text": "「專員」語氣很急，說不處理每個月都會被扣款，要你到ATM或網銀照指示操作，還一直要你別掛電話。",
       "choices": [
         {
-          "text": "掛斷，打165",
+          "text": "掛斷，自己打去查證",
           "effects": {
             "警覺": 20,
             "心理": 0
@@ -861,9 +867,11 @@
             "require": []
           },
           "grid": "green",
-          "outcome_text": "你掛斷電話，自己打了165。對方說這是常見的假客服手法：「你剛剛差一點。」你沒有損失。",
+          "outcome_text": "你掛斷電話，自己打給反詐騙單位查證。對方說這是常見的假客服手法：「你剛剛差一點。」你沒有損失。",
           "log_text": "掛斷，打165確認",
-          "rethink": false
+          "rethink": false,
+          "text_v7": "掛斷，打165",
+          "outcome_text_v7": "你掛斷電話，自己打了165。對方說這是常見的假客服手法：「你剛剛差一點。」你沒有損失。"
         },
         {
           "text": "照做，按確認",
@@ -1486,7 +1494,8 @@
       ],
       "case_card": {
         "summary": "這個結局目前沒有對應的真實個案：我們找不到手法明確是假網購或假客服、又記錄了求助後康復過程的公開報導，所以不放案例。精神科醫師的經驗是，多數詐騙受害者需要3個月到1年消化情緒，就醫並有親友陪伴會有幫助（見下方來源）。",
-        "note": "v4.4 審查修正：沒有合適的個案，不放案例"
+        "note": "",
+        "note_v7": "v4.4 審查修正：沒有合適的個案，不放案例"
       },
       "case_card_note": "找不到手法明確是假網購／假客服、又有求助後康復紀錄的公開個案，所以這個結局不放個案卡（v4.4 審查修正）",
       "missed_red_flags": [
