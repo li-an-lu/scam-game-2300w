@@ -115,6 +115,29 @@ add("ACH_LIFE_CLEAN50","life","五十不受騙","活到 50 歲，交往、婚姻
 add("ACH_LIFE_HALTED_SEEN","life","停下來也沒關係","你看過「停下來」這個結局。心累的時候，可以打 1925、1995，或找身邊的人說。",
     U(endings=["life:END_LIFE_HALTED"],scope="collection"),src_end("life","END_LIFE_HALTED"),hidden=True,tone="serious")
 add("ACH_LIFE_OWNACCOUNT","life","自己的戶頭","小時候請爸媽陪你開了自己的帳戶。",U(choices=[ch("life","hongbao",1)]),src_ev("life","hongbao"))
+# ---- v7（只新增）：Leo 的 achievements-lie-linked.json ＋ 過程成就／隱藏成就（謊言回顧卡 id 視為 life:END_*，見 stage-pool.json）----
+import os as _os
+if _os.path.exists("stage-pool.json"):
+    _SP=json.load(open("stage-pool.json")); _CORE=_SP["core_flags"]
+    _norm=lambda u:{**U(scope=u.get("scope","run")),**u}
+    for _a in json.load(open("achievements-lie-linked.json"))["achievements"]:
+        _a=dict(_a); _a["unlock"]=_norm(_a["unlock"])
+        for _k in ("requires_flags","forbids_flags"): _a["unlock"][_k]=[f if ":" in f else "life:"+f for f in _a["unlock"][_k]]
+        if not _a.get("source"): _a["source"]=src_ev("life","family_talk") if "told_family" in str(_a["unlock"]) else [{"ref":"life:END_QUIET","from":"stage-pool.lie_endings","name":"謊言連結結局卡（寫手提供，待查證）","url":None}]
+        if _a["id"]=="ACH_LIE_SPOT_AUTHORITY": _a["unlock"]["requires_choices"]=[ch("life","fake_police",0)]   # 原指向不存在的 authority_call，連到人生線假警察事件
+        for _s in _a.get("source",[]): _s["name"]=(_s.get("name") or "")+"（寫手提供，待查證）" if "待查證" not in (_s.get("name") or "") else _s["name"]
+        if _a["id"]=="ACH_LIE_SPOT_AUTHORITY": _a["source"]=src_ev("life","fake_police")
+        A.append(_a)
+    _src=lambda eid:[{"ref":f"life:{eid}","from":"stage-pool.lie_endings","name":"謊言連結結局卡（寫手提供，待查證）","url":None}]
+    _have={x["unlock"]["requires_endings"][0] for x in A if x["category"]=="ending_codex" and len(x["unlock"]["requires_endings"])==1}
+    for _c in _SP["lie_endings"]:
+        if f"life:{_c['id']}" not in _have:
+            add(f"ACH_{_c['id']}","ending_codex",_c["name"][:10],f"圖鑑記錄：結局「{_c['name']}」。",U(endings=[f"life:{_c['id']}"],scope="collection"),_src(_c["id"]),tone="record" if _c["pool"]=="heavy" else "positive")
+    add("ACH_V7_CORE3","life","三句話","同一輪裡，被三種不同的「大人的話」影響過。",{**U(),"requires_flags_min":{"flags":[f"life:{f}" for f in _CORE],"n":3}},_src("END_QUIET"),tone="record")
+    add("ACH_V7_ALMOST_FAMILY","life","先問了家人","有人提醒過你要跟家人說，最後你真的停下來了。",U(endings=["life:END_ALMOST"],flags=["life:reminded_family"]),_src("END_ALMOST"))
+    add("ACH_V7_TOLD_DESPITE","life","不再說還好","曾經習慣說「還好」，後來還是向家人說明了過程。",U(flags=["life:said_its_fine","life:told_family"]),src_ev("life","family_talk"))
+    add("ACH_V7_ALL_CORE","life","全部都聽過","同一輪集滿六種核心謊言。",U(flags=[f"life:{f}" for f in _CORE]),_src("END_QUIET"),hidden=True,tone="record")
+    add("ACH_V7_QUIET_STORM","life","聽過還是平靜","聽過很多謊言，這一生仍然風平浪靜。",{**U(endings=["life:END_QUIET"]),"requires_flags_min":{"flags":[f"life:{f}" for f in _CORE],"n":3}},_src("END_QUIET"),hidden=True)
 # v6：CLEAN40 需實際活到 40 歲（HALTED 提早結束者不算）
 for _a in A:
     if _a["id"]=="ACH_LIFE_CLEAN40": _a["unlock"]["min_age_lived"]=40

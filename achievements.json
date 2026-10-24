@@ -3334,19 +3334,19 @@
      "life:criminal_record"
     ],
     "forbids_endings": [
+     "mule:END_RECORD",
+     "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
      "mule:END_CUT_OFF",
-     "mule:END_ACCOUNT",
-     "mule:END_RECORD",
-     "shopping:END_SILENT_COLLAPSE",
      "shopping:END_TICKET_LOST",
      "shopping:END_SMALL_FEE",
+     "shopping:END_SILENT_COLLAPSE",
      "shopping:END_CS_DRAINED",
      "investment:END_COLLAPSE",
      "investment:END_DEBT",
+     "investment:END_BROKE",
      "investment:END_FAMILY_RIFT",
-     "investment:END_ALL_LOST",
-     "investment:END_BROKE"
+     "investment:END_ALL_LOST"
     ],
     "min_age_lived": 40
    },
@@ -3707,19 +3707,19 @@
      "life:life_halted"
     ],
     "forbids_endings": [
+     "mule:END_RECORD",
+     "mule:END_ACCOUNT",
      "mule:END_CONVICTED",
      "mule:END_CUT_OFF",
-     "mule:END_ACCOUNT",
-     "mule:END_RECORD",
-     "shopping:END_SILENT_COLLAPSE",
      "shopping:END_TICKET_LOST",
      "shopping:END_SMALL_FEE",
+     "shopping:END_SILENT_COLLAPSE",
      "shopping:END_CS_DRAINED",
      "investment:END_COLLAPSE",
      "investment:END_DEBT",
+     "investment:END_BROKE",
      "investment:END_FAMILY_RIFT",
      "investment:END_ALL_LOST",
-     "investment:END_BROKE",
      "romance:END_RM_COLLAPSE",
      "romance:END_RM_DEEP",
      "marriage:END_MR_PAID",
@@ -3815,6 +3815,703 @@
      "from": "event.sources",
      "name": "PTT C_Chat 2026-03-01 討論串：推文「成年就拿到存摺印章提款卡」「跟老媽對分，我那一半存進戶頭」",
      "url": "https://www.ptt.cc/bbs/C_Chat/M.1772379094.A.2BA.html"
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_TRUST_LONG",
+   "category": "ending_codex",
+   "name": "他每天跟我說早安",
+   "description": "圖鑑記錄：結局「他每天跟我說早安」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_TRUST_LONG"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_TRUST_LONG",
+     "from": "ending.sources",
+     "name": "假交友結合投資類型（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_GROUP_PROFIT",
+   "category": "ending_codex",
+   "name": "群組裡每個人都在賺",
+   "description": "圖鑑記錄：結局「群組裡每個人都在賺」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_GROUP_PROFIT"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_GROUP_PROFIT",
+     "from": "ending.sources",
+     "name": "假投資群組曬單（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_AUTHORITY_CALL",
+   "category": "ending_codex",
+   "name": "他說他是警察",
+   "description": "圖鑑記錄：結局「他說他是警察」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_AUTHORITY_CALL"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "life:END_AUTHORITY_CALL",
+     "from": "ending.sources",
+     "name": "假檢警詐騙（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_DONT_WORRY",
+   "category": "ending_codex",
+   "name": "不想讓家人擔心",
+   "description": "圖鑑記錄：結局「不想讓家人擔心」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_DONT_WORRY"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "serious",
+   "source": [
+    {
+     "ref": "life:END_DONT_WORRY",
+     "from": "ending.sources",
+     "name": "獨自處理後損失擴大（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ALMOST",
+   "category": "ending_codex",
+   "name": "差點匯出去",
+   "description": "圖鑑記錄：結局「差點匯出去」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_ALMOST"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_ALMOST",
+     "from": "ending.sources",
+     "name": "臨櫃攔阻／親友勸阻（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_QUIET",
+   "category": "ending_codex",
+   "name": "這一生沒什麼大事",
+   "description": "圖鑑記錄：結局「這一生沒什麼大事」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_QUIET"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "ending.sources",
+     "name": "日常小謊與非高額被害（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_HELPED_OTHERS",
+   "category": "ending_codex",
+   "name": "你勸過別人",
+   "description": "圖鑑記錄：結局「你勸過別人」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_HELPED_OTHERS"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_HELPED_OTHERS",
+     "from": "ending.sources",
+     "name": "親友勸阻成功（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIE_CHILDHOOD_3",
+   "category": "life",
+   "name": "從小聽到的話",
+   "description": "在同一局中觸發至少 3 個童年被動謊言。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:lie_child_1",
+     "life:lie_child_2",
+     "life:lie_child_3"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIE_SPOT_AUTHORITY",
+   "category": "red_flag",
+   "name": "這不像警察會說的話",
+   "description": "在假檢警相關事件中選擇掛斷或查證。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [
+     {
+      "line": "life",
+      "event": "fake_police",
+      "choice_index": 0,
+      "text": "掛斷，打165"
+     }
+    ],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:fake_police",
+     "from": "event.sources",
+     "name": "寫手提供：fake_police：假檢警監管帳戶（原稿 55 歲，人生線只到 50 歲，改為 49 歲）（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_LIE_TELL_FAMILY",
+   "category": "red_flag",
+   "name": "還是跟家人說了",
+   "description": "在「不想讓家人擔心」相關情境中選擇告知家人。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:told_family"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:family_talk",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_CODEX_LIE_5",
+   "category": "ending_codex",
+   "name": "謊言圖鑑 ×5",
+   "description": "收集任意 5 個謊言連結型結局。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [],
+    "requires_any_endings": [
+     "life:END_TRUST_LONG",
+     "life:END_GROUP_PROFIT",
+     "life:END_AUTHORITY_CALL",
+     "life:END_DONT_WORRY",
+     "life:END_SHOPPING_LINK",
+     "life:END_JOB_FEE",
+     "life:END_ROMANCE_BORROW",
+     "life:END_FAMILY_IMPERSONATE",
+     "life:END_INVEST_SMALL",
+     "life:END_CUSTOMER_SERVICE",
+     "life:END_LOAN_FIRST",
+     "life:END_ALMOST",
+     "life:END_QUIET",
+     "life:END_HELPED_OTHERS"
+    ],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": [],
+    "min_count": 5
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_SHARE_SENTENCE",
+   "category": "life",
+   "name": "留下一句話",
+   "description": "在結局時留下一句想說的話。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:shared_sentence"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_SHOPPING_LINK",
+   "category": "ending_codex",
+   "name": "客服說要驗證",
+   "description": "圖鑑記錄：結局「客服說要驗證」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_SHOPPING_LINK"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_SHOPPING_LINK",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_JOB_FEE",
+   "category": "ending_codex",
+   "name": "先繳訓練費",
+   "description": "圖鑑記錄：結局「先繳訓練費」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_JOB_FEE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_JOB_FEE",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_ROMANCE_BORROW",
+   "category": "ending_codex",
+   "name": "他說只是暫時周轉",
+   "description": "圖鑑記錄：結局「他說只是暫時周轉」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_ROMANCE_BORROW"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_ROMANCE_BORROW",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_FAMILY_IMPERSONATE",
+   "category": "ending_codex",
+   "name": "兒子說要錢",
+   "description": "圖鑑記錄：結局「兒子說要錢」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_FAMILY_IMPERSONATE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_FAMILY_IMPERSONATE",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_INVEST_SMALL",
+   "category": "ending_codex",
+   "name": "先小額試試",
+   "description": "圖鑑記錄：結局「先小額試試」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_INVEST_SMALL"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_INVEST_SMALL",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_CUSTOMER_SERVICE",
+   "category": "ending_codex",
+   "name": "訂單異常",
+   "description": "圖鑑記錄：結局「訂單異常」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_CUSTOMER_SERVICE"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_CUSTOMER_SERVICE",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_END_LOAN_FIRST",
+   "category": "ending_codex",
+   "name": "要貸款先轉帳",
+   "description": "圖鑑記錄：結局「要貸款先轉帳」。",
+   "unlock": {
+    "scope": "collection",
+    "requires_endings": [
+     "life:END_LOAN_FIRST"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_LOAN_FIRST",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_V7_CORE3",
+   "category": "life",
+   "name": "三句話",
+   "description": "同一輪裡，被三種不同的「大人的話」影響過。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": [],
+    "requires_flags_min": {
+     "flags": [
+      "life:heard_stranger",
+      "life:heard_police",
+      "life:heard_everyone",
+      "life:said_its_fine",
+      "life:heard_miss_chance",
+      "life:obey_authority"
+     ],
+     "n": 3
+    }
+   },
+   "hidden": false,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_V7_ALMOST_FAMILY",
+   "category": "life",
+   "name": "先問了家人",
+   "description": "有人提醒過你要跟家人說，最後你真的停下來了。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "life:END_ALMOST"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:reminded_family"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_ALMOST",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_V7_TOLD_DESPITE",
+   "category": "life",
+   "name": "不再說還好",
+   "description": "曾經習慣說「還好」，後來還是向家人說明了過程。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:said_its_fine",
+     "life:told_family"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": false,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:family_talk",
+     "from": "event.sources",
+     "name": "寫手提供：《2300萬分之一》交貨便與相關擴充＋第四輪 expansion-r4.md；依據描述：刑事局揭露超商寄件被用於洗錢（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_V7_ALL_CORE",
+   "category": "life",
+   "name": "全部都聽過",
+   "description": "同一輪集滿六種核心謊言。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [],
+    "requires_any_endings": [],
+    "requires_flags": [
+     "life:heard_stranger",
+     "life:heard_police",
+     "life:heard_everyone",
+     "life:said_its_fine",
+     "life:heard_miss_chance",
+     "life:obey_authority"
+    ],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": []
+   },
+   "hidden": true,
+   "tone": "record",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ACH_V7_QUIET_STORM",
+   "category": "life",
+   "name": "聽過還是平靜",
+   "description": "聽過很多謊言，這一生仍然風平浪靜。",
+   "unlock": {
+    "scope": "run",
+    "requires_endings": [
+     "life:END_QUIET"
+    ],
+    "requires_any_endings": [],
+    "requires_flags": [],
+    "requires_choices": [],
+    "forbids_flags": [],
+    "forbids_endings": [],
+    "requires_flags_min": {
+     "flags": [
+      "life:heard_stranger",
+      "life:heard_police",
+      "life:heard_everyone",
+      "life:said_its_fine",
+      "life:heard_miss_chance",
+      "life:obey_authority"
+     ],
+     "n": 3
+    }
+   },
+   "hidden": true,
+   "tone": "positive",
+   "source": [
+    {
+     "ref": "life:END_QUIET",
+     "from": "stage-pool.lie_endings",
+     "name": "謊言連結結局卡（寫手提供，待查證）",
+     "url": null
     }
    ]
   }

@@ -17,6 +17,11 @@ if len(_s0.argv)>1 and _s0.argv[1].endswith("achievements.json"):
             for x in v.values():
                 if isinstance(x,dict): FL["life"]|=set(x.get("flags",[]))
                 elif isinstance(x,str): FL["life"].add(x)
+    import os as _o7   # v7：謊言回顧卡與階段池 flag
+    if _o7.path.exists("stage-pool.json"):
+        _SP=_j.load(open("stage-pool.json")); EN["life"]|={c["id"] for c in _SP["lie_endings"]}
+        FL["life"]|=set(_SP["core_flags"])|set(_SP["foreshadow"])|{f"lie_child_{n}" for n in range(1,10)}|{"shared_sentence"}
+        for _c in _SP["lie_endings"]: EV["life"].setdefault(_c["id"],{"choices":[]})
     A=_j.load(open(_s0.argv[1]))["achievements"]; E=[]; ids=set()
     for a in A:
         i=a["id"]
@@ -47,7 +52,10 @@ if len(_s0.argv)>1 and _s0.argv[1].endswith("achievements.json"):
             if not ev: E.append(f"{i}: event {c['line']}:{c['event']} 不存在"); continue
             ch=ev["choices"]
             if c["choice_index"]>=len(ch) or ch[c["choice_index"]]["text"]!=c["text"]: E.append(f"{i}: choice {c} 不符")
-        if not any(u.get(k) for k in ("requires_endings","requires_any_endings","requires_flags","requires_choices")): E.append(f"{i}: 無解鎖條件")
+        for r in (u.get("requires_flags_min") or {}).get("flags",[]):
+            l,_,x=r.partition(":")
+            if l not in FL or x not in FL[l]: E.append(f"{i}: requires_flags_min {r} 不存在")
+        if not any(u.get(k) for k in ("requires_endings","requires_any_endings","requires_flags","requires_choices","requires_flags_min")): E.append(f"{i}: 無解鎖條件")
         for s_ in a["source"]:
             l,_,x=s_.get("ref","").partition(":")
             if s_.get("ref")!="all" and (l not in EN or (x not in EN[l] and x not in EV[l])): E.append(f"{i}: source ref {s_.get('ref')} 不存在")

@@ -78,13 +78,14 @@ function choiceHtml(c, i) {
   return `<button data-i="${i}" class="choice">${c.cross_line ? '<span class="tag unlock">人生經驗解鎖</span>' : ''}${esc(noEmoji(c.text))}</button>`;
 }
 // 成就（achievements.json）：存在 localStorage『ach』；run＝這一局內達成，collection＝跨局累積
-let ACH = null;
+let ACH = null, STAGE_POOL = null;
 const achStore = () => { let s = {}; try { s = JSON.parse(localStorage.getItem('ach') || '{}'); } catch (_) {} s.endings ||= []; s.flags ||= []; s.choices ||= []; s.got ||= {}; return s; };
 const achCount = () => { const g = achStore().got; return ACH.filter(a => g[a.id]).length; };
 function achRecord(en, ses = {}) {
   if (!ACH) return [];
   const lp = G.lifePlayer || G.player, l0 = G.combined ? 'life' : (document.body.dataset.line || 'life');
   const R = { endings: new Set([`${l0}:${en.id}`]), flags: new Set(), choices: new Set() };
+  if (ses.lieCard) R.endings.add(`life:${ses.lieCard}`);   // v7 謊言回顧卡
   const addC = (line, id, idx, text) => { R.choices.add(`${line}|${id}|#${idx}`); R.choices.add(`${line}|${id}|${text}`); };
   for (const f of lp.flags) R.flags.add(`${l0}:${f}`);
   for (const h of lp.history) addC(l0, h.id, h.idx, h.choice);
@@ -98,8 +99,9 @@ function achRecord(en, ses = {}) {
   const fresh = [];
   for (const a of ACH) {
     if (st.got[a.id]) continue;
-    const u = a.unlock, S = u.scope === 'collection' ? A : R;
-    const ok = u.requires_endings.every(e => S.endings.has(e)) && (!u.requires_any_endings.length || u.requires_any_endings.some(e => S.endings.has(e)))
+    const u = { requires_endings: [], requires_any_endings: [], requires_flags: [], requires_choices: [], forbids_flags: [], forbids_endings: [], ...a.unlock }, S = u.scope === 'collection' ? A : R;
+    const fm = u.requires_flags_min, anyN = u.min_count ? u.requires_any_endings.filter(e => S.endings.has(e)).length >= u.min_count : true;
+    const ok = anyN && (!fm || fm.flags.filter(f => S.flags.has(f)).length >= fm.n) && u.requires_endings.every(e => S.endings.has(e)) && (!u.requires_any_endings.length || u.requires_any_endings.some(e => S.endings.has(e)))
       && u.requires_flags.every(f => S.flags.has(f)) && !u.forbids_flags.some(f => S.flags.has(f)) && !u.forbids_endings.some(e => S.endings.has(e))
       && u.requires_choices.every(c => S.choices.has(`${c.line}|${c.event}|#${c.choice_index}`) || S.choices.has(`${c.line}|${c.event}|${c.text}`));
     // 年齡門檻：unlock.min_age_lived；沒有欄位時從描述「活到 N 歲」推（achievements.json 本身沒有年齡條件）
@@ -134,24 +136,76 @@ function textHtml(e, txt, seen) {
   const one = txt.replace(/\s+/g, ' ');
   return `<details class="seen"><summary><span class="seen-tag">已看過</span> ${esc(one.length > 22 ? one.slice(0, 22) + '…' : one)}</summary><div class="text">${esc(txt)}</div></details>`;
 }
+// v7 開始頁：依 leo-design/start-page.html（動態數字、事實輪播、警語、四數值、分享經驗輪播、暗金／酒紅基調）
+const FACTS = [   // 第一則已查證（165 打詐儀表板）；其餘為寫手提供，待查證
+  { t: '2026年9月，台灣平均每天約359件詐騙案，一天被騙走1.3億元。', src: 'https://165dashboard.tw', note: '165打詐儀表板，2026年9月' },
+  { t: '多數人一天說 0～2 個謊，其中約 90% 是無傷大雅的小謊。' }, { t: '10 分鐘的日常對話裡，約 60% 的成年人會至少說一次謊。' },
+  { t: '超過 95% 的民眾曾收過假訊息，投資理財類最常出現。' }, { t: '孩子大約 2～3 歲就會開始有意識地說第一個謊。' },
+  { t: '履歷裡約有 30～40% 含有不同程度的誇大。' }, { t: '假投資詐騙雖然件數不一定最多，但財損金額往往最高。' }];
+const factHtml = f => `${esc(f.t)}${f.src ? ` <small><a href="${esc(f.src)}" target="_blank" rel="noopener">${esc(f.note)}</a></small>` : ' <small>（寫手提供，待查證）</small>'}`;
+const DEMO_EXP = [   // 示範短句（非真實投稿）；之後由審核清單取代
+  { tag: '受騙', quote: '「對方說再轉一次就解凍。我真的轉了。」', who: '高雄 · 45 歲' }, { tag: '有驚無險', quote: '「差點匯出去，後來打給家人確認才停手。」', who: '台中 · 32 歲' },
+  { tag: '風平浪靜', quote: '「這一生沒遇過什麼大事。薪水不多，但每個月都過得去。」', who: '台南 · 58 歲' }, { tag: '懊悔', quote: '「我一直覺得自己不會上當。結果還是轉了。」', who: '台北 · 29 歲' },
+  { tag: '受騙', quote: '「他每天跟我說早安。三個月後，我把積蓄都給了他。」', who: '新北 · 51 歲' }, { tag: '有驚無險', quote: '「網拍賣家一直催我私下交易。我沒理他，後來他消失了。」', who: '桃園 · 27 歲' },
+  { tag: '風平浪靜', quote: '「沒有人騙過我，也沒有人特別幫過我。這樣也好。」', who: '彰化 · 64 歲' }, { tag: '懊悔', quote: '「我媽叫我不要點那個連結。我還是點了。」', who: '台中 · 23 歲' },
+  { tag: '受騙', quote: '「投資群組裡每個人都在曬獲利。我進去的隔天，群組就不見了。」', who: '高雄 · 38 歲' }, { tag: '有驚無險', quote: '「假警察打來時，我掛掉後打給真正的派出所。他們說沒這回事。」', who: '台北 · 41 歲' }];
+// 分享短句暫行方案：玩家留言存 localStorage.sharedPending；輪播只顯示 localStorage.sharedApproved（手動匯入審核後的 JSON）
+const lsJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || '') ?? d; } catch (_) { return d; } };
+const approvedExp = () => { const a = lsJ('sharedApproved', []); return Array.isArray(a) && a.length ? a.filter(x => x && x.quote && x.approved !== false) : DEMO_EXP; };
+let startTimers = [];
 function start() {
+  startTimers.forEach(clearInterval); startTimers = [];
   if ($('#log').parentElement !== $('#app')) $('#app').append($('#log'));
   closePhone(); $('#hud').hidden = true; $('#log').hidden = true;
   const prev = JSON.parse(localStorage.getItem('lives') || '[]');
-  const dbg = debugFlags();
-  $('#screen').innerHTML = `<h1>${esc(lifeScript?.meta?.title || manifest?.title || '2300萬分之1')}</h1>
-  <div class="card"><p>你將隨機出生在台灣某個角落，一年一年長大。<b>人生只有一次，選了就不能重來。</b></p>
-  ${INTRO_FACT ? `<p class="src" id="intro-fact">${INTRO_FACT}</p>` : ''}
-  ${prev.length ? `<p class="src">你已經活過 ${prev.length} 次人生。</p>` : ''}
-  <label class="np"><input type="checkbox" id="np" ${noPressure() ? 'checked' : ''}> 無壓力模式（關閉所有倒數）</label>
-  ${dbg.length ? `<p class="debug">🧪 除錯 flags：${esc(dbg.join(', '))}</p>` : ''}
-  ${prev.length ? `<label class="np"><input type="checkbox" id="skipseen" ${skipSeen() ? 'checked' : ''}> 跳過已看過的劇情（摺疊成一行，選擇照常）</label>` : ''}
-  <button class="primary" id="go">投胎 →</button>
-  ${ACH ? `<button id="ach">成就 ${achCount()} / ${ACH.length}</button>` : ''}</div>`;
+  const dbg = debugFlags(), EXP = approvedExp(), demo = EXP === DEMO_EXP;
+  const title = lifeScript?.meta?.title || manifest?.title || '2300萬分之1';
+  const tm = title.match(/^(.*萬)分之(\d+)$/);
+  $('#screen').innerHTML = `<div class="start-v7">
+  <div class="meta">台灣人生模擬 · 取材自真實資料</div>
+  <div class="start-hero"><h1>${tm ? `${esc(tm[1])}<span class="of">分之</span><span class="one">${esc(tm[2])}</span>` : esc(title)}</h1>
+    <p class="sub">你是其中一個。<br>大多數謊言很小，但有些會變成轉機。</p></div>
+  <div class="live-row">
+    <div class="live-card"><div class="num" id="live-lies">0</div><div class="lbl">打開這個頁面後<br>被說出的小謊<small>示意動畫，非實際統計</small></div></div>
+    <div class="live-card"><div class="num" id="live-cases">0</div><div class="lbl">今天到現在全台約受理<br>的詐騙案件<small>依每天約359件換算（165打詐儀表板，2026年9月）</small></div></div>
+  </div>
+  <div class="fact-ticker" id="fact-ticker">${factHtml(FACTS[0])}</div>
+  <p class="desc">一出生，四個數值就已經決定。接下來你會遇到家人、同學、同事說的話，也會遇到<strong>看起來很真</strong>的訊息與機會。遊戲裡的事件取材自 165 統計與真實經驗。<br><b>人生只有一次，選了就不能重來。</b></p>
+  <div class="card main-card">
+    <div class="stat-row">${['存款', '警覺', '人際', '心理'].map(k => `<div class="stat"><span>${k}</span><b>隨機</b></div>`).join('')}</div>
+    ${prev.length ? `<p class="src">你已經活過 ${prev.length} 次人生。</p>` : ''}
+    <label class="np"><input type="checkbox" id="np" ${noPressure() ? 'checked' : ''}> 無壓力模式（關閉所有倒數）</label>
+    ${prev.length ? `<label class="np"><input type="checkbox" id="skipseen" ${skipSeen() ? 'checked' : ''}> 跳過已看過的劇情</label>` : ''}
+    ${dbg.length ? `<p class="debug">🧪 除錯 flags：${esc(dbg.join(', '))}</p>` : ''}
+    <button class="primary" id="go">開始這一生 →</button>
+    ${ACH ? `<button class="ghost" id="ach">成就 ${achCount()} / ${ACH.length}</button>` : ''}</div>
+  <p class="footer">上當的人不笨，往往只是太真誠。</p>
+  <div class="shared-section"><h2>他們分享的經驗</h2><p class="sub">走完一生的人，留下一句話。沒有名字，只有當時的感覺。</p>
+    <div class="carousel" id="exp-carousel"></div>
+    <div class="nav-row"><button id="exp-prev">←</button><div class="dots" id="exp-dots"></div><button id="exp-next">→</button></div>
+    <div class="shared-note"><strong>備註：</strong>${demo ? '目前為預設示範短句（非真實投稿），一次顯示 3 則並輪播。' : '以下為審核通過的玩家短句。'}玩家在結局時可留下「一句想說的話」，經審核後才會出現在這裡。
+      <details><summary>審核清單匯入（管理用）</summary><p class="src">貼上 JSON 陣列：[{"tag":"有驚無險","quote":"「…」","who":"台中 · 32 歲"}]</p>
+      <textarea id="exp-json" rows="3" style="width:100%"></textarea><button id="exp-import">匯入審核清單</button><button id="exp-export">匯出待審短句</button></details></div></div>
+  </div>`;
   if (ACH) $('#ach').onclick = showAchievements;
   $('#skipseen') && ($('#skipseen').onchange = e => localStorage.setItem('skipSeen', String(e.target.checked)));
   $('#np').onchange = e => localStorage.setItem('noPressure', String(e.target.checked));
+  // 動態數字
+  let lies = 0; const casesNow = () => { const d = new Date(), f = (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()) / 86400; return Math.floor(359 * f); };
+  $('#live-cases').textContent = casesNow().toLocaleString();
+  startTimers.push(setInterval(() => { lies += Math.random() > 0.4 ? 1 : 2; const el = $('#live-lies'); if (el) el.textContent = lies.toLocaleString(); }, 1600));
+  startTimers.push(setInterval(() => { const el = $('#live-cases'); if (el) el.textContent = casesNow().toLocaleString(); }, 3200));
+  let fi = 0; startTimers.push(setInterval(() => { const el = $('#fact-ticker'); if (!el) return; fi = (fi + 1) % FACTS.length; el.style.opacity = 0; setTimeout(() => { el.innerHTML = factHtml(FACTS[fi]); el.style.opacity = 1; }, 280); }, 4200));
+  // 經驗輪播
+  let page = 0; const per = 3, pages = Math.max(1, Math.ceil(EXP.length / per));
+  const draw = () => { $('#exp-carousel').innerHTML = EXP.slice(page * per, page * per + per).map(e => `<div class="exp-card"><div class="tag">${esc(e.tag)}</div><p class="quote">${esc(e.quote)}</p><div class="who">${esc(e.who || '')}</div></div>`).join('');
+    $('#exp-dots').innerHTML = Array.from({ length: pages }, (_, i) => `<span class="${i === page ? 'on' : ''}"></span>`).join(''); };
+  $('#exp-next').onclick = () => { page = (page + 1) % pages; draw(); }; $('#exp-prev').onclick = () => { page = (page - 1 + pages) % pages; draw(); };
+  draw(); startTimers.push(setInterval(() => { if ($('#exp-carousel')) { page = (page + 1) % pages; draw(); } }, 7000));
+  $('#exp-import').onclick = () => { try { const a = JSON.parse($('#exp-json').value); if (!Array.isArray(a)) throw 0; localStorage.setItem('sharedApproved', JSON.stringify(a.filter(x => x && x.quote).map(x => ({ tag: String(x.tag || ''), quote: String(x.quote).slice(0, 60), who: String(x.who || '') })))); toast('已匯入審核清單'); start(); } catch (_) { toast('JSON 格式不正確'); } };
+  $('#exp-export').onclick = () => { $('#exp-json').value = JSON.stringify(lsJ('sharedPending', []), null, 1); toast('待審短句已放入文字框'); };
   $('#go').onclick = () => {
+    startTimers.forEach(clearInterval); startTimers = [];
     track('start');
     birth = Engine.rollBirth(manifest.birth); $('#log-list').innerHTML = '';
     if (lifeScript && !dbg.length && !Q.get('line')) return beginCombined();
@@ -171,6 +225,7 @@ function beginLine(sc, id, flags) {
 // 合併模式（預設）：人生線為主幹，詐騙線在 19／27／37 歲插入（engine.createCombined，移植 combined.py）
 function beginCombined() {
   G = Engine.createCombined(lifeScript, scripts, birth); script = lifeScript; lastAge = 0;
+  if (STAGE_POOL && Q.get('stage') !== '0') G = Stage.wrap(G, STAGE_POOL);   // v7 階段抽池
   document.body.dataset.line = 'life';
   $('#hud').hidden = false; $('#log').hidden = false; render();
 }
@@ -179,6 +234,7 @@ function render(delta) {
   const s = G.current();
   if (G.combined) { script = s.type === 'scam_end' ? s.scamScript : G.script; document.body.dataset.line = s.line || 'life'; }
   if (s.type === 'scam_end') return scamEnd(s);
+  if (s.type === 'beat' || s.type === 'pos') return stageCard(s, delta);
   const d = { ...(delta || {}) }; for (const [k, v] of Object.entries(s.enterDelta || {})) d[k] = (d[k] || 0) + v;
   statHtml(d);
   if (s.type === 'ending') return script === lifeScript && !G.combined ? lifeEnd(s.ending, s) : ending(s.ending, s);
@@ -211,6 +267,30 @@ function render(delta) {
     <div class="src">依據：${srcHtml(e.sources)}</div></div>`;
   bindChoices($('#screen'), s, e);
   if (e.pressure) startTimer(e.pressure, $('#screen .card:last-child'));
+}
+// v7：被動謊言（敘事、無選項）／心態轉場／伏筆回扣／正面事件
+const STAGE_LABEL = { child: '童年', student: '學生', adult: '出社會' };
+function stageCard(s, delta) {
+  statHtml(delta || {});
+  const tag = s.kind === 'pos' ? '正面' : s.kind === 'lie' ? '大人的話' : s.kind === 'echo' ? '想起' : '長大';
+  const cls = s.kind === 'pos' ? 'pos' : s.kind === 'echo' ? 'beat echo' : 'beat';
+  if (s.age > lastAge) lastAge = s.age;
+  $('#h-age').textContent = s.age + ' 歲';
+  $('#screen').innerHTML = `<div class="card ${cls} flip-in" data-stage-kind="${esc(s.kind)}"><div class="age-tag">${esc(s.age)} 歲<span class="stage-tag">${esc(STAGE_LABEL[s.stage] || '')}${STAGE_LABEL[s.stage] ? '・' : ''}${tag}</span></div>
+    <div class="text" style="white-space:pre-line">${esc(s.text)}</div>
+    <div class="choices">${s.kind === 'pos' ? s.choices.map((c, i) => `<button class="btn choice" data-si="${i}">${esc(c.text)}</button>`).join('') : '<button class="primary" id="beat-go">繼續 ›</button>'}</div></div>`;
+  if (s.kind !== 'pos') return $('#beat-go').onclick = () => {
+    const d = G.beatAck();
+    if (s.kind === 'lie') $('#log-list').insertAdjacentHTML('afterbegin', `<li>${esc(s.age)} 歲：${esc(s.text.split('\n')[0].slice(0, 28))}…</li>`);
+    window.scrollTo(0, 0); render(d);
+  };
+  document.querySelectorAll('[data-si]').forEach(b => b.onclick = async () => {
+    document.querySelectorAll('[data-si]').forEach(x => { x.disabled = true; x.classList.toggle('picked', x === b); });
+    await sleep(CHOICE_PAUSE_MS);
+    const r = G.posChoose(+b.dataset.si);
+    $('#log-list').insertAdjacentHTML('afterbegin', `<li>${esc(r.age)} 歲：${esc(r.choice.text)}</li>`);
+    resultCard({ age: r.age }, { outcome_text: r.choice.outcome_text }, r.delta);
+  });
 }
 function bindChoices(root, s, e, onPicked) {
   root.querySelectorAll('button[data-i]').forEach(b => b.onclick = async () => {
@@ -404,13 +484,21 @@ function bindContact() {
     } catch (_) { m.textContent = '送出失敗，請稍後再試'; b.disabled = false; }
   };
 }
+function lieEndHtml(LE) {   // 謊言回顧卡：回顧連結只引用這一局實際出現過的謊言
+  const c = LE.card;
+  return `<div class="card act lie-end" id="lie-end" data-card="${esc(c.id)}"><h3>這一生的謊言回顧</h3><h2>${esc(c.name)}</h2>
+    <p class="e-text">${esc(c.text)}</p>
+    ${LE.quotes.length ? `<p class="src">回顧連結：${esc(c.review)}</p>${LE.quotes.map(q => `<div class="quote">${esc(q.age)} 歲・${esc(q.text.split('\n')[0])}</div>`).join('')}` : `<p class="src">回顧連結：這一局沒有聽到相關的話。</p>`}
+    <details><summary class="src">真實案件卡與破綻</summary><p class="src" style="white-space:pre-line">${esc(c.case)}</p><ul class="flags">${c.missed.map(m => `<li>${esc(m)}</li>`).join('')}</ul><p class="src">（${esc(c.source_note)}）</p></details></div>`;
+}
 function ending(en, s = {}) {
   const p = G.player;
   const lives = JSON.parse(localStorage.getItem('lives') || '[]'); lives.push({ end: en.id, t: Date.now() }); localStorage.setItem('lives', JSON.stringify(lives));
   const isHelpSrc = x => /^(165|1925|1995)/.test(x.name || '') || /^https?:\/\/(165\.npa\.gov\.tw\/?$|dep\.mohw\.gov\.tw\/DOMHAOH\/cp-4906-54077)/.test(x.url || '');
   const srcs = (en.sources || []).filter(x => !isHelpSrc(x));
   const HL = /^tel:|mohw\.gov\.tw|1925|1995/i;   // 案件卡不放指向求助專線的連結／說明
-  const cc0 = en.case_card || {}, cc = { ...cc0, url: cc0.url && !HL.test(cc0.url) ? cc0.url : '', note: (cc0.note || '').split(/[；;]/).filter(t => !/專線|^tel:/.test(t.trim())).join('；') }, cells = G.lifeGrid(en), achNew = achRecord(en, s);
+  const LE = G.lieEnding && !G._lieShown ? (G._lieShown = G.lieEnding()) : G._lieShown || null;
+  const cc0 = en.case_card || {}, cc = { ...cc0, url: cc0.url && !HL.test(cc0.url) ? cc0.url : '', note: (cc0.note || '').split(/[；;]/).filter(t => !/專線|^tel:/.test(t.trim())).join('；') }, cells = G.lifeGrid(en), achNew = achRecord(en, { ...s, lieCard: LE?.card.id });
   const caught = flagTitle(en).caught;
   const map = script.red_flag_texts || {};
   const reasons = (en.reason_texts || []).filter(r => p.flags.has(r.flag)).map(r => r.text);
@@ -429,6 +517,7 @@ function ending(en, s = {}) {
     <p class="src">${p.county}・${p.family}家庭・活到 ${ageLived(s)} 歲・存款 ${money(p.stats['存款'] ?? 0)}${p.debt ? `・負債 ${money(p.debt)}` : ''}</p>
     ${p.lifeFlags.length ? `<p class="src">帶著的人生經驗：${p.lifeFlags.map(esc).join('、')}</p>` : ''}</div>
     <button class="primary" id="sh">分享</button><button id="dl">下載結果圖</button><button id="cp">複製分享文字</button></div>
+  ${LE ? lieEndHtml(LE) : ''}
   <div class="card act destig">你不是笨，是話術太專業。詐騙集團有劇本、有分工、會針對每個人的弱點設計。被騙不是你的錯，最重要的是盡快求助、止損。</div>
   <div class="card act"><h3>📁 真實案件卡</h3><p>${esc(cc.summary || '')}</p>
     ${cc.url && cc.story_id != null ? `<a class="btn" href="${esc(cc.url)}" target="_blank" rel="noopener">閱讀原文（案例 #${esc(cc.story_id)}）↗</a>` : ''}
@@ -443,6 +532,8 @@ function ending(en, s = {}) {
   ${achNewHtml(achNew)}
   ${st.length ? `<div class="card"><h3>📊 真實數據</h3>${st.map(s => `<p class="src">${statLine(s)}</p>`).join('')}</div>` : ''}
   ${srcs.length ? `<div class="card"><h3>資料來源</h3><p class="src">${srcHtml(srcs)}</p></div>` : ''}
+  ${LE ? `<div class="card share-box"><h3>留下一句想說的話</h3><p class="src">不用留名字。只存在這台裝置，經審核後才可能出現在開始頁。</p>
+    <textarea id="say" maxlength="40" placeholder="例如：差點匯出去，後來打給家人確認才停手。"></textarea><button id="say-go">送出這一句</button></div>` : ''}
   ${authorHtml()}
   <button id="again">開始另一段新人生（這一生不能重來）</button>`;
   { const lg = $('#log'); lg.hidden = false; $('#log-slot').replaceWith(lg); }
@@ -474,6 +565,13 @@ function ending(en, s = {}) {
   };
   $('#cp').onclick = () => navigator.clipboard?.writeText(shareText(en, cells)).then(() => toast('已複製'), () => toast('複製失敗，請手動選取'));
   bindContact();
+  $('#say-go') && ($('#say-go').onclick = () => {
+    const q = $('#say').value.trim().slice(0, 40); if (!q) return toast('先寫一句話');
+    const pend = lsJ('sharedPending', []); pend.push({ tag: LE.card.pool === 'heavy' ? '受騙' : LE.card.id === 'END_QUIET' ? '風平浪靜' : '有驚無險', quote: `「${q}」`, who: `${p.county} · ${ageLived(s)} 歲`, t: Date.now() });
+    localStorage.setItem('sharedPending', JSON.stringify(pend));
+    (G.lifePlayer || p).flags.add('shared_sentence'); const n = achRecord(en, { ...s, lieCard: LE.card.id });
+    $('#say-go').disabled = true; toast(n.length ? `已送出・新成就：${n.map(x => x.name).join('、')}` : '已送出，等待審核');
+  });
   $('#again').onclick = start;
   window.scrollTo(0, 0);
 }
@@ -533,6 +631,7 @@ function flagTitle(en) {
   if (lf?.file && (lf.enabled || Q.get('life') === '1') && Q.get('life') !== '0') lifeScript = await Engine.load(Q.get('lifefile') || lf.file).catch(() => null);
   if (!manifest.birth.county_pool) Object.assign(manifest.birth, { county_pool: loaded[0].player_init.county_pool, family_pool: loaded[0].player_init.family_pool.map(f => f.name) });
   ACH = (await Engine.load('achievements.json').catch(() => null))?.achievements || null;
+  STAGE_POOL = await Engine.load('stage-pool.json').catch(() => null);
   start();
 })()
   .catch(e => { $('#screen').innerHTML = `<div class="card">${esc(e.message)}<br>請用本機伺服器開啟（python3 -m http.server）。</div>`; });

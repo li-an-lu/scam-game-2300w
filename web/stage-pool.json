@@ -1,0 +1,3723 @@
+{
+ "version": "v7",
+ "unit_note": "Leo 原稿 1 單位 = 本作 3 分（0–100 制）",
+ "core_flags": [
+  "heard_stranger",
+  "heard_police",
+  "heard_everyone",
+  "said_its_fine",
+  "heard_miss_chance",
+  "obey_authority"
+ ],
+ "stages": [
+  {
+   "id": "child",
+   "label": "童年",
+   "min_age": 4,
+   "max_age": 12,
+   "draws": 6,
+   "max_lies": 3
+  },
+  {
+   "id": "student",
+   "label": "學生",
+   "min_age": 13,
+   "max_age": 22,
+   "draws": 6,
+   "max_lies": 3
+  },
+  {
+   "id": "adult",
+   "label": "出社會",
+   "min_age": 23,
+   "max_age": 42,
+   "draws": 6,
+   "max_lies": 3
+  }
+ ],
+ "lie_cooldown": 1,
+ "core_lie_weight": 3,
+ "foreshadow": {
+  "fs_verify": "你想起很久以前，有人教過你：先確認，再決定。",
+  "reminded_family": "你想起家裡那句話：有事可以說，不用一個人扛。",
+  "talked_family_work": "你想起曾經有人在你猶豫時，陪你停下來想一想。"
+ },
+ "childhood_mindset": [
+  {
+   "when": {
+    "min_pos": 3
+   },
+   "text": "那幾年，總有人在你跌倒時蹲下來。你慢慢相信，遇到怪事可以先問人。",
+   "effects": {
+    "警覺": 3,
+    "心理": 3
+   }
+  },
+  {
+   "when": {
+    "min_lies": 3
+   },
+   "text": "小時候聽過很多「不這樣就會怎樣」。長大後，你很容易被一句嚇人的話推著走。",
+   "effects": {
+    "警覺": -3
+   }
+  },
+  {
+   "when": {},
+   "text": "童年過去了。有些話你記得，有些人你也記得。",
+   "effects": {}
+  }
+ ],
+ "lies": [
+  {
+   "id": "L000",
+   "age": 5,
+   "stage": "child",
+   "text": "你把碗裡最後幾口飯推到一邊。媽媽看了一眼，語氣平靜地說：「吃不完，以後娶的老婆臉上會有痘痘喔。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L001",
+   "age": 6,
+   "stage": "child",
+   "text": "你說今天肚子不舒服，想請假。爸爸蹲下來，聲音很輕：「不去的話，警察會來把你抓去關。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_police"
+   ]
+  },
+  {
+   "id": "L002",
+   "age": 7,
+   "stage": "child",
+   "text": "你想去巷口找同學玩。媽媽站在門口說：「天黑了還在外面，虎姑婆會來把你帶走。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_stranger"
+   ]
+  },
+  {
+   "id": "L003",
+   "age": 8,
+   "stage": "child",
+   "text": "你跌倒把膝蓋擦破，眼淚掉下來。旁邊的大人說：「男生不可以哭，哭的人以後沒出息。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L004",
+   "age": 9,
+   "stage": "child",
+   "text": "你想買一本漫畫。爸爸說：「錢是辛苦賺來的，小孩子不應該亂花。現在存起來，以後才會有錢。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L005",
+   "age": 10,
+   "stage": "child",
+   "text": "你說今天不想寫作業。媽媽看著你：「不寫的話，以後只能去撿垃圾。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L006",
+   "age": 11,
+   "stage": "child",
+   "text": "親戚來家裡，看著你說：「你看隔壁那個誰，成績多好。你要是再不用功，以後就沒人要。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_everyone"
+   ]
+  },
+  {
+   "id": "L007",
+   "age": 4,
+   "stage": "child",
+   "text": "你不肯吃藥。媽媽把湯匙靠近你的嘴：「不吃的話，病不會好，會一直痛。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L008",
+   "age": 6,
+   "stage": "child",
+   "text": "你看完卡通還想再看一集。爸爸把遙控器拿走：「再看眼睛會瞎掉。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L009",
+   "age": 7,
+   "stage": "child",
+   "text": "你把青菜推到碗邊。媽媽說：「不吃青菜以後長不高，以後沒人想跟你玩。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L010",
+   "age": 8,
+   "stage": "child",
+   "text": "你上學遲到了。老師在門口說：「再遲到就不用來了，以後沒學校收你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "L011",
+   "age": 9,
+   "stage": "child",
+   "text": "你和同學吵架後打了一架。回家後爸爸說：「再打人就送你去少年隊，以後沒人管你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_police"
+   ]
+  },
+  {
+   "id": "L012",
+   "age": 10,
+   "stage": "child",
+   "text": "你考完試回家。媽媽問分數，你說還沒公布。她說：「考不好以後只能去當粗工，沒人看得起你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L013",
+   "age": 11,
+   "stage": "child",
+   "text": "你想玩手機。爸爸說：「玩手機的小孩以後都沒出息，眼睛也會壞掉。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L014",
+   "age": 5,
+   "stage": "child",
+   "text": "你說晚上要開燈睡覺。媽媽說：「不關燈的話，鬼會來找你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L015",
+   "age": 12,
+   "stage": "child",
+   "text": "你說要去同學家玩。爸爸說：「不要跟那種人混在一起，以後會學壞。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_stranger"
+   ]
+  },
+  {
+   "id": "L016",
+   "age": 8,
+   "stage": "child",
+   "text": "你在商店指著一個玩具。媽媽說：「買了就不會再買別的，以後沒錢給你花。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L017",
+   "age": 9,
+   "stage": "child",
+   "text": "你體育課跑得很慢。老師說：「跑不快的人以後什麼都做不好。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L018",
+   "age": 13,
+   "stage": "student",
+   "text": "段考成績出來，你沒有達到家裡期待的分數。媽媽看著成績單說：「再這樣下去，以後只能去讀私立，沒人看得起。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L019",
+   "age": 14,
+   "stage": "student",
+   "text": "你說想休息一天不要去補習。爸爸說：「別人都在補，你不補以後就跟不上，沒有好學校讀。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_everyone"
+   ]
+  },
+  {
+   "id": "L020",
+   "age": 15,
+   "stage": "student",
+   "text": "你想加入某個社團。導師說：「現在不是玩的時候，社團會影響功課，以後考不上好大學。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L021",
+   "age": 16,
+   "stage": "student",
+   "text": "你晚上滑手機。媽媽進房說：「再玩手機眼睛會瞎，以後沒人要。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L022",
+   "age": 17,
+   "stage": "student",
+   "text": "模擬考成績不理想。親戚說：「考不好就去當兵，以後沒出息。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L023",
+   "age": 18,
+   "stage": "student",
+   "text": "你想選一個自己有興趣的科系。爸爸說：「讀那個以後沒工作，還是選熱門的比較保險。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L024",
+   "age": 19,
+   "stage": "student",
+   "text": "你說想打工賺零用錢。媽媽說：「現在打工會影響課業，以後沒好工作。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L025",
+   "age": 20,
+   "stage": "student",
+   "text": "你提到新認識的朋友。爸爸說：「不要跟那種人混，以後會學壞，沒有好下場。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_stranger"
+   ]
+  },
+  {
+   "id": "L026",
+   "age": 14,
+   "stage": "student",
+   "text": "你週末想晚起。媽媽說：「早起的人才會成功，睡懶覺以後沒出息。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L027",
+   "age": 16,
+   "stage": "student",
+   "text": "你想穿比較輕鬆的衣服去學校。老師說：「穿成這樣以後沒人看得起你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L028",
+   "age": 18,
+   "stage": "student",
+   "text": "你說想去看電影。爸爸說：「現在不是玩的時候，考完再玩，不然以後沒時間後悔。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L029",
+   "age": 15,
+   "stage": "student",
+   "text": "家庭聚餐時，長輩看著你說：「你看你表哥，成績多好。你要是再不用功，以後就沒人要。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L030",
+   "age": 17,
+   "stage": "student",
+   "text": "你提到班上有人在交往。媽媽說：「現在談戀愛會影響功課，以後考不上好學校。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L031",
+   "age": 19,
+   "stage": "student",
+   "text": "你想去某個公司實習。爸爸說：「那種地方沒前途，還是找大公司比較穩。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L032",
+   "age": 21,
+   "stage": "student",
+   "text": "你說想直接工作。親戚說：「不讀研究所以後沒競爭力，沒人會用你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L033",
+   "age": 13,
+   "stage": "student",
+   "text": "你體育成績不好。老師說：「連跑步都跑不好，以後什麼都做不成。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L034",
+   "age": 20,
+   "stage": "student",
+   "text": "你想搬出去住。媽媽說：「現在搬出去會學壞，還是住家裡比較安全。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L035",
+   "age": 22,
+   "stage": "student",
+   "text": "你投了幾份履歷還沒回音。爸爸說：「再找不到工作就去當粗工，沒人會養你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L036",
+   "age": 14,
+   "stage": "student",
+   "text": "月考排名出來，你不是前段。媽媽說：「再這樣下去，以後連私立都讀不上。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L037",
+   "age": 15,
+   "stage": "student",
+   "text": "你提到要跟同學出去。爸爸說：「不要跟成績差的人混，以後會被拖下水。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L038",
+   "age": 16,
+   "stage": "student",
+   "text": "你說昨晚讀到很晚。媽媽說：「睡不夠以後長不高，也考不好。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L039",
+   "age": 17,
+   "stage": "student",
+   "text": "你想填一個冷門科系。親戚說：「讀那個以後沒工作，沒人會錄你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L040",
+   "age": 18,
+   "stage": "student",
+   "text": "你想增加打工時數。爸爸說：「打工太多會影響課業，以後沒好前途。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L041",
+   "age": 19,
+   "stage": "student",
+   "text": "你還想繼續參加社團。媽媽說：「大學了還在玩社團，以後沒競爭力。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L042",
+   "age": 20,
+   "stage": "student",
+   "text": "你想去小公司實習。爸爸說：「小公司沒名氣，以後履歷不好看。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L043",
+   "age": 21,
+   "stage": "student",
+   "text": "你說想先工作再決定要不要讀研究所。親戚說：「現在不讀以後就沒機會了。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_miss_chance"
+   ]
+  },
+  {
+   "id": "L044",
+   "age": 13,
+   "stage": "student",
+   "text": "你把制服外套脫掉。老師說：「再這樣穿以後沒人看得起你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L045",
+   "age": 22,
+   "stage": "student",
+   "text": "你拿到一份工作offer。爸爸說：「薪水這麼低，以後怎麼生活。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L046",
+   "age": 23,
+   "stage": "adult",
+   "text": "你拿到第一份正職。親戚說：「年輕人要多磨練，薪水低一點沒關係，以後會好。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L047",
+   "age": 24,
+   "stage": "adult",
+   "text": "你連續加班一週。主管說：「公司像家，大家一起拼，以後升遷才有機會。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "L048",
+   "age": 25,
+   "stage": "adult",
+   "text": "你想請一天假處理私事。主管說：「現在請假會影響團隊，年輕人要學會犧牲。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "L049",
+   "age": 26,
+   "stage": "adult",
+   "text": "你想談加薪。主管說：「現在公司辛苦，等業績好了自然會調，要有耐心。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L050",
+   "age": 27,
+   "stage": "adult",
+   "text": "你收到其他公司的面試邀請。同事說：「現在跳槽風險很大，還是待著比較穩。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L051",
+   "age": 28,
+   "stage": "adult",
+   "text": "家人問你什麼時候結婚。長輩說：「再拖下去就沒人要了，以後更難。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L052",
+   "age": 29,
+   "stage": "adult",
+   "text": "你說現在買不起房。親戚說：「年輕人不買房以後永遠買不起，要趕緊。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L053",
+   "age": 30,
+   "stage": "adult",
+   "text": "你和伴侶還沒有孩子。長輩說：「再不快點生，以後身體不好，也沒人照顧你們。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L054",
+   "age": 32,
+   "stage": "adult",
+   "text": "你想換一個比較不加班的工作。朋友說：「現在轉職會被認為不穩定，以後更難找。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L055",
+   "age": 34,
+   "stage": "adult",
+   "text": "你被問要不要接主管。同事說：「不接的話以後就沒機會升了，要把握。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_miss_chance"
+   ]
+  },
+  {
+   "id": "L056",
+   "age": 35,
+   "stage": "adult",
+   "text": "你說想減少加班去運動。主管說：「現在拼事業最重要，身體以後再顧。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L057",
+   "age": 24,
+   "stage": "adult",
+   "text": "你穿得比較輕鬆去公司。主管說：「穿成這樣以後沒人看得起你，要專業一點。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L058",
+   "age": 26,
+   "stage": "adult",
+   "text": "你想下班後去上課。家人說：「現在進修會影響工作表現，以後沒升遷。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L059",
+   "age": 31,
+   "stage": "adult",
+   "text": "你說想自己帶孩子一段時間。長輩說：「不送托嬰以後跟不上，也影響工作。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L060",
+   "age": 33,
+   "stage": "adult",
+   "text": "同事推薦一個「穩賺」的投資。他說：「現在不進場以後就沒機會了。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_miss_chance"
+   ]
+  },
+  {
+   "id": "L061",
+   "age": 36,
+   "stage": "adult",
+   "text": "父母身體開始不好。親戚說：「你要多賺錢才有能力照顧他們，不然以後後悔。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L062",
+   "age": 28,
+   "stage": "adult",
+   "text": "家庭聚餐時有人說：「你看你同學都升主管了，你還在原地。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "heard_everyone"
+   ]
+  },
+  {
+   "id": "L063",
+   "age": 38,
+   "stage": "adult",
+   "text": "你提到想早點準備退休。朋友說：「現在說太早，以後沒錢才知道後悔。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L064",
+   "age": 23,
+   "stage": "adult",
+   "text": "你在試用期被要求多做一些。主管說：「試用期要表現，以後才有機會留下。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L065",
+   "age": 25,
+   "stage": "adult",
+   "text": "部門聚餐你想先走。同事說：「不參加以後人際會不好，升遷也難。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L066",
+   "age": 27,
+   "stage": "adult",
+   "text": "你想自己出錢上課。家人說：「現在花錢進修不划算，以後有公司出再去。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L067",
+   "age": 29,
+   "stage": "adult",
+   "text": "你想請育嬰假。主管說：「現在請會影響升遷，以後有的是時間。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "L068",
+   "age": 31,
+   "stage": "adult",
+   "text": "你想下班後做點副業。朋友說：「本業都沒做好，副業以後更亂。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L069",
+   "age": 33,
+   "stage": "adult",
+   "text": "你考慮換到其他城市工作。家人說：「現在換地方風險大，以後更難安定。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L070",
+   "age": 35,
+   "stage": "adult",
+   "text": "你說想固定運動。同事說：「現在拼事業最重要，運動以後再做。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L071",
+   "age": 37,
+   "stage": "adult",
+   "text": "你想減少工時照顧父母。親戚說：「不拼錢以後怎麼養他們。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L072",
+   "age": 24,
+   "stage": "adult",
+   "text": "你穿著輕鬆一點。主管說：「客戶會看，穿得不好以後沒生意。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L073",
+   "age": 39,
+   "stage": "adult",
+   "text": "你想再轉一次職。朋友說：「這個年紀轉職以後更難，還是待著。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L074",
+   "age": 7,
+   "stage": "child",
+   "text": "你不想把玩具分給弟弟。媽媽說：「不分的話以後沒人跟你玩，也沒朋友。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L075",
+   "age": 9,
+   "stage": "child",
+   "text": "你把成績單藏起來。爸爸發現後說：「藏成績的人以後都沒出息。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L076",
+   "age": 11,
+   "stage": "child",
+   "text": "你想穿自己喜歡的衣服去學校。媽媽說：「穿成這樣以後被人笑，沒人想跟你做朋友。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L077",
+   "age": 15,
+   "stage": "student",
+   "text": "你想玩一下手遊。爸爸說：「玩遊戲的人以後都考不好，沒大學讀。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L078",
+   "age": 18,
+   "stage": "student",
+   "text": "你提到用交友軟體。媽媽說：「用那個以後會遇到壞人，沒人會真心對你。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L079",
+   "age": 21,
+   "stage": "student",
+   "text": "你考慮延畢。親戚說：「延畢以後履歷不好看，沒公司要。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L080",
+   "age": 24,
+   "stage": "adult",
+   "text": "年終不如預期。主管說：「公司今年辛苦，以後會補回來。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L081",
+   "age": 30,
+   "stage": "adult",
+   "text": "你對房貸有疑慮。業務說：「現在不貸以後更買不起，要快決定。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L082",
+   "age": 36,
+   "stage": "adult",
+   "text": "健檢有幾個紅字。同事說：「現在先拼工作，身體以後再顧。」",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L083",
+   "age": 4,
+   "stage": "child",
+   "text": "你把果汁打翻了。媽媽問是誰，你指著弟弟。她看了你一眼，沒有拆穿。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L084",
+   "age": 6,
+   "stage": "child",
+   "text": "老師問作業有沒有寫完。你說「寫了」，其實只寫了一半。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L085",
+   "age": 9,
+   "stage": "child",
+   "text": "你把同學的東西弄壞了。回家後爸爸問今天有沒有發生什麼事，你說「沒有」。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L086",
+   "age": 11,
+   "stage": "child",
+   "text": "朋友問你喜不喜歡他送的東西。你說「還好」，其實你不太喜歡。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "said_its_fine"
+   ]
+  },
+  {
+   "id": "L087",
+   "age": 14,
+   "stage": "student",
+   "text": "家人問這次考得怎樣。你說「還可以」，實際上你知道自己退步了。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L088",
+   "age": 16,
+   "stage": "student",
+   "text": "午休時大家在聊週末做了什麼。你說「在家休息」，其實你大部分時間都在打遊戲。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L089",
+   "age": 18,
+   "stage": "student",
+   "text": "你在自傳裡寫「積極參與社團」。實際上你只去過幾次。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L090",
+   "age": 20,
+   "stage": "student",
+   "text": "你在個人檔案上把身高多寫了兩公分，照片也選了比較好看的角度。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L091",
+   "age": 21,
+   "stage": "student",
+   "text": "教授問報告進度。你說「差不多了」，其實你還沒開始寫結論。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L092",
+   "age": 24,
+   "stage": "adult",
+   "text": "面試官問你為什麼離開上一份工作。你說「想尋求更大的挑戰」，實際上你是因為加班太多而離開。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L093",
+   "age": 26,
+   "stage": "adult",
+   "text": "同事問你週末過得怎樣。你說「還不錯」，其實你大部分時間都在補眠跟滑手機。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L094",
+   "age": 28,
+   "stage": "adult",
+   "text": "醫生問你有沒有規律運動。你說「有」，實際上你這個月只去過兩次。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L095",
+   "age": 30,
+   "stage": "adult",
+   "text": "媽媽問你工作順不順利。你說「還好」，沒有提最近被主管當眾糾正的事。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "said_its_fine"
+   ]
+  },
+  {
+   "id": "L096",
+   "age": 33,
+   "stage": "adult",
+   "text": "伴侶問你今天加班是不是又很累。你說「還好」，其實你已經連續三天超過十點才回家。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": [
+    "said_its_fine"
+   ]
+  },
+  {
+   "id": "L097",
+   "age": 35,
+   "stage": "adult",
+   "text": "在某個場合，有人問你近期的成就。你講了一個比較好看的版本，把過程中的卡住與幫忙都省略了。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  },
+  {
+   "id": "L098",
+   "age": 27,
+   "stage": "adult",
+   "text": "你跟朋友吃完飯，對方問「今天的菜怎樣」。你說「不錯」，其實你覺得有點鹹。",
+   "effects": {
+    "心理": -3
+   },
+   "core_flags": []
+  }
+ ],
+ "positive": [
+  {
+   "id": "c_neighbor_bandage",
+   "age": 7,
+   "stage": "child",
+   "text": "你在巷口騎腳踏車摔倒，膝蓋破皮，血滲出來。隔壁阿姨從屋子裡走出來，拿出消毒水和OK繃，蹲下來幫你擦。\n她沒有說「要勇敢」，只是說：「痛就哭沒關係。」",
+   "choices": [
+    {
+     "text": "讓她幫忙處理",
+     "outcome_text": "你坐在階梯上讓她包好，後來她還給你一顆糖果。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "自己回家",
+     "outcome_text": "你站起來自己走回家，媽媽看到傷口後也沒多說什麼。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_uncle_story",
+   "age": 9,
+   "stage": "child",
+   "text": "暑假下午，舅舅來家裡。他沒有問你功課，只是坐在客廳講以前在工廠打工的事，講到好笑的地方自己先笑出來。\n你聽得很入神。",
+   "choices": [
+    {
+     "text": "一直聽他講",
+     "outcome_text": "他講了快一個小時，離開前摸了摸你的頭說「你很會聽」。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "中途去玩",
+     "outcome_text": "你聽了一陣子後跑去玩，他沒有生氣。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_teacher_notice",
+   "age": 10,
+   "stage": "child",
+   "text": "班上有人被欺負，你沒有加入也沒有阻止。隔天導師把你留下來，沒有罵你，只是問：「你當時在想什麼？」\n你愣了一下。",
+   "choices": [
+    {
+     "text": "說出自己看到的",
+     "outcome_text": "導師點點頭，沒有再追問，只說「以後如果想說，可以來找我」。",
+     "effects": {
+      "警覺": 6,
+      "心理": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說沒看到",
+     "outcome_text": "導師看了你一眼，沒有再多說，讓你回去了。",
+     "effects": {
+      "心理": -3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_old_man_bus",
+   "age": 8,
+   "stage": "child",
+   "text": "你和媽媽搭公車，有一位老人站不穩。媽媽還沒開口，你先把位子讓出來。\n老人對你點頭，媽媽沒有特別誇你。",
+   "choices": [
+    {
+     "text": "讓出位子",
+     "outcome_text": "老人坐下來後，對你笑了一下。下車時媽媽輕輕拍了拍你的肩膀。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    },
+    {
+     "text": "繼續坐著",
+     "outcome_text": "你沒有動作，老人最後靠在柱子上。媽媽也沒說什麼。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_classmate_share",
+   "age": 11,
+   "stage": "child",
+   "text": "午餐時間，同桌把便當裡的雞腿夾一半到你的碗裡。他說：「我媽今天煮太多。」\n你看著那塊雞腿。",
+   "choices": [
+    {
+     "text": "收下並說謝謝",
+     "outcome_text": "你吃得很開心，後來也把你的水果分給他。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "推回去",
+     "outcome_text": "他聳聳肩，把雞腿夾回去，沒有再多說。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_dad_fix_bike",
+   "age": 9,
+   "stage": "child",
+   "text": "你的腳踏車鏈條掉了。爸爸沒有叫你自己想辦法，只是把工具拿出來，蹲在院子裡修。\n他修的時候沒有說話，你在旁邊看。",
+   "choices": [
+    {
+     "text": "在旁邊幫忙遞工具",
+     "outcome_text": "他修好後讓你試騎，鏈條不再掉。他只說「可以了」。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "自己去玩",
+     "outcome_text": "你跑去旁邊玩，回來時腳踏車已經修好了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_library_quiet",
+   "age": 10,
+   "stage": "child",
+   "text": "你在圖書館坐了一個下午，沒有人趕你，也沒有人問你功課。館員只是偶爾經過，幫你把掉到地上的書撿起來。\n你一直看到閉館。",
+   "choices": [
+    {
+     "text": "繼續坐到閉館",
+     "outcome_text": "閉館鈴響時，你把書放回架上。館員對你點了點頭。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "中途離開",
+     "outcome_text": "你看了一陣子後離開，沒有人特別注意。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_grandma_food",
+   "age": 6,
+   "stage": "child",
+   "text": "阿嬤從市場回來，把一包剛炸好的甜不辣放在桌上。她沒有說「吃完要寫功課」，只是說：「趁熱吃。」\n你拿起一支。",
+   "choices": [
+    {
+     "text": "坐下來吃",
+     "outcome_text": "你吃得很慢，阿嬤在旁邊看電視，沒有催你。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    },
+    {
+     "text": "拿去外面吃",
+     "outcome_text": "你拿著甜不辣跑出去找同學，回來時袋子已經空了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "talked_family_work"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c_stranger_return",
+   "age": 8,
+   "stage": "child",
+   "text": "你在公園把水壺忘在長椅上。過了十分鐘回去找，發現一個不認識的哥哥把它放在旁邊的樹下，還用石頭壓住。\n他已經走了。",
+   "choices": [
+    {
+     "text": "把水壺拿回來",
+     "outcome_text": "你拿起水壺，看了看四周，沒有人。你把水壺抱回家。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒有特別想",
+     "outcome_text": "你拿回水壺，覺得只是剛好有人幫忙。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_mom_listen",
+   "age": 11,
+   "stage": "child",
+   "text": "你在學校被同學說閒話，回家後一直不說話。媽媽沒有追問，只是坐在你旁邊，把電視聲音轉小。\n過了一陣子，你自己開口。",
+   "choices": [
+    {
+     "text": "把事情說出來",
+     "outcome_text": "媽媽聽完沒有批評對方，只說：「那你今天想怎麼辦？」",
+     "effects": {
+      "心理": 9,
+      "人際": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    },
+    {
+     "text": "還是不說",
+     "outcome_text": "你們安靜坐了一陣子，媽媽起身去廚房熱菜。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c_coach_no_yell",
+   "age": 12,
+   "stage": "child",
+   "text": "體育課跑步你落後很多。教練沒有大聲叫你，只是在你跑過時說：「慢慢跑就好，不要停。」\n你跑完全程。",
+   "choices": [
+    {
+     "text": "繼續跑完",
+     "outcome_text": "跑完後教練點點頭，沒有再多說。你覺得喘，但沒有被罵。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "中途停下來",
+     "outcome_text": "你停下來走路，教練沒有過來罵你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_friend_wait",
+   "age": 9,
+   "stage": "child",
+   "text": "放學後你說要去買東西，同學說他可以等你。你買完出來，發現他真的還站在店門口。\n他沒有催你。",
+   "choices": [
+    {
+     "text": "跟他一起回家",
+     "outcome_text": "你們一路聊天回家，他沒有提自己等了多久。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己可以了",
+     "outcome_text": "他點點頭，自己先走。你看著他的背影。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_park_slide",
+   "age": 6,
+   "stage": "child",
+   "text": "公園裡有一個較大的哥哥在溜滑梯。你想玩，他看到你後主動讓出位子，還說：「你先。」\n你爬上去。",
+   "choices": [
+    {
+     "text": "說謝謝再溜",
+     "outcome_text": "你溜下去後，他在下面等你，還問要不要再玩一次。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "直接溜下去",
+     "outcome_text": "你溜完就跑去別的地方，他沒有再叫你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_rain_umbrella",
+   "age": 8,
+   "stage": "child",
+   "text": "放學時突然下大雨，你沒有帶傘。同班同學把自己的傘分一邊給你，兩個人一起走。\n雨打在傘上。",
+   "choices": [
+    {
+     "text": "一起走回家",
+     "outcome_text": "你們走了一段路才分開，他說「下次記得帶傘」。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己可以跑",
+     "outcome_text": "你跑了一小段就全身濕透，回家後媽媽沒有罵你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c_draw_praise",
+   "age": 7,
+   "stage": "child",
+   "text": "美勞課你畫了一張很亂的畫。老師走過來看，沒有說「畫得不好」，只說：「這個顏色你用得很特別。」\n你看著自己的畫。",
+   "choices": [
+    {
+     "text": "繼續畫完",
+     "outcome_text": "你把畫完成後交給老師，她把它貼在教室後面。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "把畫揉掉",
+     "outcome_text": "你把畫揉成一團丟掉，老師沒有再問。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_night_market",
+   "age": 10,
+   "stage": "child",
+   "text": "晚上爸爸帶你去夜市。他沒有規定只能買一樣，只是問你想吃什麼。\n攤位的燈很亮。",
+   "choices": [
+    {
+     "text": "選一樣慢慢吃",
+     "outcome_text": "你們坐在路邊吃，爸爸沒有催你快點回家。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    },
+    {
+     "text": "說不想吃",
+     "outcome_text": "你們在夜市走了一圈就回家，爸爸沒有生氣。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c_lost_found",
+   "age": 9,
+   "stage": "child",
+   "text": "你在學校把鉛筆盒弄丟了。隔天早自習，一個不認識的學長把它放在你的抽屜上。\n鉛筆盒完好無缺。",
+   "choices": [
+    {
+     "text": "去找學長說謝謝",
+     "outcome_text": "你找到他，他只說「沒關係」，就去上課了。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "默默收起來",
+     "outcome_text": "你把鉛筆盒放回書包，沒有特別去找人。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_grandma_walk",
+   "age": 11,
+   "stage": "child",
+   "text": "阿嬤說要去買菜，問你要不要一起去。她走得很慢，你在旁邊等她。\n市場裡人很多。",
+   "choices": [
+    {
+     "text": "陪她走完",
+     "outcome_text": "買完菜後她給你一顆糖，說「謝謝你陪我」。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "中途說想回家",
+     "outcome_text": "你先回家，阿嬤後來自己回來，沒有抱怨。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c_group_project",
+   "age": 12,
+   "stage": "child",
+   "text": "分組報告時，有人提議大家一起做。你負責的部分做完後，其他人也把自己的部分交出來。\n沒有人偷懶。",
+   "choices": [
+    {
+     "text": "一起討論到完成",
+     "outcome_text": "報告當天大家都很順，老師沒有特別批評。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "做完自己的就離開",
+     "outcome_text": "你做完就走，後來報告還是順利完成了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_doctor_gentle",
+   "age": 5,
+   "stage": "child",
+   "text": "你發燒去看醫生。醫生沒有兇你，只是輕輕摸你的額頭，說：「很快就好了。」\n護士給你一張貼紙。",
+   "choices": [
+    {
+     "text": "乖乖看完",
+     "outcome_text": "看完後你拿到貼紙，回家後燒也慢慢退了。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "一直哭",
+     "outcome_text": "你哭了一陣子，醫生還是把診看完，沒有罵你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_bike_together",
+   "age": 8,
+   "stage": "child",
+   "text": "週末同學約你一起騎腳踏車去河堤。他沒有騎很快，一直等你。\n風很大。",
+   "choices": [
+    {
+     "text": "一起騎完全程",
+     "outcome_text": "你們在河堤坐了一下才回家，他說下次再約。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "中途說想回去",
+     "outcome_text": "他沒有生氣，陪你騎回出發點。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_teacher_extra",
+   "age": 10,
+   "stage": "child",
+   "text": "放學後你還在教室寫作業。導師進來後沒有趕你，只是問你哪裡不懂，然後坐下來講了一下。\n教室很安靜。",
+   "choices": [
+    {
+     "text": "把不懂的問完",
+     "outcome_text": "你問完後比較懂了，導師說「可以了就回家」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己可以",
+     "outcome_text": "導師點點頭，讓你自己寫，沒有再打擾。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_classmate_notes",
+   "age": 14,
+   "stage": "student",
+   "text": "你生病請假一天，隔天回學校發現同桌已經把筆記整理好放在你抽屜。\n他沒有特別說什麼。",
+   "choices": [
+    {
+     "text": "說謝謝並還他",
+     "outcome_text": "他說「沒關係」，你們後來一起對過一次筆記。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "默默收下",
+     "outcome_text": "你把筆記抄完，沒有特別去找他。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_teacher_office",
+   "age": 16,
+   "stage": "student",
+   "text": "你對某個科目一直不懂。放學後導師主動說：「要不要來辦公室，我再講一次。」\n辦公室只有你們兩個。",
+   "choices": [
+    {
+     "text": "去問清楚",
+     "outcome_text": "你問完後比較懂了，導師說「下次不懂就來」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "說自己可以",
+     "outcome_text": "導師點點頭，沒有再勉強你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_club_senior",
+   "age": 15,
+   "stage": "student",
+   "text": "你剛加入社團，學長沒有叫你做雜事，而是先帶你看大家在做什麼，問你想從哪裡開始。\n社團教室很吵。",
+   "choices": [
+    {
+     "text": "跟著學",
+     "outcome_text": "學長教你基本的東西，沒有催你快。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說先看看",
+     "outcome_text": "你在旁邊看了一陣子，學長沒有趕你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_library_seat",
+   "age": 17,
+   "stage": "student",
+   "text": "考試週圖書館很滿。你找到位子後，旁邊的人主動把多餘的椅子挪開，讓你比較好坐。\n他沒有說話。",
+   "choices": [
+    {
+     "text": "點頭致意",
+     "outcome_text": "你們安靜地讀到閉館，離開時他對你點了點頭。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒有特別反應",
+     "outcome_text": "你坐下後開始讀書，沒有再互動。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_part_time_boss",
+   "age": 19,
+   "stage": "student",
+   "text": "你第一次打工，老闆沒有一直盯著你，只是在你做錯時輕聲說一次正確做法。\n店裡人不多。",
+   "choices": [
+    {
+     "text": "照著做",
+     "outcome_text": "下班時老闆說「今天不錯」，沒有多罵。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "一直出錯",
+     "outcome_text": "老闆還是把班開完，沒有當面責罵你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_friend_listen",
+   "age": 18,
+   "stage": "student",
+   "text": "你考試考很差，心情不好。朋友沒有說「你應該更努力」，只是坐在你旁邊，聽你講。\n操場很安靜。",
+   "choices": [
+    {
+     "text": "把心情說出來",
+     "outcome_text": "他聽完後說「下次一起讀」，沒有再多勸。",
+     "effects": {
+      "心理": 9,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說沒事",
+     "outcome_text": "你們安靜坐了一陣子，他就先走了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_professor_email",
+   "age": 20,
+   "stage": "student",
+   "text": "你對報告題目很困惑，寫信問教授。他回信時沒有只說「自己想」，而是給了幾個方向。\n信很短。",
+   "choices": [
+    {
+     "text": "照方向再寫",
+     "outcome_text": "你交出去後，教授在評語裡寫了「有進步」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "還是自己寫",
+     "outcome_text": "你還是照原本的寫，教授沒有再追問。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_roommate_share",
+   "age": 19,
+   "stage": "student",
+   "text": "你半夜肚子餓，室友把自己的泡麵分你一包，說：「我還有。」\n宿舍很安靜。",
+   "choices": [
+    {
+     "text": "收下並說謝謝",
+     "outcome_text": "你們一起吃完，他沒有再提這件事。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己有",
+     "outcome_text": "他點點頭，把泡麵放回去。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_group_fair",
+   "age": 16,
+   "stage": "student",
+   "text": "分組作業時，有人提議大家把工作分配清楚，做完後一起對。\n沒有人推卸。",
+   "choices": [
+    {
+     "text": "參與分配",
+     "outcome_text": "報告完成後大家都很順，沒有人被罵。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "做自己的部分",
+     "outcome_text": "你做完自己的就交出去，後來整體還是完成了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_coach_encourage",
+   "age": 15,
+   "stage": "student",
+   "text": "體育課你一直做不好某個動作。老師沒有大聲罵，只是說：「再試一次，慢慢來。」\n你又做了一次。",
+   "choices": [
+    {
+     "text": "再試一次",
+     "outcome_text": "雖然還是不完美，但老師點了點頭。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說不想做了",
+     "outcome_text": "老師讓你先休息，沒有再叫你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_alumni_talk",
+   "age": 21,
+   "stage": "student",
+   "text": "系上辦學長分享。有一位學長沒有只講「要努力」，而是說自己也曾迷惘，後來慢慢找到方向。\n教室裡人不多。",
+   "choices": [
+    {
+     "text": "留下來聽完",
+     "outcome_text": "結束後你去問了一個問題，他很認真回答。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "中途離開",
+     "outcome_text": "你聽了一陣子就走了，沒有人特別注意。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_lab_partner",
+   "age": 20,
+   "stage": "student",
+   "text": "實驗課你和搭档一組。他沒有自己做完就走，而是等你一起對數據。\n實驗室很安靜。",
+   "choices": [
+    {
+     "text": "一起對完",
+     "outcome_text": "你們把報告寫完，他說「下次繼續」。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己可以",
+     "outcome_text": "他點點頭，先離開了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_bus_chat",
+   "age": 18,
+   "stage": "student",
+   "text": "你搭公車去補習，旁邊坐著一個不認識的學生。他主動跟你說今天的交通很亂，你們聊了幾句。\n沒有交換聯絡方式。",
+   "choices": [
+    {
+     "text": "聊幾句",
+     "outcome_text": "下車時他說「加油」，你也回了一句。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒有回應",
+     "outcome_text": "他沒有再說話，你們各自看手機。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_scholarship",
+   "age": 17,
+   "stage": "student",
+   "text": "學校公告有一個小型獎學金，導師私下來跟你說：「你的情況可以試試看。」\n他沒有保證你一定會上。",
+   "choices": [
+    {
+     "text": "準備資料申請",
+     "outcome_text": "你交出去後，雖然沒上，但導師說「有試過就好」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說不想申請",
+     "outcome_text": "導師沒有再勸，只說「以後有機會再跟你說」。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_friend_borrow",
+   "age": 14,
+   "stage": "student",
+   "text": "你忘了帶文具，同桌把自己的多餘的筆借你，說：「還我就可以了。」\n他沒有再提。",
+   "choices": [
+    {
+     "text": "用完還他",
+     "outcome_text": "你還他時說謝謝，他只點了點頭。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "忘了還",
+     "outcome_text": "隔天你才想起來，他沒有生氣。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_night_study",
+   "age": 16,
+   "stage": "student",
+   "text": "段考前幾天，幾個同學約在圖書館一起讀。沒有人一直滑手機，大家安靜地讀自己的。\n閉館前才散。",
+   "choices": [
+    {
+     "text": "一起讀到閉館",
+     "outcome_text": "離開時有人說「明天繼續」，你們點點頭。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "早點離開",
+     "outcome_text": "你先走，沒有人特別挽留。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_family_dinner",
+   "age": 19,
+   "stage": "student",
+   "text": "你回家吃晚飯，爸爸沒有問成績，只是問你今天在學校有沒有發生什麼事。\n桌上有你喜歡的菜。",
+   "choices": [
+    {
+     "text": "講一點學校的事",
+     "outcome_text": "他聽完後點點頭，沒有再多問。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說沒什麼",
+     "outcome_text": "你們安靜吃完飯，他沒有再追問。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_internship_mentor",
+   "age": 21,
+   "stage": "student",
+   "text": "實習第一週，指導的人沒有把所有雜事都丟給你，而是先帶你看流程，問你哪裡不懂。\n辦公室人不多。",
+   "choices": [
+    {
+     "text": "跟著學",
+     "outcome_text": "一週結束時他說「你進步得不錯」。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "自己摸索",
+     "outcome_text": "你自己看文件，他沒有一直過來盯。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_online_classmate",
+   "age": 20,
+   "stage": "student",
+   "text": "遠距課程時，有一個同學在聊天室分享自己的筆記連結，說「大家可以參考」。\n沒有人要求回報。",
+   "choices": [
+    {
+     "text": "下載並說謝謝",
+     "outcome_text": "你用了那份筆記，後來也把自己的整理分享出去。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒有下載",
+     "outcome_text": "你繼續看自己的，沒有特別回應。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_sports_day",
+   "age": 13,
+   "stage": "student",
+   "text": "運動會你參加接力，跑完後隊友拍你的肩膀，說「辛苦了」。\n沒有人怪你跑得慢。",
+   "choices": [
+    {
+     "text": "跟大家一起收",
+     "outcome_text": "你們把器材收回去，有人請大家喝飲料。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "先去休息",
+     "outcome_text": "你坐在旁邊休息，隊友沒有叫你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_peer_tutor",
+   "age": 15,
+   "stage": "student",
+   "text": "你數學一直不懂，同班同學主動說：「我可以教你，沒關係。」\n放學後你們留在教室。",
+   "choices": [
+    {
+     "text": "讓他教",
+     "outcome_text": "他講得很慢，你問到懂為止。他說「下次再一起」。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己再看看",
+     "outcome_text": "他沒有勉強，只說「想問再找我」。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_cafeteria_share",
+   "age": 14,
+   "stage": "student",
+   "text": "營養午餐你把不吃的配菜留下。後面的同學問能不能給他，你點頭。\n他說了謝謝。",
+   "choices": [
+    {
+     "text": "給他",
+     "outcome_text": "他吃完後對你點點頭，沒有再多說。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己要吃",
+     "outcome_text": "你把配菜吃掉，他沒有再問。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_advisor_check",
+   "age": 20,
+   "stage": "student",
+   "text": "你對未來很迷惘，去找導師。他沒有直接告訴你該做什麼，而是問你「你自己比較在意什麼」。\n辦公室很安靜。",
+   "choices": [
+    {
+     "text": "好好聊",
+     "outcome_text": "聊完後你比較清楚自己想試的方向，導師說可以再來。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說還沒想好",
+     "outcome_text": "導師沒有催你，只說「想好了再來找我」。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_lab_late",
+   "age": 21,
+   "stage": "student",
+   "text": "你實驗做到很晚，指導教授經過時沒有罵你，只是問「還順利嗎」，然後讓你繼續。\n實驗室燈還亮著。",
+   "choices": [
+    {
+     "text": "繼續做完",
+     "outcome_text": "你做完後把東西收拾好，教授已經先走了。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說今天先到這裡",
+     "outcome_text": "教授點點頭，讓你先回去。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_bus_seat",
+   "age": 16,
+   "stage": "student",
+   "text": "上學尖峰時段公車很擠。有人起身讓位給你，你本來站得很累。\n他沒有說話。",
+   "choices": [
+    {
+     "text": "坐下並點頭",
+     "outcome_text": "你坐下後對他點頭，他看向窗外。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說不用",
+     "outcome_text": "你繼續站著，他沒有再讓。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_project_feedback",
+   "age": 19,
+   "stage": "student",
+   "text": "小組報告後，教授給的評語不是只有分數，而是寫了具體哪裡可以再改。\n評語不長。",
+   "choices": [
+    {
+     "text": "照評語再修",
+     "outcome_text": "你修完後再交一次，教授說「有看到進步」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "只看分數",
+     "outcome_text": "你沒有再改，教授也沒有再追。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_dorm_quiet",
+   "age": 18,
+   "stage": "student",
+   "text": "你想早點睡，室友主動把音樂關掉，說：「你先睡。」\n宿舍變安靜。",
+   "choices": [
+    {
+     "text": "說謝謝",
+     "outcome_text": "你很快睡著，隔天室友沒有再提。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒說什麼",
+     "outcome_text": "你睡著了，隔天一切正常。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_career_talk",
+   "age": 22,
+   "stage": "student",
+   "text": "學校辦就業講座，講者沒有只說「要有競爭力」，而是分享自己也曾被拒很多次。\n聽的人不多。",
+   "choices": [
+    {
+     "text": "留下來聽完",
+     "outcome_text": "結束後你覺得沒那麼焦慮，雖然還是不知道下一步。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "中途離開",
+     "outcome_text": "你聽了一陣子就走，沒有人特別注意。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_classmate_snack",
+   "age": 13,
+   "stage": "student",
+   "text": "午休時同桌把自己的零食分你一些，說：「我媽給太多。」\n沒有要求回報。",
+   "choices": [
+    {
+     "text": "收下",
+     "outcome_text": "你吃完後說謝謝，他繼續看自己的書。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說不用",
+     "outcome_text": "他點點頭，把零食收回去。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_rain_wait",
+   "age": 17,
+   "stage": "student",
+   "text": "放學下大雨，你沒帶傘。學校門口的警衛說可以在裡面等，雨小一點再走。\n他沒有催你。",
+   "choices": [
+    {
+     "text": "等雨小",
+     "outcome_text": "你等了十幾分鐘，雨變小後才走。警衛沒有再多說。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "直接衝出去",
+     "outcome_text": "你跑回家，全身濕透，沒有人罵你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_colleague_help",
+   "age": 24,
+   "stage": "adult",
+   "text": "你第一次負責一個小專案，卡住了。隔壁同事主動過來說：「我之前做過類似的，可以跟你說。」\n他沒有要求回報。",
+   "choices": [
+    {
+     "text": "聽他講",
+     "outcome_text": "他講完關鍵點後就回去工作，你後來順利完成。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己再看看",
+     "outcome_text": "他點點頭，沒有再過來。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_boss_no_yell",
+   "age": 25,
+   "stage": "adult",
+   "text": "你交出去的東西有錯誤。主管沒有在大家面前罵你，只是私下跟你說哪裡要改。\n辦公室很安靜。",
+   "choices": [
+    {
+     "text": "照著改",
+     "outcome_text": "你改完後再交，主管說「這次可以了」。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "覺得委屈",
+     "outcome_text": "你還是改了，但心裡不太舒服。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_friend_listen_work",
+   "age": 27,
+   "stage": "adult",
+   "text": "你加班到很晚，心情很差。朋友約你吃宵夜，沒有說「你應該更努力」，只是聽你講。\n店裡人不多。",
+   "choices": [
+    {
+     "text": "把不痛快說出來",
+     "outcome_text": "他聽完後說「辛苦了」，沒有再多勸。",
+     "effects": {
+      "心理": 9,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說沒事",
+     "outcome_text": "你們安靜吃完，他就先走了。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_partner_support",
+   "age": 29,
+   "stage": "adult",
+   "text": "你工作壓力大，回家後不太想說話。伴侶沒有追問，只是把晚餐熱好，坐在你旁邊。\n家裡很安靜。",
+   "choices": [
+    {
+     "text": "後來講一點",
+     "outcome_text": "你講完後他沒有給建議，只說「我知道了」。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "還是不說",
+     "outcome_text": "你們安靜吃完飯，他沒有再問。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_neighbor_package",
+   "age": 26,
+   "stage": "adult",
+   "text": "你不在家時有包裹。鄰居幫你收下，後來傳訊息跟你說放在他家。\n他沒有抱怨。",
+   "choices": [
+    {
+     "text": "去拿並道謝",
+     "outcome_text": "你去拿時他說「沒關係」，沒有再多說。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "隔天再拿",
+     "outcome_text": "你隔天才去拿，他沒有生氣。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_team_fair",
+   "age": 30,
+   "stage": "adult",
+   "text": "專案趕工時，團隊把工作分配清楚，沒有人把難的部分全推給你。\n大家各自做。",
+   "choices": [
+    {
+     "text": "做自己的部分",
+     "outcome_text": "專案完成後主管沒有特別罵誰，大家各自下班。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "多做一點",
+     "outcome_text": "你多做了一些，但沒有人要求你必須這樣。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_doctor_listen",
+   "age": 32,
+   "stage": "adult",
+   "text": "你去健康檢查，醫生沒有只說「你要多運動」，而是問你工作狀況，再給建議。\n診間很安靜。",
+   "choices": [
+    {
+     "text": "好好聽",
+     "outcome_text": "你離開時覺得至少有人聽你講工作的事。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說知道了",
+     "outcome_text": "醫生沒有再多說，讓你離開。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_parent_no_pressure",
+   "age": 34,
+   "stage": "adult",
+   "text": "你回家，父母沒有問你薪水或升遷，只是問你有沒有好好吃飯。\n桌上有家常菜。",
+   "choices": [
+    {
+     "text": "坐下來吃",
+     "outcome_text": "你們安靜吃完，他們沒有再追問工作。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己吃過了",
+     "outcome_text": "他們沒有勉強你，讓你去休息。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_child_draw",
+   "age": 36,
+   "stage": "adult",
+   "text": "孩子畫了一張很亂的畫給你，說是你。你沒有說「畫得不好」。\n他看著你。",
+   "choices": [
+    {
+     "text": "說謝謝並收下",
+     "outcome_text": "你把畫放在桌上，孩子很開心。",
+     "effects": {
+      "心理": 6,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說知道了",
+     "outcome_text": "孩子把畫拿走，沒有再多說。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_old_colleague",
+   "age": 38,
+   "stage": "adult",
+   "text": "你在外面遇到以前的同事。他沒有問你現在薪水多少，只是說「最近好嗎」。\n你們站著聊了幾句。",
+   "choices": [
+    {
+     "text": "聊一下近況",
+     "outcome_text": "聊完後他說「有空再聯絡」，就分開了。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "簡單回應",
+     "outcome_text": "你們很快就結束對話。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_hr_clear",
+   "age": 25,
+   "stage": "adult",
+   "text": "你對公司制度有疑問。人資沒有推託，而是把規定清楚說明，並給你文件。\n沒有敷衍。",
+   "choices": [
+    {
+     "text": "把文件看完",
+     "outcome_text": "你看完後比較清楚自己的權益。",
+     "effects": {
+      "心理": 3,
+      "警覺": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說知道了",
+     "outcome_text": "人資沒有再多說。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_weekend_no_msg",
+   "age": 28,
+   "stage": "adult",
+   "text": "週末你沒有收到主管的訊息。你發現自己可以真的休息。\n手機很安靜。",
+   "choices": [
+    {
+     "text": "好好休息",
+     "outcome_text": "你週一上班時沒有被追問週末做了什麼。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "還是看一下工作",
+     "outcome_text": "你自己看了一下，但沒有人要求。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_community_help",
+   "age": 31,
+   "stage": "adult",
+   "text": "社區有人需要幫忙搬東西。你經過時被問能不能搭一把手，你幫忙了。\n沒有人強迫。",
+   "choices": [
+    {
+     "text": "幫忙搬",
+     "outcome_text": "搬完後對方說謝謝，你就離開了。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說趕時間",
+     "outcome_text": "對方沒有再勉強你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_partner_chore",
+   "age": 33,
+   "stage": "adult",
+   "text": "你下班很累。伴侶已經把家事做完一部分，沒有說「你也要做」。\n家裡算乾淨。",
+   "choices": [
+    {
+     "text": "說謝謝",
+     "outcome_text": "你們一起吃完剩下的晚餐。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒特別說",
+     "outcome_text": "一切正常，沒有人計較。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_mentor_advice",
+   "age": 27,
+   "stage": "adult",
+   "text": "公司裡有個資深的人主動跟你說：「如果遇到問題可以問我，沒關係。」\n他沒有居高臨下。",
+   "choices": [
+    {
+     "text": "後來真的問了",
+     "outcome_text": "他回答得很直接，沒有多餘的教訓。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒有去問",
+     "outcome_text": "他沒有再主動來找你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_child_school",
+   "age": 37,
+   "stage": "adult",
+   "text": "孩子學校有活動，老師沒有只叫家長「要配合」，而是說明可以選擇參與的方式。\n你沒有被強迫。",
+   "choices": [
+    {
+     "text": "參與一次",
+     "outcome_text": "活動結束後老師說謝謝，沒有再要求更多。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說不方便",
+     "outcome_text": "老師沒有再追，孩子也沒有被特別對待。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_salary_clear",
+   "age": 24,
+   "stage": "adult",
+   "text": "發薪日你收到明細。人資把各項目列清楚，沒有含糊帶過。\n你看得懂。",
+   "choices": [
+    {
+     "text": "仔細看完",
+     "outcome_text": "你確認沒有問題，把明細存起來。",
+     "effects": {
+      "警覺": 6,
+      "心理": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "只看總額",
+     "outcome_text": "你沒有發現異常，就沒再看。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_old_friend",
+   "age": 35,
+   "stage": "adult",
+   "text": "多年沒見的朋友聯絡你，只是想吃個飯，沒有推銷或借錢。\n你們約在普通的店。",
+   "choices": [
+    {
+     "text": "赴約",
+     "outcome_text": "吃完後他沒有再要求什麼，就各自離開。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說最近忙",
+     "outcome_text": "他沒有再勉強，只說以後再約。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_team_lunch",
+   "age": 26,
+   "stage": "adult",
+   "text": "同事約午餐，沒有人討論工作，只是聊天。\n沒有人被排除。",
+   "choices": [
+    {
+     "text": "一起去",
+     "outcome_text": "吃完後大家各自回工作崗位，沒有後續壓力。",
+     "effects": {
+      "心理": 3,
+      "人際": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說自己有事",
+     "outcome_text": "他們沒有再約你，也沒有生氣。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_boundary_ok",
+   "age": 39,
+   "stage": "adult",
+   "text": "你拒絕了一個不合理的臨時需求。主管沒有再施壓，只說「那我再看看其他人」。\n你沒有被穿小鞋。",
+   "choices": [
+    {
+     "text": "堅持拒絕",
+     "outcome_text": "後來事情還是有人處理，你沒有被特別針對。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "後來還是做了",
+     "outcome_text": "你做完後覺得累，但主管沒有再多說。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_clear_expectation",
+   "age": 24,
+   "stage": "adult",
+   "text": "新專案開始前，主管把目標和期限說清楚，沒有事後才追加。\n你知道要做什麼。",
+   "choices": [
+    {
+     "text": "確認後開始",
+     "outcome_text": "你照著做完，沒有被臨時改需求。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "沒特別確認",
+     "outcome_text": "後來還是有小調整，但沒有大改。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a_leave_approved",
+   "age": 26,
+   "stage": "adult",
+   "text": "你請一天假。主管直接核准，沒有問很多原因，也沒有事後酸你。\n假單很快過。",
+   "choices": [
+    {
+     "text": "好好休息",
+     "outcome_text": "你回來後沒有被追問假日做了什麼。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "還是看一下訊息",
+     "outcome_text": "你自己看了，但沒有人要求你回。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_peer_review_fair",
+   "age": 28,
+   "stage": "adult",
+   "text": "同事幫你看文件，只指出具體問題，沒有人身攻擊。\n意見很直接。",
+   "choices": [
+    {
+     "text": "照建議改",
+     "outcome_text": "你改完後他說「可以了」。",
+     "effects": {
+      "心理": 3,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "部分採納",
+     "outcome_text": "他沒有再堅持。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_partner_time",
+   "age": 30,
+   "stage": "adult",
+   "text": "週末你想休息。伴侶沒有安排一堆事情，只是問你想不想出門。\n你可以選擇。",
+   "choices": [
+    {
+     "text": "一起出門",
+     "outcome_text": "你們輕鬆走了一下就回家。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說想待在家",
+     "outcome_text": "你們在家休息，沒有人不高興。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_child_no_compare",
+   "age": 34,
+   "stage": "adult",
+   "text": "孩子學校表現普通。你沒有拿他跟別人比，只是問他今天開不開心。\n他回答了。",
+   "choices": [
+    {
+     "text": "聽他講",
+     "outcome_text": "他講完後去玩，你沒有再追成績。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說知道了",
+     "outcome_text": "對話很快結束。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_neighbor_tool",
+   "age": 27,
+   "stage": "adult",
+   "text": "你臨時需要工具。鄰居借你，說用完再還就可以。\n沒有計較。",
+   "choices": [
+    {
+     "text": "用完歸還",
+     "outcome_text": "你還他時說謝謝，他沒有再多說。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "隔天還",
+     "outcome_text": "他沒有催你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_hr_policy_clear",
+   "age": 25,
+   "stage": "adult",
+   "text": "你問加班費怎麼算。人資把規定和計算方式說明清楚。\n沒有模糊帶過。",
+   "choices": [
+    {
+     "text": "確認理解",
+     "outcome_text": "你之後對薪資比較有概念。",
+     "effects": {
+      "警覺": 6,
+      "心理": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "說知道了",
+     "outcome_text": "人資沒有再解釋。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_team_no_blame",
+   "age": 32,
+   "stage": "adult",
+   "text": "專案有延遲。會議上沒有人公開指責某個人，而是討論接下來怎麼補。\n氣氛還算平穩。",
+   "choices": [
+    {
+     "text": "參與討論",
+     "outcome_text": "大家分完工作就散會。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒多說話",
+     "outcome_text": "會議結束，沒有人特別看你。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_old_classmate",
+   "age": 36,
+   "stage": "adult",
+   "text": "老同學聯絡你，只是想敘舊，沒有借錢或推銷。\n你們約咖啡。",
+   "choices": [
+    {
+     "text": "赴約",
+     "outcome_text": "聊完後各自離開，沒有後續要求。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說最近忙",
+     "outcome_text": "他沒有再約。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_boundary_respected",
+   "age": 38,
+   "stage": "adult",
+   "text": "你說下班後不看訊息。主管之後真的比較少在晚上找你。\n你發現界線被尊重。",
+   "choices": [
+    {
+     "text": "維持這個習慣",
+     "outcome_text": "你晚上可以休息，隔天工作也沒被針對。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "偶爾還是回",
+     "outcome_text": "你自己選擇回，但沒有被要求必須回。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_park_friend",
+   "age": 8,
+   "stage": "child",
+   "text": "公園裡有個不認識的小孩主動約你一起玩溜滑梯。他沒有搶你的位置。",
+   "choices": [
+    {
+     "text": "一起玩",
+     "outcome_text": "你們玩了一陣子，他媽媽叫他時他跟你說再見。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": [
+      "reminded_family"
+     ]
+    },
+    {
+     "text": "自己玩",
+     "outcome_text": "他沒有再來找你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "c_teacher_sticker",
+   "age": 10,
+   "stage": "child",
+   "text": "你今天表現普通，老師還是給了你一張小貼紙，說：「有進步。」",
+   "choices": [
+    {
+     "text": "收下",
+     "outcome_text": "你把貼紙貼在鉛筆盒上。",
+     "effects": {
+      "心理": 6
+     },
+     "flags": []
+    },
+    {
+     "text": "說不用",
+     "outcome_text": "老師沒有再給。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_study_group_fair",
+   "age": 16,
+   "stage": "student",
+   "text": "讀書會大家輪流講題，沒有人一直讓你講最難的。",
+   "choices": [
+    {
+     "text": "參與輪流",
+     "outcome_text": "結束時大家說下次再約。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "只聽",
+     "outcome_text": "沒有人強迫你講。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "s_professor_office_hour",
+   "age": 20,
+   "stage": "student",
+   "text": "你去教授的 office hour。他沒有趕你，聽你問完問題再回答。",
+   "choices": [
+    {
+     "text": "問清楚",
+     "outcome_text": "你離開時比較懂了。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "很快離開",
+     "outcome_text": "教授沒有再留你。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_clear_kpi",
+   "age": 26,
+   "stage": "adult",
+   "text": "年初主管把你的 KPI 寫清楚，沒有年底才說你沒達標。",
+   "choices": [
+    {
+     "text": "確認內容",
+     "outcome_text": "你知道今年要做什麼。",
+     "effects": {
+      "警覺": 6,
+      "心理": 3
+     },
+     "flags": [
+      "fs_verify"
+     ]
+    },
+    {
+     "text": "沒仔細看",
+     "outcome_text": "後來還是照著做。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_team_credit",
+   "age": 29,
+   "stage": "adult",
+   "text": "專案成功後，主管在會議上提到大家的貢獻，沒有只講自己。",
+   "choices": [
+    {
+     "text": "覺得被看見",
+     "outcome_text": "會後沒有人特別爭功。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "沒特別感覺",
+     "outcome_text": "會議結束。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_partner_no_blame",
+   "age": 33,
+   "stage": "adult",
+   "text": "家裡有事情沒做好。伴侶沒有責怪你，只是一起處理。",
+   "choices": [
+    {
+     "text": "一起處理",
+     "outcome_text": "事情解決後沒有人再提。",
+     "effects": {
+      "心理": 6,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "說抱歉",
+     "outcome_text": "對方說沒關係。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_child_choice",
+   "age": 37,
+   "stage": "adult",
+   "text": "孩子想自己決定週末要做什麼。你讓他選，沒有全盤安排。",
+   "choices": [
+    {
+     "text": "讓他選",
+     "outcome_text": "你們照他的想法過了一天。",
+     "effects": {
+      "心理": 3,
+      "人際": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "還是你決定",
+     "outcome_text": "孩子沒有再堅持。",
+     "effects": {
+      "心理": 0
+     },
+     "flags": []
+    }
+   ]
+  },
+  {
+   "id": "a_no_after_hours",
+   "age": 40,
+   "stage": "adult",
+   "text": "你明確說晚上不處理非緊急訊息。之後真的比較少人晚上找你。",
+   "choices": [
+    {
+     "text": "維持界線",
+     "outcome_text": "你晚上可以休息。",
+     "effects": {
+      "心理": 6,
+      "警覺": 3
+     },
+     "flags": []
+    },
+    {
+     "text": "偶爾還是回",
+     "outcome_text": "你自己選擇。",
+     "effects": {
+      "心理": 3
+     },
+     "flags": []
+    }
+   ]
+  }
+ ],
+ "lie_endings": [
+  {
+   "id": "END_TRUST_LONG",
+   "name": "他每天跟我說早安",
+   "text": "你記得小時候大人說過，不要隨便跟陌生人說話。\n但這個人已經跟你聊天三個月了。他知道你幾點下班，知道你喜歡什麼。\n當他第一次提到投資時，你沒有覺得他是陌生人。",
+   "case": "交友軟體認識後，對方每日固定問候、分享生活瑣事約數月，再引入投資。被害人先小額獲利後加碼，最終無法出金。此類「假交友結合投資」財損長期居打詐統計前茅。\n案例對照：刑事局整理之假投資步驟（建立信任→引入投資→誘導加碼→出金受阻）。",
+   "missed": [
+    "話題從生活突然轉到投資",
+    "第一次能出金，之後就被要求再轉入",
+    "對方不願視訊或見面"
+   ],
+   "review": "童年「不要跟陌生人說話」",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {
+    "heard_stranger": 18
+   },
+   "requires": [
+    "heard_stranger"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "heard_stranger"
+   ]
+  },
+  {
+   "id": "END_GROUP_PROFIT",
+   "name": "群組裡每個人都在賺",
+   "text": "你記得學生時期常聽到「別人都在補，你不補就跟不上」。\n這次群組裡每個人都在曬獲利截圖。你怕自己又落後，就先轉了一筆小的試試。",
+   "case": "投資群組內多名帳號曬獲利後，被害人跟進。初期可出金，後續被要求繳「保證金」或加碼後失聯。\n案例對照：165 打詐儀錶板顯示假投資財損金額常年最高，群組曬單為常見前期手法。",
+   "missed": [
+    "獲利截圖無法查證",
+    "要求脫離正規平台",
+    "出金出現額外費用"
+   ],
+   "review": "學生「別人都在做」／出社會「現在不進場以後沒機會」",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 10,
+   "boost": {
+    "heard_everyone": 20,
+    "heard_miss_chance": 20
+   },
+   "requires": [
+    "heard_everyone"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "heard_everyone",
+    "heard_miss_chance"
+   ]
+  },
+  {
+   "id": "END_AUTHORITY_CALL",
+   "name": "他說他是警察",
+   "text": "你小時候聽過「不去的話警察會來抓你」。\n這通電話裡，對方語氣很確定，還說已經有你的資料。你不敢先掛斷。",
+   "case": "自稱檢警來電，掌握部分個資並要求配合「資金清查」，引導操作 ATM 或網銀。\n案例對照：刑事局宣導明確指出，真正警察不會電話要求操作 ATM；此類案件單筆財損往往較高。",
+   "missed": [
+    "要求你不要掛斷",
+    "引導至 ATM／網銀",
+    "來電顯示可偽造"
+   ],
+   "review": "童年「警察會來抓你」",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 6,
+   "boost": {
+    "heard_police": 16
+   },
+   "requires": [
+    "heard_police"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "heard_police"
+   ]
+  },
+  {
+   "id": "END_DONT_WORRY",
+   "name": "不想讓家人擔心",
+   "text": "你出社會後習慣跟家人說「還好」。\n這次你也沒有講。你覺得自己可以處理，不想讓他們擔心。",
+   "case": "被害人發現異常後選擇不告知家人，繼續匯款試圖自行解決，損失擴大。家屬多在催債或帳戶凍結時才知情。\n案例對照：多起判決與新聞中，被害人因「不想讓家人擔心」而延誤求助。",
+   "missed": [
+    "已無法出金仍繼續轉入",
+    "對方要求保密",
+    "不向信任的人確認"
+   ],
+   "review": "出社會「說還好」",
+   "help": "165 反詐騙專線／1925 安心專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {
+    "said_its_fine": 18
+   },
+   "requires": [
+    "said_its_fine"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "said_its_fine"
+   ]
+  },
+  {
+   "id": "END_SHOPPING_LINK",
+   "name": "客服說要驗證",
+   "text": "你在網路上看到便宜的東西。對方說要先驗證身分才能出貨。\n你記得以前老師說過「不聽話以後沒有好工作」，你不想把事情搞複雜，就照做了。",
+   "case": "網購或二手交易中，對方以「實名認證」「金流驗證失敗」等理由引導點擊連結或轉帳。2025 年網購詐騙受理件數常居首位。\n案例對照：165 指出，跳過正規平台私下交易、出現「驗證」字樣即高風險。",
+   "missed": [
+    "要求脫離購物平台",
+    "出現「驗證」「解凍」等字眼",
+    "催促立刻完成"
+   ],
+   "review": "學生／出社會的服從與怕麻煩",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 12,
+   "boost": {
+    "obey_authority": 16
+   },
+   "requires": [],
+   "pool": "heavy",
+   "review_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "END_JOB_FEE",
+   "name": "先繳訓練費",
+   "text": "你記得出社會時聽過「年輕人要多磨練，薪水低一點沒關係」。\n這份工作說先繳一點訓練費，做完就能賺回來。你覺得反正也是學習，就先付了。",
+   "case": "求職詐騙中，對方以「保證錄取」「高薪輕鬆」為由，要求先繳訓練費、保證金或購買裝備。被害人付款後失聯或被要求再繳。\n案例對照：165 與相關新聞中，假求職常結合「先付錢才能上工」。",
+   "missed": [
+    "正規工作不需先繳高額費用",
+    "要求匯款至個人帳戶",
+    "急催「名額有限」"
+   ],
+   "review": "出社會「年輕人要多磨練」",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {
+    "obey_authority": 14
+   },
+   "requires": [],
+   "pool": "heavy",
+   "review_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "END_ROMANCE_BORROW",
+   "name": "他說只是暫時周轉",
+   "text": "你小時候聽過「錢是辛苦賺來的，不可以亂花」。\n但這個人已經交往一陣子了。他說只是暫時周轉，下個月就還。你把錢轉過去。",
+   "case": "交往或網戀期間，對方以急用、投資、醫療等理由借款，事後失聯或只還極少部分。部分案件涉及偽造身分或隱瞞婚姻。\n案例對照：多起民事與刑事判決中，以感情為前提借款後違約。",
+   "missed": [
+    "不願見面或視訊卻急著借錢",
+    "理由反覆變更",
+    "還款日期一延再延"
+   ],
+   "review": "童年金錢觀／感情信任",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {},
+   "requires": [],
+   "pool": "heavy",
+   "review_flags": []
+  },
+  {
+   "id": "END_FAMILY_IMPERSONATE",
+   "name": "兒子說要錢",
+   "text": "你接到電話，對方說是你兒子，聲音有點像，又說現在不方便講。\n你記得以前總是跟家人說「還好」，這次你也不想再問太多，就先轉了。",
+   "case": "假冒親友來電，聲稱出事、被關或急需用錢，要求立刻匯款並勿告知他人。\n案例對照：165 常見「猜猜我是誰」與假綁架類型，利用緊張與親情。",
+   "missed": [
+    "不願你打電話向本人確認",
+    "要求立刻匯款",
+    "聲音或用詞有異仍繼續"
+   ],
+   "review": "出社會「說還好」／不想多問",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {
+    "said_its_fine": 14
+   },
+   "requires": [
+    "said_its_fine"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "said_its_fine"
+   ]
+  },
+  {
+   "id": "END_INVEST_SMALL",
+   "name": "先小額試試",
+   "text": "你記得有人說過「現在不試以後就沒機會」。\n對方說先放一點點就好，賺了再加。你覺得金額不大，就轉了。",
+   "case": "假投資常以小額可出金建立信任，再誘導加碼。許多被害人最初只打算「試試」。\n案例對照：刑事局假投資步驟中，「第一次能出金」為常見信任陷阱。",
+   "missed": [
+    "保證獲利或低風險高報酬",
+    "出金後立刻要求再投入",
+    "平台或群組無法查證"
+   ],
+   "review": "出社會「現在不進場以後沒機會」",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 10,
+   "boost": {
+    "heard_miss_chance": 18
+   },
+   "requires": [
+    "heard_miss_chance"
+   ],
+   "pool": "heavy",
+   "review_flags": [
+    "heard_miss_chance"
+   ]
+  },
+  {
+   "id": "END_CUSTOMER_SERVICE",
+   "name": "訂單異常",
+   "text": "你收到訊息說訂單有問題，要聯繫客服處理。\n你不想把事情搞大，就照對方說的點了連結。",
+   "case": "假冒電商或物流客服，以訂單異常、重複扣款等理由引導點擊釣魚連結或提供資料。\n案例對照：165 指出網購詐騙受理件數常居高，假客服為常見手法。",
+   "missed": [
+    "主動傳來的連結",
+    "要求提供驗證碼或操作網銀",
+    "官方客服不會這樣聯繫"
+   ],
+   "review": "怕麻煩／服從指示",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 10,
+   "boost": {
+    "obey_authority": 16
+   },
+   "requires": [],
+   "pool": "heavy",
+   "review_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "END_LOAN_FIRST",
+   "name": "要貸款先轉帳",
+   "text": "你急需用錢。對方說可以幫你辦貸款，但要先轉一筆「手續費」或「保證金」。\n你覺得反正會核下來，就先付了。",
+   "case": "假貸款要求先繳費用、保證金或購買點數才能撥款，付款後失聯。\n案例對照：165 與銀行宣導均指出，正規貸款不會要求先轉帳。",
+   "missed": [
+    "未核貸就要求先付錢",
+    "匯款至個人帳戶",
+    "急催「今天不付就失效」"
+   ],
+   "review": "急需與服從",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 8,
+   "boost": {},
+   "requires": [],
+   "pool": "heavy",
+   "review_flags": [
+    "obey_authority"
+   ]
+  },
+  {
+   "id": "END_ALMOST",
+   "name": "差點匯出去",
+   "text": "你已經打開網銀了。\n後來你打給家人，對方說「先不要」。你把頁面關掉。\n這一生沒有大損失，但你記得那個差點。",
+   "case": "刑事局與銀行臨櫃攔阻數據顯示，部分案件在最後一步被成功勸阻，人均損失明顯下降。\n案例對照：查找潛在被害人機制曾成功阻止約六成繼續匯款。",
+   "missed": [
+    "對方催促「現在不轉就失效」",
+    "要求不要告訴別人"
+   ],
+   "review": "有驚無險／差點",
+   "help": "165 反詐騙專線",
+   "source_note": "寫手提供，待查證",
+   "base": 6,
+   "boost": {
+    "reminded_family": 22
+   },
+   "requires": [],
+   "pool": "light",
+   "review_flags": []
+  },
+  {
+   "id": "END_QUIET",
+   "name": "這一生沒什麼大事",
+   "text": "你沒有遇過什麼大詐騙。\n薪水不多，但每個月都過得去。沒有人特別騙你，也沒有人特別幫你。\n你覺得這樣也好。",
+   "case": "統計上並非每個人都會成為高額被害人。多數日常謊言是小謊，重大損失集中在少數類型。此卡用於對照「沒發生不代表不常見」。\n案例對照：165 整體件數與財損分布、說謊頻率研究（多數人一天 0–2 個小謊）。",
+   "missed": [
+    "（無具體事件）",
+    "網購與假投資仍是最常見接觸管道"
+   ],
+   "review": "風平浪靜／日常小謊",
+   "help": "（可不顯示）",
+   "source_note": "寫手提供，待查證",
+   "base": 15,
+   "boost": {
+    "_no_core": 25
+   },
+   "requires": [],
+   "pool": "light",
+   "review_flags": []
+  },
+  {
+   "id": "END_HELPED_OTHERS",
+   "name": "你勸過別人",
+   "text": "有朋友差點匯款，你叫他先打給家人確認。\n他後來沒有轉。你自己這一生也沒有大損失。\n你覺得至少這次有人聽進去了。",
+   "case": "臨櫃攔阻與親友勸阻是實務上有效的防止損失方式。部分案件因最後一步被阻止而免於高額損失。\n案例對照：刑事局查找潛在被害人與臨櫃攔阻數據。",
+   "missed": [
+    "（此為正向輕結局）",
+    "對方當時有催促與保密要求"
+   ],
+   "review": "正面事件／有驚無險的延伸",
+   "help": "（可不顯示）",
+   "source_note": "寫手提供，待查證",
+   "base": 4,
+   "boost": {
+    "talked_family_work": 12,
+    "fs_verify": 10
+   },
+   "requires": [],
+   "pool": "light",
+   "review_flags": []
+  }
+ ]
+}
